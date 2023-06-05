@@ -16,7 +16,6 @@ namespace ForumManagementSystem
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
