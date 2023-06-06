@@ -118,16 +118,7 @@ namespace ForumManagementSystem.Repository
             throw new NotImplementedException();
         }
 
-        public Post GetByuser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Post GetByUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-
+              
         public Post GetByUser(string user)
         {
             throw new NotImplementedException();
