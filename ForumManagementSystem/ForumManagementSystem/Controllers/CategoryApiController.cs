@@ -1,24 +1,27 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿
+
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ForumManagementSystem.Controllers
 {
-    [Route("api/category")]
     [ApiController]
+    [Route("api/categories")]
     public class CategoryApiController : ControllerBase
     {
 
-        private readonly ICategoryServices categoryService;
-        public CategoryApiController(ICategoryServices categoryService)
+        private readonly ICategoryService categoryService;
+        private readonly ForumManagementSystem.Models.CategoryMapper categoryMapper;
+        public CategoryApiController(ICategoryService categoryService, ForumManagementSystem.Models.CategoryMapper categoryMapper)
         {
             this.categoryService = categoryService;
+            this.categoryMapper = categoryMapper;
         }
 
         [HttpGet("")]
-        public IActionResult GetCategories([FromQuery] CategoryQueryParameters parameters)
+        public IActionResult GetCategories([FromQuery] CategoryQueryParameter parameters)
         {
             List<Category> result = this.categoryService.FilterBy(parameters);
 
@@ -41,12 +44,12 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreateCategory([FromBody] Category category)
+        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto)
         {
             try
             {
-                
-                var createdCategory= this.categoryService.Create(category);
+                Category category = this.categoryMapper.Map(categoryDto);
+                var createdCategory = this.categoryService.Create(category);
                 return this.StatusCode(StatusCodes.Status201Created, createdCategory);
             }
             catch (DuplicateEntityException ex)
@@ -55,10 +58,11 @@ namespace ForumManagementSystem.Controllers
             }
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] Category category)
+        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto)
         {
             try
             {
+                Category category = this.categoryMapper.Map(categoryDto);
                 Category updatedCategory = this.categoryService.Update(id, category);
                 return this.StatusCode(StatusCodes.Status200OK, updatedCategory);
             }

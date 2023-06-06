@@ -17,11 +17,14 @@ namespace ForumManagementSystem
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
             //Services
-            builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserService, UserService>();
 
             //Helpers
             builder.Services.AddScoped<UserMapper>();
+            builder.Services.AddScoped<ForumManagementSystem.Models.CategoryMapper>();
+
+
 
             var app = builder.Build();
             
@@ -33,5 +36,9 @@ namespace ForumManagementSystem
             app.MapControllers();
             app.Run();
         }
+    }
+
+    internal class CategoryMapper
+    {
     }
 }

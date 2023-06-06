@@ -42,7 +42,7 @@ namespace ForumManagementSystem.Repository
             return category;
         }
 
-        public List<Category> FilterBy(CategoryQueryParameters parameters)
+        public List<Category> FilterBy(CategoryQueryParameter parameters)
         {
             List<Category> result = categories;
 
@@ -54,14 +54,6 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.FindAll(c => c.Name.Contains(parameters.Description)).ToList();
             }
-            if (parameters.FromDateTime.HasValue)
-            {
-                result = result.FindAll(c => c.DateTime>=parameters.FromDateTime).ToList();
-            }
-            if (parameters.ToDateTime.HasValue)
-            {
-                result = result.FindAll(c => c.DateTime <= parameters.ToDateTime).ToList();
-            }
             if (!string.IsNullOrEmpty(parameters.SortBy))
             {
                 if (parameters.SortBy.Equals("name", StringComparison.InvariantCultureIgnoreCase))
@@ -72,11 +64,8 @@ namespace ForumManagementSystem.Repository
                 {
                     result = result.OrderBy(c => c.Description).ToList();
                 }
-                else if (parameters.SortBy.Equals("fromDataTime", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    result = result.OrderBy(c => c.DateTime).ToList();
-                }
-                if (!string.IsNullOrEmpty(parameters.SortOrder) && parameters.SortOrder.Equals("desc", StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrEmpty(parameters.SortOrder) 
+                    && parameters.SortOrder.Equals("desc", StringComparison.InvariantCultureIgnoreCase))
                 {
                     result.Reverse();
                 }
@@ -93,7 +82,7 @@ namespace ForumManagementSystem.Repository
         public Category GetById(int id)
         {
             var category = categories.FirstOrDefault(c => c.Id == id);
-            return category?? throw new EntityNotFoundException($"Category with id={id} doesn't exist.");
+            return category ?? throw new EntityNotFoundException($"Category with id={id} doesn't exist.");
         }
         public Category GetByName(string name)
         {

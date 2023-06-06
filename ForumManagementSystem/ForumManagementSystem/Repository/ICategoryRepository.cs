@@ -10,16 +10,13 @@ namespace ForumManagementSystem.Repository
 
         Category GetByName(string name);
 
-        List<Category> FilterBy(CategoryQueryParameters parameters);
+        List<Category> FilterBy(CategoryQueryParameter parameters);
 
         Category Create(Category category);
 
         Category Update(int id,Category category);
 
         Category Delete(int id);
-
-        
-
 
     }
 }

@@ -2,13 +2,13 @@
 
 namespace ForumManagementSystem.Services
 {
-    public interface ICategoryServices
+    public interface ICategoryService
     {
         List<Category> GetAll();
 
         Category GetById(int id);
 
-        List<Category> FilterBy(CategoryQueryParameters parameters);
+        List<Category> FilterBy(CategoryQueryParameter parameters);
 
         Category Create(Category category);
 

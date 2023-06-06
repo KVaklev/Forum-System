@@ -4,10 +4,10 @@ using ForumManagementSystem.Repository;
 
 namespace ForumManagementSystem.Services
 {
-    public class CategoryServices : ICategoryServices
+    public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository repository;
-        public CategoryServices(ICategoryRepository repository)
+        public CategoryService(ICategoryRepository repository)
         {
             this.repository = repository;
         }
@@ -17,7 +17,7 @@ namespace ForumManagementSystem.Services
             {
                 var createCategory = this.repository.GetByName(category.Name);
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 var createCategory = this.repository.Create(category);
                 return createCategory;
@@ -31,7 +31,7 @@ namespace ForumManagementSystem.Services
             return repository.Delete(id);
         }
 
-        public List<Category> FilterBy(CategoryQueryParameters parameters)
+        public List<Category> FilterBy(CategoryQueryParameter parameters)
         {
             return this.repository.FilterBy(parameters);
         }
