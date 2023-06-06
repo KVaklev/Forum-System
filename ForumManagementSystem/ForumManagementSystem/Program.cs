@@ -1,3 +1,6 @@
+using ForumManagementSystem.Repository;
+using ForumManagementSystem.Services;
+
 namespace ForumManagementSystem
 {
     public class Program
@@ -9,13 +12,14 @@ namespace ForumManagementSystem
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ICategoryServices, CategoryServices>();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
