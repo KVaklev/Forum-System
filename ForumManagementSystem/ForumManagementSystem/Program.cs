@@ -14,6 +14,7 @@ namespace ForumManagementSystem
             builder.Services.AddControllers();
             builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+            
 
             var app = builder.Build();
 
