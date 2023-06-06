@@ -22,7 +22,7 @@ namespace ForumManagementSystem.Repository
                  },
                  new User()
                  {
-                   Id = 1,
+                   Id = 2,
                      FirstName = "Mariq",
                      LastName = "Petrova",
                      Email = "m.petrova@gmail.com",
