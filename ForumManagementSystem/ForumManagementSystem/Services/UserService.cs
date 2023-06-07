@@ -42,9 +42,10 @@ namespace ForumManagementSystem.Services
         public User Update(int id, User user)
         {
             bool duplicateExists = true;
+
             try
             {
-                User existingUser = this.repository.GetByUsername(user.Username);
+                User existingUser = this.repository.GetById(id);
 
                 if (existingUser.Id == id)
                 {
@@ -58,7 +59,7 @@ namespace ForumManagementSystem.Services
 
             if (duplicateExists)
             {
-                throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
+                throw new DuplicateEntityException($"User with id '{user.Id}' already exists.");
             }
 
             User updatedUser = this.repository.Update(id, user);

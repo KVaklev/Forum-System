@@ -19,34 +19,22 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetUsers([FromQuery] UserQueryParameters filterParameters)
+        public IActionResult GetUsers()
         {
-            List<User> result = this.userService.FilterBy(filterParameters);
+            List<User> users = this.userService.GetAll();
 
-            return this.StatusCode(StatusCodes.Status200OK, result);
-        }
+            List<GetUserDto> userDtos = users.Select(user => UserMapper.MapUserToDtoGet(user)).ToList();
 
-        [HttpGet("{id}")]
-        public IActionResult GetUserById(int id)
-        {
-            try
-            {
-                User user = this.userService.GetById(id);
-
-                return this.StatusCode(StatusCodes.Status200OK, user);
-            }
-            catch (EntityNotFoundException e)
-            {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
-            }
+            return this.StatusCode(StatusCodes.Status200OK, userDtos);
         }
 
         [HttpPost("")]
-        public IActionResult CreateUser([FromBody] UserDto userDto)
+        public IActionResult CreateUser([FromBody] CreateUserDto createUserDto) 
         {
             try
             {
-                User user = this.userMapper.Map(userDto);
+                User user = this.userMapper.MapUserToDtoCreate(createUserDto);
+
                 User createdUser = this.userService.Create(user);
 
                 return this.StatusCode(StatusCodes.Status201Created, createdUser);
@@ -55,14 +43,16 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
+          
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
+        [HttpPut("{id}")] //only bi id??
+        public IActionResult UpdateUser(int id, [FromBody] CreateUserDto createUserDto)
         {
             try
             {
-                User user = this.userMapper.Map(userDto);
+                User user = this.userMapper.MapUserToDtoCreate(createUserDto);
+
                 User updatedUser = this.userService.Update(id, user);
 
                 return this.StatusCode(StatusCodes.Status200OK, updatedUser);
@@ -77,7 +67,10 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        //[HttpPut("{username}")] //forbidden?
+
+
+        [HttpDelete("{id}")]// only by admin??
         public IActionResult DeleteUser(int id)
         {
             try
@@ -91,6 +84,5 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
-
     }
 }

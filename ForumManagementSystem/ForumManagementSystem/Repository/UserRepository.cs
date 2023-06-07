@@ -1,6 +1,5 @@
 ﻿using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
-using System.Xml.Linq;
 
 namespace ForumManagementSystem.Repository
 {
@@ -22,7 +21,7 @@ namespace ForumManagementSystem.Repository
                  },
                  new User()
                  {
-                   Id = 2,
+                     Id = 2,
                      FirstName = "Mariq",
                      LastName = "Petrova",
                      Email = "m.petrova@gmail.com",
@@ -73,11 +72,12 @@ namespace ForumManagementSystem.Repository
         public User Update(int id, User user) //ToCheck - not full
         {
             User userToUpdate=this.GetById(id);
-            userToUpdate.FirstName = user.FirstName;
-            userToUpdate.LastName = user.LastName;
-            userToUpdate.Email = user.Email;
-            userToUpdate.Password = user.Password;
-            userToUpdate.PhoneNumber= user.PhoneNumber;
+
+           userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
+           userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
+           userToUpdate.Email = user.Email ?? userToUpdate.Email;
+           userToUpdate.Password =  user.Password ?? userToUpdate.Password;
+           userToUpdate.PhoneNumber =  user.PhoneNumber ?? userToUpdate.PhoneNumber;
 
             //role?
             return userToUpdate;
