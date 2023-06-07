@@ -47,7 +47,11 @@ namespace ForumManagementSystem.Repository
             return post ?? throw new EntityNotFoundException($"Post with user = {user} doesn't exist.");
         }
 
+<<<<<<< Updated upstream
         public Post GetById(int id)
+=======
+        public Post GetByID(int id)
+>>>>>>> Stashed changes
         {
             Post post = this.posts.Where(posts => posts.Id == id).FirstOrDefault();
             return post ?? throw new EntityNotFoundException($"Post with ID = {id} doesn't exist.");
@@ -67,7 +71,11 @@ namespace ForumManagementSystem.Repository
 
         public Post Update(int id, Post post)
         {
+<<<<<<< Updated upstream
             Post postToUpdate = this.GetById(id);
+=======
+            Post postToUpdate = this.GetByID(id);
+>>>>>>> Stashed changes
             postToUpdate.User = post.User;
             postToUpdate.Title = post.Title;
             postToUpdate.Category = post.Category;
