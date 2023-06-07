@@ -17,7 +17,7 @@ namespace ForumManagementSystem.Services
         }
         public Post GetById(int id)
         {
-            return this.repository.GetByID(id);
+            return this.repository.GetById(id);
         }
         public Post Create(Post post)
         {
@@ -27,7 +27,7 @@ namespace ForumManagementSystem.Services
             {
                 this.repository.GetByTitle(post.Title);
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 duplicateExists = false;
             }

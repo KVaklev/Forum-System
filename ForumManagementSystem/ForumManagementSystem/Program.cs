@@ -26,6 +26,7 @@ namespace ForumManagementSystem
             //Helpers
             builder.Services.AddScoped<UserMapper>();
             builder.Services.AddScoped<ForumManagementSystem.Models.CategoryMapper>();
+            builder.Services.AddScoped<ForumManagementSystem.Models.PostMapper>();
 
 
 
@@ -41,7 +42,7 @@ namespace ForumManagementSystem
         }
     }
 
-    internal class CategoryMapper
+    internal class PostMapper
     {
     }
 }

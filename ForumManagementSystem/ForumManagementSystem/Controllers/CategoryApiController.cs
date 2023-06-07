@@ -1,6 +1,4 @@
-﻿
-
-using ForumManagementSystem.Exceptions;
+﻿using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;

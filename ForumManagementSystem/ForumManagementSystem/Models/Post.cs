@@ -15,9 +15,5 @@
         public List<Comment> Comments { get; set; }
 
         public DateTime DateTime { get; set; }
-
-
-        //public User users { get; set; }
-
     }
 }

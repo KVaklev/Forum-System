@@ -6,7 +6,7 @@ namespace ForumManagementSystem.Repository
     {
         List<Post> GetAll();
 
-        Post GetByID(int id);
+        Post GetById(int id);
 
         Post GetByUser(string user);
 

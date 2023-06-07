@@ -47,7 +47,7 @@ namespace ForumManagementSystem.Repository
             return post ?? throw new EntityNotFoundException($"Post with user = {user} doesn't exist.");
         }
 
-        public Post GetByID(int id)
+        public Post GetById(int id)
         {
             Post post = this.posts.Where(posts => posts.Id == id).FirstOrDefault();
             return post ?? throw new EntityNotFoundException($"Post with ID = {id} doesn't exist.");
@@ -67,7 +67,7 @@ namespace ForumManagementSystem.Repository
 
         public Post Update(int id, Post post)
         {
-            Post postToUpdate = this.GetByID(id);
+            Post postToUpdate = this.GetById(id);
             postToUpdate.User = post.User;
             postToUpdate.Title = post.Title;
             postToUpdate.Category = post.Category;
@@ -87,7 +87,7 @@ namespace ForumManagementSystem.Repository
 
         public Post Delete(int id)
         {
-            Post postToDelete = this.GetByID(id);
+            Post postToDelete = this.GetById(id);
             this.posts.Remove(postToDelete);
             return postToDelete;
         }
