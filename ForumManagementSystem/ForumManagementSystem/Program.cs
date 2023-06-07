@@ -1,6 +1,7 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ForumManagementSystem
 {
@@ -25,10 +26,8 @@ namespace ForumManagementSystem
 
             //Helpers
             builder.Services.AddScoped<UserMapper>();
-            builder.Services.AddScoped<ForumManagementSystem.Models.CategoryMapper>();
-
-
-
+            builder.Services.AddScoped<CategoryMapper>();
+            
             var app = builder.Build();
             
             // Configure the HTTP request pipeline.
