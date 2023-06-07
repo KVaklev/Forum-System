@@ -8,9 +8,11 @@
 
         public string Title { get; set; }
 
-        public string Category { get; set; }
+        public string Category { get; set; } // Tag
 
         public string Content { get; set; }
+
+        public List<Comment> Comments { get; set; }
 
         public DateTime DateTime { get; set; }
 

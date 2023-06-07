@@ -15,10 +15,13 @@ namespace ForumManagementSystem
             // Repositories
             builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
+            builder.Services.AddSingleton<IPostRepository, PostRepository>();
+
 
             //Services
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IPostService, PostService>();
 
             //Helpers
             builder.Services.AddScoped<UserMapper>();

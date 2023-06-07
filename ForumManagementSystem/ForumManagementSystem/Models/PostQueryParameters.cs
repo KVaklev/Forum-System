@@ -8,8 +8,6 @@
 
         public string Category { get; set; }
 
-        public string Content { get; set; }
-
         public DateTime? FromDateTime { get; set; }
 
         public DateTime? ToDateTime { get; set; }
