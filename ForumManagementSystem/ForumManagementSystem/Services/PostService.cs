@@ -17,11 +17,9 @@ namespace ForumManagementSystem.Services
         }
         public Post GetById(int id)
         {
-<<<<<<< Updated upstream
+
             return this.repository.GetById(id);
-=======
-            return this.repository.GetByID(id);
->>>>>>> Stashed changes
+
         }
         public Post Create(Post post)
         {
@@ -31,11 +29,8 @@ namespace ForumManagementSystem.Services
             {
                 this.repository.GetByTitle(post.Title);
             }
-<<<<<<< Updated upstream
             catch (EntityNotFoundException)
-=======
-            catch (EntityNotFoundException ex)
->>>>>>> Stashed changes
+
             {
                 duplicateExists = false;
             }
