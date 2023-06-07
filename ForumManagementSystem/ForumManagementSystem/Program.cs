@@ -17,17 +17,20 @@ namespace ForumManagementSystem
             builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IPostRepository, PostRepository>();
+            builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
 
 
             //Services
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
 
             //Helpers
             builder.Services.AddScoped<UserMapper>();
             builder.Services.AddScoped<ForumManagementSystem.Models.CategoryMapper>();
             builder.Services.AddScoped<ForumManagementSystem.Models.PostMapper>();
+            builder.Services.AddScoped<CommentMapper>();
 
             var app = builder.Build();
             

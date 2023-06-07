@@ -48,11 +48,11 @@ namespace ForumManagementSystem.Repository
 
             if (!string.IsNullOrEmpty(parameters.Name))
             {
-                result = result.FindAll(c => c.Name.Contains(parameters.Name)).ToList();
+                result = result.FindAll(c => c.Name.Contains(parameters.Name));
             }
             if (!string.IsNullOrEmpty(parameters.Description))
             {
-                result = result.FindAll(c => c.Name.Contains(parameters.Description)).ToList();
+                result = result.FindAll(c => c.Name.Contains(parameters.Description));
             }
             if (!string.IsNullOrEmpty(parameters.SortBy))
             {
