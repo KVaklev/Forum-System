@@ -1,7 +1,6 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ForumManagementSystem
 {
@@ -28,8 +27,8 @@ namespace ForumManagementSystem
 
             //Helpers
             builder.Services.AddScoped<UserMapper>();
-            builder.Services.AddScoped<ForumManagementSystem.Models.CategoryMapper>();
-            builder.Services.AddScoped<ForumManagementSystem.Models.PostMapper>();
+            builder.Services.AddScoped<CategoryMapper>();
+            builder.Services.AddScoped<PostMapper>();
             builder.Services.AddScoped<CommentMapper>();
 
             var app = builder.Build();

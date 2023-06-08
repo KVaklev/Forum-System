@@ -14,15 +14,15 @@ namespace ForumManagementSystem.Repository
                 new Category
                  {
                     Id = 1,
-                    Name = "VAT",
-                    Description = "ЗДДС, ЗКПО, ЗДДФЛ",
+                    Name = "Asian",
+                    Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
                     DateTime = DateTime.Now
                  },
                 new Category
                 {
                     Id = 2,
-                    Name = "ТРЗ и осигуряване",
-                    Description = "КТ, КСО, Наредби, майчинство, болнични, обезщетения",
+                    Name = "Europe",
+                    Description = "European countries related discussions in this forum and that includes the UK as well you dumbo!",
                     DateTime = DateTime.Now
                 }
             };

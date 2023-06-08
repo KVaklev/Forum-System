@@ -106,7 +106,7 @@ namespace ForumManagementSystem.Repository
                 result = result.FindAll(user => user.Email.Contains(filterParameters.Email));
             }
 
-            //if (!string.IsNullOrEmpty(filterParameters.Post)) -->Post.Title, Post.Content??? Post.Tag?? and others
+            //if (!string.IsNullOrEmpty(filterParameters.Post)) --> Post.Title, Post.Content ??? Post.Tag ?? and others
             //{
             //    result = result.FindAll(user => user.Post.Contains(filterParameters.Post));
             //}
