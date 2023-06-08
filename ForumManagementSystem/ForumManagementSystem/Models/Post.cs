@@ -4,11 +4,11 @@
     {
         public int Id { get; set; }
 
-        public string User { get; set; }
+        public User User { get; set; }
 
         public string Title { get; set; }
 
-        public string Category { get; set; } // Tag
+        public Category Category { get; set; } // Tag
 
         public string Content { get; set; }
 

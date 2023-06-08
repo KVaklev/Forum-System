@@ -44,7 +44,4 @@ namespace ForumManagementSystem
         }
     }
 
-    internal class PostMapper
-    {
-    }
 }

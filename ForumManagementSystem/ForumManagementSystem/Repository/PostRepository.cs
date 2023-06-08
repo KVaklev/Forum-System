@@ -6,18 +6,24 @@ namespace ForumManagementSystem.Repository
     public class PostRepository : IPostRepository
     {
         private readonly List<Post> posts;
+        private readonly IUserRepository userRepository;
+        private readonly ICategoryRepository categoryRepository;
 
-        public PostRepository()
+        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
+            this.userRepository= userRepository;
+            this.categoryRepository= categoryRepository;
+
+
             posts = new List<Post>()
 
             {
                 new Post
                 {
                     Id = 1,
-                    User = "Ivan Ivanov",
+                    User = this.userRepository.GetById(1),
                     Title = "BMW 5, 2007",
-                    Category = "Engine",
+                    Category = this.categoryRepository.GetById(1),
                     Content = "Have you ever experienced issues when start the engine",
                     DateTime = DateTime.Now
                 },
@@ -25,9 +31,9 @@ namespace ForumManagementSystem.Repository
                 new Post
                 {
                     Id = 2,
-                    User = "John Smith",
+                    User = this.userRepository.GetById(2),
                     Title = "Mercedes GLC, 2012",
-                    Category = "Suspension",
+                    Category = this.categoryRepository.GetById(2),
                     Content = "Have you experienced issues with suspension making strange noise",
                     DateTime = DateTime.Now
                 },
@@ -41,10 +47,10 @@ namespace ForumManagementSystem.Repository
             return this.posts;
         }
 
-        public Post GetByUser(string user)
+        public Post GetByUser(string username)
         {
-            Post post = this.posts.Where(posts => posts.User == user).FirstOrDefault();
-            return post ?? throw new EntityNotFoundException($"Post with user = {user} doesn't exist.");
+            Post post = this.posts.Where(posts => posts.User.Username == username).FirstOrDefault();
+            return post ?? throw new EntityNotFoundException($"Post with user = {username} doesn't exist.");
         }
 
         public Post GetById(int id)
@@ -60,10 +66,10 @@ namespace ForumManagementSystem.Repository
             Post post = this.posts.Where(posts => posts.Title == title).FirstOrDefault();
             return post ?? throw new EntityNotFoundException($"Post with title = {title} doesn't exist.");
         }
-        public Post GetByCategory(string category)
+        public Post GetByCategory(string categoryName)
         {
-            Post post = this.posts.Where(posts => posts.Category == category).FirstOrDefault();
-            return post ?? throw new EntityNotFoundException($"Post with category = {category} doesn't exist.");
+            Post post = this.posts.Where(posts => posts.Category.Name == categoryName).FirstOrDefault();
+            return post ?? throw new EntityNotFoundException($"Post with category = {categoryName} doesn't exist.");
         }
 
         public Post Update(int id, Post post)
@@ -98,17 +104,17 @@ namespace ForumManagementSystem.Repository
         {
             List<Post> result = this.posts;
 
-            if (!string.IsNullOrEmpty(filterParameters.User))
+            if (!string.IsNullOrEmpty(filterParameters.User.Username))
             {
-                result = result.FindAll(p => p.User.Contains(filterParameters.User));
+                result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
             }
             if (!string.IsNullOrEmpty(filterParameters.Title))
             {
                 result = result.FindAll(p => p.Title.Contains(filterParameters.Title));
             }
-            if (!string.IsNullOrEmpty(filterParameters.Category))
+            if (!string.IsNullOrEmpty(filterParameters.Category.Name))
             {
-                result = result.FindAll(p => p.Category.Contains(filterParameters.Category));
+                result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
             }
             if (filterParameters.FromDateTime.HasValue && filterParameters.ToDateTime.HasValue)
             {
