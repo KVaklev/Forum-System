@@ -6,12 +6,12 @@ namespace ForumManagementSystem.Models
     {
         public int Id { get; set; }
 
-        [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
-        [MaxLength(20, ErrorMessage = "The {0} must be no more than {1} characters long.")]
+        [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string FirstName { get; set; }
 
-        [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
-        [MaxLength(20, ErrorMessage = "The {0} must be no more than {1} characters long.")]
+        [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string LastName { get; set; }
 
         [EmailAddress(ErrorMessage = "Please provide a valid email.")]
