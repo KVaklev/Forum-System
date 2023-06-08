@@ -5,7 +5,7 @@ namespace ForumManagementSystem.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        List<Category> categories;
+        private readonly List<Category> categories;
 
         public CategoryRepository()
         {

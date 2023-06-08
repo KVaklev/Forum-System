@@ -9,10 +9,9 @@ namespace ForumManagementSystem.Controllers
     [Route("api/categories")]
     public class CategoryApiController : ControllerBase
     {
-
         private readonly ICategoryService categoryService;
-        private readonly ForumManagementSystem.Models.CategoryMapper categoryMapper;
-        public CategoryApiController(ICategoryService categoryService, ForumManagementSystem.Models.CategoryMapper categoryMapper)
+        private readonly CategoryMapper categoryMapper;
+        public CategoryApiController(ICategoryService categoryService, CategoryMapper categoryMapper)
         {
             this.categoryService = categoryService;
             this.categoryMapper = categoryMapper;

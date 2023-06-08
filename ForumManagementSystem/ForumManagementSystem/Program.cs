@@ -43,8 +43,4 @@ namespace ForumManagementSystem
             app.Run();
         }
     }
-
-    internal class PostMapper
-    {
-    }
 }

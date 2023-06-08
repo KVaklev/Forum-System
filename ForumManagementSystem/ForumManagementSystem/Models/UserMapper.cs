@@ -1,15 +1,7 @@
-﻿using ForumManagementSystem.Services;
-
-namespace ForumManagementSystem.Models
+﻿namespace ForumManagementSystem.Models
 {
     public class UserMapper
     {
-        private readonly IUserService userService;
-
-        public UserMapper(IUserService userService)
-        {
-            this.userService = userService;
-        }
         public static GetUserDto MapUserToDtoGet(User user)
         {
             return new GetUserDto()
@@ -34,7 +26,6 @@ namespace ForumManagementSystem.Models
 
             };
         }
-
     }
 
 }

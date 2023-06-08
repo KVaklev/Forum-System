@@ -2,10 +2,6 @@
 {
     public class PostMapper
     {
-        public PostMapper()
-        {
-
-        }
         public Post Map(PostDto postDto)
         {
            

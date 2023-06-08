@@ -18,15 +18,17 @@ namespace ForumManagementSystem.Controllers
             this.userMapper=userMapper;
         }
 
-        [HttpGet("")]
-        public IActionResult GetUsers()
-        {
-            List<User> users = this.userService.GetAll();
 
-            List<GetUserDto> userDtos = users.Select(user => UserMapper.MapUserToDtoGet(user)).ToList();
+        [HttpGet("")]
+        public IActionResult GetUsers([FromQuery] UserQueryParameters userQueryParameters)
+        {
+            List<User> result = this.userService.FilterBy(userQueryParameters);
+
+            List<GetUserDto> userDtos = result.Select(user => UserMapper.MapUserToDtoGet(user)).ToList();
 
             return this.StatusCode(StatusCodes.Status200OK, userDtos);
         }
+
 
         [HttpPost("")]
         public IActionResult CreateUser([FromBody] CreateUserDto createUserDto) 

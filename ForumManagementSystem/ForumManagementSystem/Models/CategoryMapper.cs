@@ -2,17 +2,12 @@
 {
     public class CategoryMapper
     {
-        public CategoryMapper()
-        {
-
-        }
-
-        public Category Map(CategoryDTO dto)
+        public Category Map(CategoryDTO categoryDTO)
         {
             return new Category
             {
-                Name = dto.Name,
-                Description = dto.Description
+                Name = categoryDTO.Name,
+                Description = categoryDTO.Description
             };
         }
     }

@@ -115,11 +115,11 @@ namespace ForumManagementSystem.Repository
 
             if (!string.IsNullOrEmpty(filterParameters.SortBy))
             {
-                if (filterParameters.SortBy.Equals("FirstName", StringComparison.InvariantCultureIgnoreCase))
+                if (filterParameters.SortBy.Equals("firstName", StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = result.OrderBy(user => user.FirstName).ToList();
                 }
-                else if (filterParameters.SortBy.Equals("LastName", StringComparison.InvariantCultureIgnoreCase))
+                else if (filterParameters.SortBy.Equals("lastName", StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = result.OrderBy(user => user.LastName).ToList();
                 }
