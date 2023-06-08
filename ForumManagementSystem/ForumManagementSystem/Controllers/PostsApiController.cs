@@ -10,9 +10,15 @@ namespace ForumManagementSystem.Controllers
     public class PostsApiController : ControllerBase
     {
         private readonly IPostService postService;
+
+        private readonly Models.PostMapper postMapper;
+
+        public PostsApiController(IPostService postService, Models.PostMapper postMapper)
+
         private readonly PostMapper postMapper; 
 
         public PostsApiController (IPostService postService, PostMapper postMapper)
+
         {
             this.postService = postService;
             this.postMapper = postMapper;
@@ -56,6 +62,7 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
         }
+
 
         [HttpPut("{id}")]
         public IActionResult UpdatePost(int id, [FromBody] PostDto postDto)

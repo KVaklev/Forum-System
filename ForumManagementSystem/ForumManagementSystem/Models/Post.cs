@@ -8,7 +8,7 @@
 
         public string Title { get; set; }
 
-        public string Category { get; set; } // Tag
+        public Category Category { get; set; } // Tag
 
         public string Content { get; set; }
 

@@ -4,7 +4,7 @@
     {
         public Post Map(PostDto postDto)
         {
-           
+
             return new Post()
             {
                 Title = postDto.Title,
