@@ -11,13 +11,9 @@ namespace ForumManagementSystem.Controllers
     {
         private readonly IPostService postService;
 
-        private readonly Models.PostMapper postMapper;
+        private readonly PostMapper postMapper;
 
-        public PostsApiController(IPostService postService, Models.PostMapper postMapper)
-
-        private readonly PostMapper postMapper; 
-
-        public PostsApiController (IPostService postService, PostMapper postMapper)
+        public PostsApiController(IPostService postService, PostMapper postMapper)
 
         {
             this.postService = postService;
