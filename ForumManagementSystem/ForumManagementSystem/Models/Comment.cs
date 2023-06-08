@@ -13,5 +13,8 @@ namespace ForumManagementSystem.Models
         public string Content { get; set; }
 
         public DateTime DateTime { get; set; }
+
+        // public int UserId { get; set; } - do we need this - FK?
+        // public int PostId { get; set; } - do we need this - FK?
     }
 }

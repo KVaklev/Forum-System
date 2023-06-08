@@ -4,6 +4,8 @@ namespace ForumManagementSystem.Models
 {
     public class User
     {
+        public List<Post> Posts { get; set; }
+        public List<Comment> Comments { get; set; }
         public int Id { get; set; }
 
         [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
@@ -26,7 +28,6 @@ namespace ForumManagementSystem.Models
 
         public bool IsBlocked = false;
 
-        //public Post post { get; set; }
 
     }
 }
