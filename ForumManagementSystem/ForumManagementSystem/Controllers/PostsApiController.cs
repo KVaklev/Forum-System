@@ -13,10 +13,6 @@ namespace ForumManagementSystem.Controllers
 
         private readonly Models.PostMapper postMapper;
 
-        public PostsApiController(IPostService postService, Models.PostMapper postMapper)
-
-        private readonly PostMapper postMapper; 
-
         public PostsApiController (IPostService postService, PostMapper postMapper)
 
         {

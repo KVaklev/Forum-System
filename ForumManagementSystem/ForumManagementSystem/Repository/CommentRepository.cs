@@ -52,9 +52,33 @@ namespace ForumManagementSystem.Repository
         {
             List<Comment> result = this.comments;
 
-            if (!string.IsNullOrEmpty(parameters.User.Username))
+            if (!string.IsNullOrEmpty(parameters.UserName))
             {
-                result = result.FindAll(comment => comment.User.Username.Contains(parameters.User.Username));
+                result = result.FindAll(comment => comment.User.Username.Contains(parameters.UserName));
+            }
+            if (parameters.FromDateTime.HasValue)
+            {
+                result = result.FindAll(c => c.DateTime >= parameters.FromDateTime);
+            }
+            if (parameters.ToDateTime.HasValue)
+            {
+                result = result.FindAll(c => c.DateTime <= parameters.ToDateTime);
+            }
+            if (!string.IsNullOrEmpty(parameters.SortBy))
+            {
+                if (parameters.SortBy.Equals("username", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    result = result.OrderBy(c => c.User.Username).ToList();
+                }
+                else if (parameters.FromDateTime.HasValue)
+                {
+                    result = result.OrderBy(c => c.DateTime).ToList();
+                }
+                if (!string.IsNullOrEmpty(parameters.SortOrder)
+                    && parameters.SortOrder.Equals("desc", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    result.Reverse();
+                }
             }
             return result;
         }

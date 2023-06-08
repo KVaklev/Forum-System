@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string User { get; set; } // User user or string user? or not needed
+        public User User { get; set; } // User user or string user? or not needed
 
         public string Title { get; set; }
 
