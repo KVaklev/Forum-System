@@ -1,6 +1,4 @@
-﻿using ForumManagementSystem.Services;
-
-namespace ForumManagementSystem.Models
+﻿namespace ForumManagementSystem.Models
 {
     public class CommentMapper
     {

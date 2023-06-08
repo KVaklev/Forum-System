@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Repositories\DataAccess.Repositories.csproj" />
+    <ProjectReference Include="..\Forum.Dto\Business.Dto.csproj" />
+    <ProjectReference Include="..\Forum.Mapper\Business.Mapper.csproj" />
+    <ProjectReference Include="..\Forum.QueryParameters\Business.QueryParameters.csproj" />
+  </ItemGroup>
+
+</Project>

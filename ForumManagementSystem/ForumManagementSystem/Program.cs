@@ -1,7 +1,6 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ForumManagementSystem
 {

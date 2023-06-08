@@ -1,5 +1,4 @@
-﻿using ForumManagementSystem.Exceptions;
-using ForumManagementSystem.Models;
+﻿using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 
 namespace ForumManagementSystem.Services
