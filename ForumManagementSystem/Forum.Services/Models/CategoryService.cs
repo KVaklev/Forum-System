@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 
@@ -6,15 +7,20 @@ namespace ForumManagementSystem.Services
 {
     public class CategoryService : ICategoryService
     {
+        private const string ModifyBeerErrorMessage = "Only an admin can modify a category.";
         private readonly ICategoryRepository repository;
+
         public CategoryService(ICategoryRepository repository)
         {
             this.repository = repository;
         }
         public Category Create(Category category)
         {
+          
+
             try
             {
+
                 var createCategory = this.repository.GetByName(category.Name);
             }
             catch (EntityNotFoundException)

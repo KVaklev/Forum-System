@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ForumManagementSystem.Controllers
 {
     [ApiController]
-    [Route("api/categories")]
+    [Route("api/home")]
     public class CategoryApiController : ControllerBase
     {
         private readonly ICategoryService categoryService;
@@ -25,7 +25,7 @@ namespace ForumManagementSystem.Controllers
             return this.StatusCode(StatusCodes.Status200OK, result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("categories/{id}")]
         public IActionResult GetCategoryById(int id)
         {
             try
@@ -54,7 +54,7 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("categories/{id}")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto)
         {
             try
@@ -73,7 +73,7 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("categories/{id}")]
         public IActionResult DeleteCategory(int id)
         {
             try

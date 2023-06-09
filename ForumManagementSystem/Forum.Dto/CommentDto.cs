@@ -4,8 +4,12 @@ namespace ForumManagementSystem.Models
 {
     public class CommentDto
     {
+        [Required(ErrorMessage = "The {0} field is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")] //TODO  - MaxValue - post.Count
         public int PostId { get; set; }
 
+        [Required(ErrorMessage = "The {0} field is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")]  //TODO  - MaxValue - user.Count
         public int UserId { get; set; }
 
         [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]

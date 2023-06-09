@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ForumManagementSystem.Controllers
 {
-    [Route($"api/comments")]
+    [Route("api/comments")]
     [ApiController]
     public class CommentApiController : ControllerBase
     {
@@ -25,7 +25,8 @@ namespace ForumManagementSystem.Controllers
 
             return this.StatusCode(StatusCodes.Status200OK, result);
         }
-        [HttpGet("{id}")]
+
+        [HttpGet("id")]
         public IActionResult GetCommentById(int id)
         {
             try
