@@ -7,7 +7,6 @@
         {
             return new Comment
             {
-                UserId=dto.UserId,
                 PostId=dto.PostId,
                 Content = dto.Content
             };

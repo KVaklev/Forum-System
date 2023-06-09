@@ -1,18 +1,17 @@
 ﻿using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
+using System.Net;
 
 namespace ForumManagementSystem.Repository
 {
     public class CommentRepository : ICommentRepository
     {
         private readonly List<Comment> comments;
-        private readonly IPostRepository postRepository;
-        private readonly IUserRepository userRepository;
+        
 
-        public CommentRepository(IUserRepository userRepository, IPostRepository postRepository)
+        public CommentRepository()
         {
-            this.postRepository = postRepository;
-            this.userRepository = userRepository;
+            
 
             this.comments = new List<Comment>()
             {
@@ -34,9 +33,10 @@ namespace ForumManagementSystem.Repository
                 }
             };
         }
-        public Comment Create(Comment comment)
+        public Comment Create(Comment comment, User user)
         {
             comment.Id = this.comments.Count + 1;
+            comment.UserId = user.Id;
             this.comments.Add(comment);
             return comment;
         }

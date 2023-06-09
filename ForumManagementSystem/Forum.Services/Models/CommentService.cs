@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Models;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 
 namespace ForumManagementSystem.Services
@@ -7,6 +8,8 @@ namespace ForumManagementSystem.Services
 
     public class CommentService : ICommentService
     {
+
+        private const string ModifyCommentErrorMessage = "Only an admin can modify a comment.";
         private readonly ICommentRepository repository;
 
         public CommentService(ICommentRepository repository)
@@ -14,13 +17,18 @@ namespace ForumManagementSystem.Services
             this.repository = repository;
         }
 
-        public Comment Create(Comment comment)
+        public Comment Create(Comment comment, User user)
         {
-            return this.repository.Create(comment);
+           return this.repository.Create(comment, user);
         }
 
-        public Comment Delete(int id)
+        public Comment Delete(int id, User user)
         {
+            Comment CommentToUpdate = this.repository.GetByID(id);
+            if (CommentToUpdate.UserId != user.Id && !user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
+            }
             return this.repository.Delete(id);
         }
 
@@ -44,8 +52,13 @@ namespace ForumManagementSystem.Services
             return this.repository.GetByUser(user);
         }
 
-        public Comment Update(int id, Comment comment)
+        public Comment Update(int id, Comment comment, User user)
         {
+            Comment CommentToUpdate = this.repository.GetByID(id);
+            if (CommentToUpdate.UserId!=user.Id && !user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
+            }
             return this.repository.Update(id, comment);
         }
     }

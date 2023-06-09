@@ -12,7 +12,7 @@ namespace ForumManagementSystem.Repository
 
         List<Comment> FilterBy(CommentQueryParameters parameters);
 
-        Comment Create(Comment comment);
+        Comment Create(Comment comment, User user);
 
         Comment Update(int id, Comment comment);
 

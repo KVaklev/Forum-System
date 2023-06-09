@@ -7,7 +7,7 @@ namespace ForumManagementSystem.Services
 {
     public class CategoryService : ICategoryService
     {
-        private const string ModifyBeerErrorMessage = "Only an admin can modify a category.";
+        private const string ModifyCategoryErrorMessage = "Only an admin can modify a category.";
         private readonly ICategoryRepository repository;
 
         public CategoryService(ICategoryRepository repository)
@@ -18,7 +18,7 @@ namespace ForumManagementSystem.Services
         {
             if (!user.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyBeerErrorMessage);
+                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
             }
 
             try
@@ -37,7 +37,7 @@ namespace ForumManagementSystem.Services
         {
             if (!user.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyBeerErrorMessage);
+                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
             }
             return repository.Delete(id);
         }
@@ -61,7 +61,7 @@ namespace ForumManagementSystem.Services
         {
             if (!user.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyBeerErrorMessage);
+                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
             }
 
             bool duplicateExists = true;

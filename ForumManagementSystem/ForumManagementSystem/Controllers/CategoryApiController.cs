@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,10 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
         [HttpPut("categories/{id}")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
@@ -80,6 +85,10 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
 
         [HttpDelete("categories/{id}")]
@@ -95,6 +104,10 @@ namespace ForumManagementSystem.Controllers
             catch (EntityNotFoundException ex)
             {
                 return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 
