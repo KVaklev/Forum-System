@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -51,12 +52,13 @@ namespace ForumManagementSystem.Controllers
           
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] CreateUserDto createUserDto)
+        [HttpPut("{id}")] 
+        public IActionResult UpdateUser(int id, [FromHeader] string username,[FromBody] CreateUserDto createUserDto)
         {
             try
             {
-                User user = this.userMapper.MapUserToDtoCreate(createUserDto);
+                User user = this.authManager.TryGetUser(username);
+                user = this.userMapper.MapUserToDtoCreate(createUserDto);
 
                 User updatedUser = this.userService.Update(id, user);
 
@@ -72,14 +74,20 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
-        [HttpDelete("{id}")]// only by admin??
-        public IActionResult DeleteUser(int id)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id, [FromHeader] string username)
         {
             try
             {
-                var deletedBeer = this.userService.Delete(id);
+                User user = this.authManager.TryGetUser(username);
 
-                return this.StatusCode(StatusCodes.Status200OK, deletedBeer);
+                this.userService.Delete(id, user);
+
+                return this.StatusCode(StatusCodes.Status200OK);
+            }
+            catch (UnauthorizedOperationException e)
+            {
+                return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (EntityNotFoundException e)
             {

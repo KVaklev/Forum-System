@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 
@@ -6,6 +7,7 @@ namespace ForumManagementSystem.Services
 {
     public class UserService : IUserService
     {
+        private const string ModifyUserErrorMessage = "Only owner or admin can modify a user.";
         private readonly IUserRepository repository;
         public UserService(IUserRepository repository)
         {
@@ -39,8 +41,13 @@ namespace ForumManagementSystem.Services
 
             return createdUser;
         }
-        public User Update(int id, User user)
+        public User Update(int id, User loggedUser)
         {
+            User userToUpdate = this.repository.GetById(id);
+            if (!userToUpdate.Equals(loggedUser) || !loggedUser.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyUserErrorMessage);
+            }
             bool duplicateExists = true;
 
             try
@@ -59,17 +66,14 @@ namespace ForumManagementSystem.Services
 
             if (duplicateExists)
             {
-                throw new DuplicateEntityException($"User with id '{user.Id}' already exists.");
+                throw new DuplicateEntityException($"User with id '{loggedUser.Id}' already exists.");
             }
 
-            User updatedUser = this.repository.Update(id, user);
+            User updatedUser = this.repository.Update(id, loggedUser);
 
             return updatedUser;
         }
-        public User Delete(int id)
-        {
-            return this.repository.Delete(id);
-        }
+     
         public List<User> FilterBy(UserQueryParameters filterParameters)
         {
             return this.repository.FilterBy(filterParameters);
@@ -83,6 +87,17 @@ namespace ForumManagementSystem.Services
         public User Promote(User user)
         {
             return this.repository.Promote(user);
+        }
+
+        public void Delete(int id, User loggedUser)
+        {
+            User user = repository.GetById(id);
+            if (!user.Equals(loggedUser) && !user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyUserErrorMessage);
+            }
+
+            this.repository.Delete(id);
         }
     }
 }

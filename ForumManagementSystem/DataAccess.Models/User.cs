@@ -29,6 +29,5 @@ namespace ForumManagementSystem.Models
 
         public bool IsAdmin = false;
 
-
     }
 }

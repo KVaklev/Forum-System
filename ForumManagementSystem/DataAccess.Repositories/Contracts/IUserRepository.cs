@@ -12,7 +12,7 @@ namespace ForumManagementSystem.Repository
         User GetByFirstName(string firstName);
         User Promote (User user);
         User Create(User user);
-        User Update(int id, User user);
+        User Update(int id, User loggedUser);
         User Delete(int id);
     }
 }
