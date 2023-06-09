@@ -10,7 +10,7 @@ namespace ForumManagementSystem.Services
         User GetByUserName(string username);
         User Promote(User user);
         User Create(User user);
-        User Update(int id, User user);
-        User Delete(int id);
+        User Update(int id, User loggedUser);
+        void Delete(int id, User loggedUser);
     }
 }
