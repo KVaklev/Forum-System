@@ -2,6 +2,7 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Helpers;
 
 namespace ForumManagementSystem.Controllers
 {
@@ -11,10 +12,16 @@ namespace ForumManagementSystem.Controllers
     {
         private readonly ICategoryService categoryService;
         private readonly CategoryMapper categoryMapper;
-        public CategoryApiController(ICategoryService categoryService, CategoryMapper categoryMapper)
+        private readonly AuthManager authManager;
+
+        public CategoryApiController
+            (ICategoryService categoryService, 
+             CategoryMapper categoryMapper, 
+             AuthManager authManager)
         {
             this.categoryService = categoryService;
             this.categoryMapper = categoryMapper;
+            this.authManager = authManager;
         }
 
         [HttpGet("")]
@@ -41,12 +48,13 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto)
+        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
         {
             try
             {
                 Category category = this.categoryMapper.Map(categoryDto);
-                var createdCategory = this.categoryService.Create(category);
+                User user = this.authManager.TryGetUser(credentials);
+                var createdCategory = this.categoryService.Create(category, user);
                 return this.StatusCode(StatusCodes.Status201Created, createdCategory);
             }
             catch (DuplicateEntityException ex)
@@ -55,12 +63,13 @@ namespace ForumManagementSystem.Controllers
             }
         }
         [HttpPut("categories/{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto)
+        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
         {
             try
             {
                 Category category = this.categoryMapper.Map(categoryDto);
-                Category updatedCategory = this.categoryService.Update(id, category);
+                User user = this.authManager.TryGetUser(credentials);
+                Category updatedCategory = this.categoryService.Update(id, category,user);
                 return this.StatusCode(StatusCodes.Status200OK, updatedCategory);
             }
             catch (EntityNotFoundException ex)
@@ -74,11 +83,12 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpDelete("categories/{id}")]
-        public IActionResult DeleteCategory(int id)
+        public IActionResult DeleteCategory(int id, [FromHeader] string credentials)
         {
             try
             {
-                var deletedCategory = this.categoryService.Delete(id);
+                User user = this.authManager.TryGetUser(credentials);
+                var deletedCategory = this.categoryService.Delete(id, user);
 
                 return this.StatusCode(StatusCodes.Status200OK, deletedCategory);
             }

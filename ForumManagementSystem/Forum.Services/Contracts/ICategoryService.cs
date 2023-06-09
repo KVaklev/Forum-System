@@ -10,11 +10,11 @@ namespace ForumManagementSystem.Services
 
         List<Category> FilterBy(CategoryQueryParameter parameters);
 
-        Category Create(Category category);
+        Category Create(Category category, User user);
 
-        Category Update(int id, Category category);
+        Category Update(int id, Category category, User user);
 
-        Category Delete(int id);
+        Category Delete(int id, User user);
     }
 }
 

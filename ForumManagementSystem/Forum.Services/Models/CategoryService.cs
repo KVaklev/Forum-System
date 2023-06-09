@@ -14,26 +14,31 @@ namespace ForumManagementSystem.Services
         {
             this.repository = repository;
         }
-        public Category Create(Category category)
+        public Category Create(Category category, User user)
         {
-          
+            if (!user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyBeerErrorMessage);
+            }
 
             try
             {
-
                 var createCategory = this.repository.GetByName(category.Name);
             }
             catch (EntityNotFoundException)
             {
                 var createCategory = this.repository.Create(category);
-                return createCategory;
-               
+                return createCategory;  
             }
             throw new DuplicateEntityException($"Category {category.Name} already exists.");
         }
 
-        public Category Delete(int id)
+        public Category Delete(int id,User user)
         {
+            if (!user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyBeerErrorMessage);
+            }
             return repository.Delete(id);
         }
 
@@ -52,8 +57,13 @@ namespace ForumManagementSystem.Services
             return this.repository.GetById(id);
         }
 
-        public Category Update(int id, Category category)
+        public Category Update(int id, Category category, User user)
         {
+            if (!user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyBeerErrorMessage);
+            }
+
             bool duplicateExists = true;
             try
             {
