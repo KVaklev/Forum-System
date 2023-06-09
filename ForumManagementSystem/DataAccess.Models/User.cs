@@ -28,6 +28,8 @@ namespace ForumManagementSystem.Models
 
         public bool IsBlocked = false;
 
+        public bool IsAdmin = false;
+
 
     }
 }
