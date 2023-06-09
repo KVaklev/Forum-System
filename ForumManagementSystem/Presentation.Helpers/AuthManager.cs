@@ -1,4 +1,8 @@
-﻿using ForumManagementSystem.Services;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
+using ForumManagementSystem.Models;
+using ForumManagementSystem.Services;
+using System.Text;
 
 namespace Presentation.Helpers
 {
@@ -9,6 +13,29 @@ namespace Presentation.Helpers
         public AuthManager(IUserService userService)
         {
             this.userService = userService;   
+        }
+
+        public User TryGetUser(string credentials)
+        {
+            string[] credentialsArray = credentials.Split(':');
+            string username = credentialsArray[0];
+            string password = credentialsArray[1];
+
+            string encodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+
+            try
+            {
+                var user = this.userService.GetByUserName(username);
+                if (user.Password == encodedPassword)
+                {
+                    return user;
+                }
+                throw new UnauthenticatedOperationException("Invalid credentials");
+            }
+            catch (EntityNotFoundException)
+            {
+                throw new UnauthorizedOperationException("Invalid username!");
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ namespace ForumManagementSystem.Repository
                      Email = "i.draganov@gmail.com",
                      Username = "ivanchoDraganchov",
                      Password = "@sfjslfljsl",
+                     IsAdmin = true,
                  },
                  new User()
                  {
@@ -39,11 +40,11 @@ namespace ForumManagementSystem.Repository
            User? user=this.users.Where(users => users.Id == id).FirstOrDefault();
            return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
         }
-        public User GetByUsername(string name)
+        public User GetByUsername(string username)
         {
-            User user = this.users.Where(users => users.Username == name).FirstOrDefault();
+            User user = this.users.Where(users => users.Username == username).FirstOrDefault();
 
-            return user ?? throw new EntityNotFoundException($"User with username '{name}' doesn't exist.");
+            return user ?? throw new EntityNotFoundException($"User with username '{username}' doesn't exist.");
         }
         public User GetByEmail(string email)
         {
@@ -133,5 +134,13 @@ namespace ForumManagementSystem.Repository
             return result;
         }
 
+        public User Promote(User user)
+        {
+            if (!user.IsAdmin)
+            {
+                user.IsAdmin = true;
+            }
+            return user;
+        }
     }
 }

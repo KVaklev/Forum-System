@@ -2,6 +2,7 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Helpers;
 
 namespace ForumManagementSystem.Controllers
 {
@@ -11,11 +12,13 @@ namespace ForumManagementSystem.Controllers
     {
         private readonly IUserService userService;
         private readonly UserMapper userMapper;
+        private readonly AuthManager authManager;
 
-        public UsersApiController(IUserService userService, UserMapper userMapper)
+        public UsersApiController(IUserService userService, UserMapper userMapper, AuthManager authManager)
         {
             this.userService = userService;
             this.userMapper=userMapper;
+            this.authManager=authManager;
         }
 
 
@@ -48,7 +51,7 @@ namespace ForumManagementSystem.Controllers
           
         }
 
-        [HttpPut("{id}")] //only bi id??
+        [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromBody] CreateUserDto createUserDto)
         {
             try
@@ -69,9 +72,6 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
-        //[HttpPut("{username}")] //forbidden?
-
-
         [HttpDelete("{id}")]// only by admin??
         public IActionResult DeleteUser(int id)
         {
@@ -80,6 +80,28 @@ namespace ForumManagementSystem.Controllers
                 var deletedBeer = this.userService.Delete(id);
 
                 return this.StatusCode(StatusCodes.Status200OK, deletedBeer);
+            }
+            catch (EntityNotFoundException e)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+            }
+        }
+
+        [HttpPut("{id}/promote")]
+        public IActionResult Promote(int id, [FromHeader] string credentials)
+        {
+            try
+            {
+                var loggedUser = authManager.TryGetUser(credentials);
+                if (loggedUser.IsAdmin)
+                {
+                    var user = this.userService.GetById(id);
+
+                    var promotedUser = this.userService.Promote(user);
+
+                    return StatusCode(StatusCodes.Status200OK, promotedUser);
+                }
+                return StatusCode(StatusCodes.Status405MethodNotAllowed);
             }
             catch (EntityNotFoundException e)
             {
