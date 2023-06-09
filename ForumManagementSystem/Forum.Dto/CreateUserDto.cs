@@ -23,7 +23,6 @@ namespace ForumManagementSystem.Models
         [MaxLength(30, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string Username { get; set; }
         public string Password { get; set; }
-        public Role Role { get; set; }
 
     }
 }

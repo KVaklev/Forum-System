@@ -8,7 +8,7 @@
             {
                 Email = user.Email,
                 Username = user.Username,
-                Role = user.Role,
+                IsAdmin = user.IsAdmin,
 
             };
         }
@@ -22,7 +22,6 @@
                 Email = createUserDto.Email,
                 Username = createUserDto.Username,
                 Password = createUserDto.Password,
-                Role = createUserDto.Role,
 
             };
         }

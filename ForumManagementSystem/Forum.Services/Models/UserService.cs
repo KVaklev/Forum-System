@@ -75,5 +75,14 @@ namespace ForumManagementSystem.Services
             return this.repository.FilterBy(filterParameters);
         }
 
+        public User GetByUserName(string username)
+        {
+            return this.repository.GetByUsername(username);
+        }
+
+        public User Promote(User user)
+        {
+            return this.repository.Promote(user);
+        }
     }
 }
