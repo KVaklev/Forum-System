@@ -7,8 +7,9 @@ namespace ForumManagementSystem.Services
         List<Post> GetAll();
         List<Post> FilterBy(PostQueryParameters filterParameters);
         Post GetById(int id);
-        Post Create(Post post);
-        Post Update(int id, Post post);
-        Post Delete(int id);
+        Post GetByUser(User user);
+        Post Create(Post post, User user);
+        Post Update(int id, Post post, User user);
+        Post Delete(int id, User user);
     }
 }

@@ -12,6 +12,7 @@ namespace ForumManagementSystem
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
             // Repositories
             builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();

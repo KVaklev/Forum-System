@@ -11,8 +11,8 @@ namespace ForumManagementSystem.Repository
 
         public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
-            this.userRepository= userRepository;
-            this.categoryRepository= categoryRepository;
+            this.userRepository = userRepository;
+            this.categoryRepository = categoryRepository;
 
 
             posts = new List<Post>()
@@ -47,11 +47,13 @@ namespace ForumManagementSystem.Repository
             return this.posts;
         }
 
-        public Post GetByUser(string username)
+        public Post GetByUser(User user)
         {
-            Post post = this.posts.Where(posts => posts.User.Username == username).FirstOrDefault();
-            return post ?? throw new EntityNotFoundException($"Post with user = {username} doesn't exist.");
+            Post post = this.posts.FirstOrDefault(post => post.User.Id == user.Id);
+            return post ?? throw new EntityNotFoundException($"Post with username {user.Username} doesn't exist.");
         }
+
+
 
         public Post GetById(int id)
 
@@ -86,9 +88,10 @@ namespace ForumManagementSystem.Repository
 
         }
 
-        public Post Create(Post post)
+        public Post Create(Post post, User user)
         {
             post.Id = this.posts.Count + 1;
+            post.User.Id = user.Id;
             this.posts.Add(post);
             return post;
         }
@@ -104,18 +107,18 @@ namespace ForumManagementSystem.Repository
         {
             List<Post> result = this.posts;
 
-            if (!string.IsNullOrEmpty(filterParameters.User.Username))
-            {
-                result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
-            }
+            //if (!string.IsNullOrEmpty(filterParameters.User.Username))
+            //{
+            //    result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
+            //}
             if (!string.IsNullOrEmpty(filterParameters.Title))
             {
                 result = result.FindAll(p => p.Title.Contains(filterParameters.Title));
             }
-            if (!string.IsNullOrEmpty(filterParameters.Category.Name))
-            {
-                result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
-            }
+            //if (!string.IsNullOrEmpty(filterParameters.Category.Name))
+            //{
+            //    result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
+            //}
             if (filterParameters.FromDateTime.HasValue && filterParameters.ToDateTime.HasValue)
             {
                 result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime && p.DateTime <= filterParameters.ToDateTime).ToList();
