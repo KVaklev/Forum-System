@@ -1,6 +1,7 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
+using Presentation.Helpers;
 
 namespace ForumManagementSystem
 {
@@ -31,6 +32,8 @@ namespace ForumManagementSystem
             builder.Services.AddScoped<CategoryMapper>();
             builder.Services.AddScoped<PostMapper>();
             builder.Services.AddScoped<CommentMapper>();
+
+            builder.Services.AddScoped<AuthManager>();
 
             var app = builder.Build();
             

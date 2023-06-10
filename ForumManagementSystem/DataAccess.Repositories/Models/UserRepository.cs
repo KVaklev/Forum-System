@@ -17,7 +17,8 @@ namespace ForumManagementSystem.Repository
                      LastName = "Draganov",
                      Email = "i.draganov@gmail.com",
                      Username = "ivanchoDraganchov",
-                     Password = "@sfjslfljsl",
+                     Password = "MTIz",
+                     IsAdmin = true,
                  },
                  new User()
                  {
@@ -39,11 +40,11 @@ namespace ForumManagementSystem.Repository
            User? user=this.users.Where(users => users.Id == id).FirstOrDefault();
            return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
         }
-        public User GetByUsername(string name)
+        public User GetByUsername(string username)
         {
-            User user = this.users.Where(users => users.Username == name).FirstOrDefault();
+            User user = this.users.Where(users => users.Username == username).FirstOrDefault();
 
-            return user ?? throw new EntityNotFoundException($"User with username '{name}' doesn't exist.");
+            return user ?? throw new EntityNotFoundException($"User with username '{username}' doesn't exist.");
         }
         public User GetByEmail(string email)
         {
@@ -69,17 +70,16 @@ namespace ForumManagementSystem.Repository
             this.users.Remove(userToDelete);
             return userToDelete;
         }
-        public User Update(int id, User user) //ToCheck - not full
+        public User Update(int id, User loggedUser) 
         {
             User userToUpdate=this.GetById(id);
 
-           userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
-           userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
-           userToUpdate.Email = user.Email ?? userToUpdate.Email;
-           userToUpdate.Password =  user.Password ?? userToUpdate.Password;
-           userToUpdate.PhoneNumber =  user.PhoneNumber ?? userToUpdate.PhoneNumber;
+           userToUpdate.FirstName = loggedUser.FirstName ?? userToUpdate.FirstName;
+           userToUpdate.LastName = loggedUser.LastName ?? userToUpdate.LastName;
+           userToUpdate.Email = loggedUser.Email ?? userToUpdate.Email;
+           userToUpdate.Password =  loggedUser.Password ?? userToUpdate.Password;
+           userToUpdate.PhoneNumber =  loggedUser.PhoneNumber ?? userToUpdate.PhoneNumber;
 
-            //role?
             return userToUpdate;
 
         }
@@ -106,13 +106,6 @@ namespace ForumManagementSystem.Repository
                 result = result.FindAll(user => user.Email.Contains(filterParameters.Email));
             }
 
-            //if (!string.IsNullOrEmpty(filterParameters.Post)) --> Post.Title, Post.Content ??? Post.Tag ?? and others
-            //{
-            //    result = result.FindAll(user => user.Post.Contains(filterParameters.Post));
-            //}
-
-            //Filter by first name = firstName, ...
-
             if (!string.IsNullOrEmpty(filterParameters.SortBy))
             {
                 if (filterParameters.SortBy.Equals("firstName", StringComparison.InvariantCultureIgnoreCase))
@@ -133,5 +126,13 @@ namespace ForumManagementSystem.Repository
             return result;
         }
 
+        public User Promote(User user)
+        {
+            if (!user.IsAdmin)
+            {
+                user.IsAdmin = true;
+            }
+            return user;
+        }
     }
 }

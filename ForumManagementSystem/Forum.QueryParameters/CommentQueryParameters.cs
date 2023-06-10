@@ -2,7 +2,7 @@
 {
     public class CommentQueryParameters
     {
-        public string? UserName { get; set; }
+        public int? UserId { get; set; }
 
         public DateTime? FromDateTime { get; set; }
 

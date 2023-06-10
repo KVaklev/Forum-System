@@ -1,20 +1,28 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Helpers;
 
 namespace ForumManagementSystem.Controllers
 {
     [ApiController]
-    [Route("api/categories")]
+    [Route("api/home")]
     public class CategoryApiController : ControllerBase
     {
         private readonly ICategoryService categoryService;
         private readonly CategoryMapper categoryMapper;
-        public CategoryApiController(ICategoryService categoryService, CategoryMapper categoryMapper)
+        private readonly AuthManager authManager;
+
+        public CategoryApiController
+            (ICategoryService categoryService, 
+             CategoryMapper categoryMapper, 
+             AuthManager authManager)
         {
             this.categoryService = categoryService;
             this.categoryMapper = categoryMapper;
+            this.authManager = authManager;
         }
 
         [HttpGet("")]
@@ -25,7 +33,7 @@ namespace ForumManagementSystem.Controllers
             return this.StatusCode(StatusCodes.Status200OK, result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("categories/{id}")]
         public IActionResult GetCategoryById(int id)
         {
             try
@@ -41,26 +49,32 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto)
+        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
         {
             try
             {
                 Category category = this.categoryMapper.Map(categoryDto);
-                var createdCategory = this.categoryService.Create(category);
+                User user = this.authManager.TryGetUser(credentials);
+                var createdCategory = this.categoryService.Create(category, user);
                 return this.StatusCode(StatusCodes.Status201Created, createdCategory);
             }
             catch (DuplicateEntityException ex)
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
-        [HttpPut("{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto)
+        [HttpPut("categories/{id}")]
+        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
         {
             try
             {
                 Category category = this.categoryMapper.Map(categoryDto);
-                Category updatedCategory = this.categoryService.Update(id, category);
+                User user = this.authManager.TryGetUser(credentials);
+                Category updatedCategory = this.categoryService.Update(id, category,user);
                 return this.StatusCode(StatusCodes.Status200OK, updatedCategory);
             }
             catch (EntityNotFoundException ex)
@@ -71,20 +85,29 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteCategory(int id)
+        [HttpDelete("categories/{id}")]
+        public IActionResult DeleteCategory(int id, [FromHeader] string credentials)
         {
             try
             {
-                var deletedCategory = this.categoryService.Delete(id);
+                User user = this.authManager.TryGetUser(credentials);
+                var deletedCategory = this.categoryService.Delete(id, user);
 
                 return this.StatusCode(StatusCodes.Status200OK, deletedCategory);
             }
             catch (EntityNotFoundException ex)
             {
                 return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 

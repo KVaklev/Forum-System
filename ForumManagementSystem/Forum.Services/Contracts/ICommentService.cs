@@ -12,10 +12,10 @@ namespace ForumManagementSystem.Services
 
         List<Comment> FilterBy(CommentQueryParameters parameters);
 
-        Comment Create(Comment comment);
+        Comment Create(Comment comment, User user);
 
-        Comment Update(int id, Comment comment);
+        Comment Update(int id, Comment comment, User user);
 
-        Comment Delete(int id);
+        Comment Delete(int id, User user);
     }
 }

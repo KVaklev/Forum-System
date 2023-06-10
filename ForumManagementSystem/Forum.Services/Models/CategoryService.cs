@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 
@@ -6,13 +7,20 @@ namespace ForumManagementSystem.Services
 {
     public class CategoryService : ICategoryService
     {
+        private const string ModifyCategoryErrorMessage = "Only an admin can modify a category.";
         private readonly ICategoryRepository repository;
+
         public CategoryService(ICategoryRepository repository)
         {
             this.repository = repository;
         }
-        public Category Create(Category category)
+        public Category Create(Category category, User user)
         {
+            if (!user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
+            }
+
             try
             {
                 var createCategory = this.repository.GetByName(category.Name);
@@ -20,14 +28,17 @@ namespace ForumManagementSystem.Services
             catch (EntityNotFoundException)
             {
                 var createCategory = this.repository.Create(category);
-                return createCategory;
-               
+                return createCategory;  
             }
             throw new DuplicateEntityException($"Category {category.Name} already exists.");
         }
 
-        public Category Delete(int id)
+        public Category Delete(int id,User user)
         {
+            if (!user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
+            }
             return repository.Delete(id);
         }
 
@@ -46,8 +57,13 @@ namespace ForumManagementSystem.Services
             return this.repository.GetById(id);
         }
 
-        public Category Update(int id, Category category)
+        public Category Update(int id, Category category, User user)
         {
+            if (!user.IsAdmin)
+            {
+                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
+            }
+
             bool duplicateExists = true;
             try
             {

@@ -13,6 +13,6 @@ namespace ForumManagementSystem.Models
         [EmailAddress(ErrorMessage = "Please provide a valid email.")]
         public string Email { get; set; }
 
-        public Role Role { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

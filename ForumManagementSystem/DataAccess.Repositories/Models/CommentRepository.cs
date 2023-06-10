@@ -1,42 +1,42 @@
 ﻿using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
+using System.Net;
 
 namespace ForumManagementSystem.Repository
 {
     public class CommentRepository : ICommentRepository
     {
         private readonly List<Comment> comments;
-        private readonly IPostRepository postRepository;
-        private readonly IUserRepository userRepository;
+        
 
-        public CommentRepository(IUserRepository userRepository, IPostRepository postRepository)
+        public CommentRepository()
         {
-            this.postRepository = postRepository;
-            this.userRepository = userRepository;
+            
 
             this.comments = new List<Comment>()
             {
                 new Comment()
                 {
                     Id= 1,
-                    User=this.userRepository.GetById(1),
-                    Post = this.postRepository.GetById(1),
+                    UserId=1,
+                    PostId = 1,
                     Content = "The best town!",
                     DateTime = DateTime.Now
                 },
                 new Comment()
                 {
                     Id= 2,
-                    User=this.userRepository.GetById(1),
-                    Post = this.postRepository.GetById(1),
+                    UserId=2,
+                    PostId = 2,
                     Content = "The worst town!",
                     DateTime = DateTime.Now
                 }
             };
         }
-        public Comment Create(Comment comment)
+        public Comment Create(Comment comment, User user)
         {
             comment.Id = this.comments.Count + 1;
+            comment.UserId = user.Id;
             this.comments.Add(comment);
             return comment;
         }
@@ -47,14 +47,14 @@ namespace ForumManagementSystem.Repository
             this.comments.Remove(commentToDelete);
             return commentToDelete;
         }
-        //TODO
+        
         public List<Comment> FilterBy(CommentQueryParameters parameters)
         {
             List<Comment> result = this.comments;
 
-            if (!string.IsNullOrEmpty(parameters.UserName))
+            if (parameters.UserId.HasValue)
             {
-                result = result.FindAll(comment => comment.User.Username.Contains(parameters.UserName));
+                result = result.FindAll(comment => comment.UserId==parameters.UserId);
             }
             if (parameters.FromDateTime.HasValue)
             {
@@ -66,11 +66,11 @@ namespace ForumManagementSystem.Repository
             }
             if (!string.IsNullOrEmpty(parameters.SortBy))
             {
-                if (parameters.SortBy.Equals("username", StringComparison.InvariantCultureIgnoreCase))
+                if (parameters.SortBy.Equals("userId", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    result = result.OrderBy(c => c.User.Username).ToList();
+                    result = result.OrderBy(c => c.UserId).ToList();
                 }
-                else if (parameters.FromDateTime.HasValue)
+                else if (parameters.SortBy.Equals("date", StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = result.OrderBy(c => c.DateTime).ToList();
                 }
@@ -93,10 +93,10 @@ namespace ForumManagementSystem.Repository
             var comment = this.comments.FirstOrDefault(comment => comment.Id == id);
             return comment ?? throw new EntityNotFoundException($"Comment with ID = {id} doesn't exist.");
         }
-        //TODO
+        
         public Comment GetByUser(User user)
         {
-            var comment = this.comments.FirstOrDefault(comment => comment.User.Equals(user));
+            var comment = this.comments.FirstOrDefault(comment => comment.UserId==user.Id);
             return comment ?? throw new EntityNotFoundException($"Comment with username {user.Username} doesn't exist.");
         }
 
