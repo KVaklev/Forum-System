@@ -21,7 +21,7 @@ namespace ForumManagementSystem.Controllers
             this.authManager = authManager;
         }
 
-        [HttpPost("login")] //needs to be checked
+        [HttpPost("login")] //needs implementation
         public IActionResult Login([FromHeader] string credentials)
         {
             try
@@ -35,5 +35,15 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
+
+        //[HttpPost("logout")] //needs implementation
+        //public IActionResult Logout([FromHeader] string credentials)
+        //{
+        //}
+
+        //[HttpPost("register")] //needs implementation
+        //public IActionResult Register([FromHeader] string credentials)
+        //{
+        //}
     }
 }

@@ -9,8 +9,10 @@ namespace ForumManagementSystem.Services
         User GetById(int id);
         User GetByUserName(string username);
         User Promote(User user);
+        User BlockUser(User user);
+        User UnblockUser(User user);
         User Create(User user);
-        User Update(int id, User loggedUser);
+        User Update(int id, User user, User loggedUser);
         void Delete(int id, User loggedUser);
     }
 }

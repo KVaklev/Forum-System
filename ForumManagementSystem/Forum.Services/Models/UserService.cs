@@ -41,10 +41,10 @@ namespace ForumManagementSystem.Services
 
             return createdUser;
         }
-        public User Update(int id, User loggedUser)
+        public User Update(int id, User user, User loggedUser)
         {
             User userToUpdate = this.repository.GetById(id);
-            if (!userToUpdate.Equals(loggedUser) || !loggedUser.IsAdmin)
+            if (!userToUpdate.Equals(loggedUser) && !loggedUser.IsAdmin)
             {
                 throw new UnauthorizedOperationException(ModifyUserErrorMessage);
             }
@@ -52,7 +52,7 @@ namespace ForumManagementSystem.Services
 
             try
             {
-                User existingUser = this.repository.GetById(id);
+                User existingUser = this.repository.GetByUsername(userToUpdate.Username);
 
                 if (existingUser.Id == id)
                 {
@@ -66,10 +66,10 @@ namespace ForumManagementSystem.Services
 
             if (duplicateExists)
             {
-                throw new DuplicateEntityException($"User with id '{loggedUser.Id}' already exists.");
+                throw new DuplicateEntityException($"User with firstname '{user.Username}' already exists.");
             }
 
-            User updatedUser = this.repository.Update(id, loggedUser);
+            User updatedUser = this.repository.Update(id, user);
 
             return updatedUser;
         }
@@ -92,12 +92,22 @@ namespace ForumManagementSystem.Services
         public void Delete(int id, User loggedUser)
         {
             User user = repository.GetById(id);
-            if (!user.Equals(loggedUser) && !user.IsAdmin)
+            if (!user.Equals(user) && !user.IsAdmin)
             {
                 throw new UnauthorizedOperationException(ModifyUserErrorMessage);
             }
 
             this.repository.Delete(id);
+        }
+
+        public User BlockUser(User user)
+        {
+            return this.repository.BlockUser(user);
+        }
+
+        public User UnblockUser(User user)
+        {
+            return this.repository.UnblockUser(user);
         }
     }
 }

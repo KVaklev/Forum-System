@@ -72,7 +72,7 @@ namespace ForumManagementSystem.Repository
         }
         public User Update(int id, User loggedUser) 
         {
-            User userToUpdate=this.GetById(id);
+           User userToUpdate=this.GetById(id);
 
            userToUpdate.FirstName = loggedUser.FirstName ?? userToUpdate.FirstName;
            userToUpdate.LastName = loggedUser.LastName ?? userToUpdate.LastName;
@@ -131,6 +131,24 @@ namespace ForumManagementSystem.Repository
             if (!user.IsAdmin)
             {
                 user.IsAdmin = true;
+            }
+            return user;
+        }
+
+        public User BlockUser(User user)
+        {
+            if (!user.IsBlocked)
+            {
+                user.IsBlocked = true;
+            }
+            return user;
+        }
+
+        public User UnblockUser(User user)
+        {
+            if (user.IsBlocked)
+            {
+                user.IsBlocked = false;
             }
             return user;
         }
