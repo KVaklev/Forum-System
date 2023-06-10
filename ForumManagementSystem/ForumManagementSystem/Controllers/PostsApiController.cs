@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Business.Exceptions;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Helpers;
 
 namespace ForumManagementSystem.Controllers
 {
@@ -12,111 +14,109 @@ namespace ForumManagementSystem.Controllers
     {
 
         private readonly IPostService postService;
-        private readonly IMapper mapper;
-        //private readonly PostMapper postMapper;
+        private readonly PostMapper postMapper;
+        private readonly AuthManager authManager;
 
-        public PostsApiController(IPostService postService, IMapper mapper)//, PostMapper postMapper)
+        public PostsApiController(IPostService postService, PostMapper postMapper, AuthManager authManager)
 
         {
-             this.postService = postService;
-             this.mapper = mapper;
-            //    this.postMapper = postMapper;
+            this.postService = postService;
+            this.postMapper = postMapper;
+            this.authManager = authManager;
         }
 
-        
+        [HttpGet("")]
+        public IActionResult GetPosts([FromQuery] PostQueryParameters filterParameters)
 
-        
+        {
+            List<Post> result = this.postService.FilterBy(filterParameters);
 
-        //[HttpGet("")]
+            return this.StatusCode(StatusCodes.Status200OK, result);
 
+        }
 
-        //public IActionResult GetPosts([FromQuery] PostQueryParameters filterParameters)
-
-        //{
-        //    List<Post> result = this.postService.FilterBy(filterParameters);
-
-        //    return this.StatusCode(StatusCodes.Status200OK, result);
-
-        //}
-
-        //[HttpGet("{id}")]
-        //public IActionResult GetPostById(int id)
-        //{
-        //    try
-        //    {
-        //        Post post = this.postService.GetById(id);
-
-        //        return this.StatusCode(StatusCodes.Status200OK, post);
-        //    }
-        //    catch (EntityNotFoundException e)
-        //    {
-        //        return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
-        //    }
-        //}
-
-        [HttpPost("")]
-        public IActionResult CreatePost([FromBody] PostDto postDto)
+        [HttpGet("{id}")]
+        public IActionResult GetPostById(int id)
         {
             try
             {
-                Post post = this.mapper.Map<Post>(postDto);
-                Post createdPost = this.postService.Create(post);
+                Post post = this.postService.GetById(id);
 
-                return StatusCode(StatusCodes.Status201Created, createdPost);
+                return this.StatusCode(StatusCodes.Status200OK, post);
             }
-
-            catch (DuplicateEntityException ex)
+            catch (EntityNotFoundException e)
             {
-                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
+                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
-            //try
-            //{
-            //    Post post = this.postMapper.Map(postDto);
-            //    Post createdPost = this.postService.Create(post);
+        }
 
-            //    return this.StatusCode(StatusCodes.Status201Created, createdPost);
-            //}
-            //catch (DuplicateEntityException e)
-            //{
-            //    return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
-            //}
+        [HttpPost("")]
+        public IActionResult CreatePost([FromBody] PostDto postDto, [FromHeader] string credentials)
+        {
+            try
+            {
+                Post post = this.postMapper.Map(postDto);
+                User user = this.authManager.TryGetUser(credentials);
+                Post createdPost = this.postService.Create(post, user);
+
+                return this.StatusCode(StatusCodes.Status201Created, createdPost);
+            }
+            catch (DuplicateEntityException e)
+            {
+                return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
+            }
+
+            catch(UnauthenticatedOperationException e)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, e.Message);
+            }
         }
 
 
-        //[HttpPut("{id}")]
-        //public IActionResult UpdatePost(int id, [FromBody] PostDto postDto)
-        //{
-        //    try
-        //    {
-        //        Post post = this.postMapper.Map(postDto);
-        //        Post updatedPost = this.postService.Update(id, post);
+        [HttpPut("{id}")]
+        public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials)
+        {
+            try
+            {
+                Post post = this.postMapper.Map(postDto);
+                User user = this.authManager.TryGetUser(credentials);
+                Post updatedPost = this.postService.Update(id, post, user);
 
-        //        return this.StatusCode(StatusCodes.Status200OK, updatedPost);
-        //    }
-        //    catch (EntityNotFoundException e)
-        //    {
-        //        return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
-        //    }
-        //    catch (DuplicateEntityException e)
-        //    {
-        //        return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
-        //    }
-        //}
+                return this.StatusCode(StatusCodes.Status200OK, updatedPost);
+            }
+            catch (EntityNotFoundException e)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+            }
+            catch (DuplicateEntityException e)
+            {
+                return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
+            }
+            catch (UnauthenticatedOperationException e)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, e.Message);
+            }
+        }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult DeletePost(int id)
-        //{
-        //    try
-        //    {
-        //        var deletedPost = this.postService.Delete(id);
+        [HttpDelete("{id}")]
+        public IActionResult DeletePost(int id, [FromHeader] string credentials)
+        {
+            try
+            {
+                User user = this.authManager.TryGetUser(credentials);
+                Post deletedPost = this.postService.Delete(id, user);
 
-        //        return this.StatusCode(StatusCodes.Status200OK, deletedPost);
-        //    }
-        //    catch (EntityNotFoundException e)
-        //    {
-        //        return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
-        //    }
-        //}
+                return this.StatusCode(StatusCodes.Status200OK, deletedPost);
+            }
+            catch (EntityNotFoundException e)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+            }
+            catch (UnauthenticatedOperationException e)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+            }
+        }
 
     }
 }

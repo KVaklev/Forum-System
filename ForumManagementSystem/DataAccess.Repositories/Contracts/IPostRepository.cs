@@ -8,7 +8,7 @@ namespace ForumManagementSystem.Repository
 
         Post GetById(int id);
 
-        Post GetByUser(string user);
+        Post GetByUser(User user);
 
         Post GetByTitle(string title);
 
@@ -16,7 +16,7 @@ namespace ForumManagementSystem.Repository
 
         List<Post> FilterBy(PostQueryParameters parameters);
 
-        Post Create(Post post);
+        Post Create(Post post, User user);
 
         Post Update(int id, Post post);
 

@@ -10,6 +10,8 @@
 
         public Category Category { get; set; } // Tag
 
+        public int Likes { get; set; }
+
         public string Content { get; set; }
 
         public List<Comment> Comments { get; set; }
