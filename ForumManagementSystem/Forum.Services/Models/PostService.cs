@@ -29,7 +29,7 @@ namespace ForumManagementSystem.Services
 
         public Post Create(Post post, User user)
         {
-            bool duplicateExists = true;
+            bool duplicateExists = false;
 
             try
             {
@@ -38,7 +38,7 @@ namespace ForumManagementSystem.Services
             catch (EntityNotFoundException)
 
             {
-                duplicateExists = false;
+                duplicateExists = true;
             }
             if (duplicateExists)
             {
@@ -50,29 +50,26 @@ namespace ForumManagementSystem.Services
             return createdPost;
         }
                 
-        public Post Update(int id, Post post, User user)
+        public Post Update(int id, Post post, User loggedUser)
         {
-            if (!user.IsAdmin)
+            Post postToUpdate = this.repository.GetById(id);
+
+            if (!postToUpdate.User.Equals(loggedUser) && !loggedUser.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyPostErrorMessage);
+                throw new UnauthenticatedOperationException(ModifyPostErrorMessage);
             }
 
-            bool duplicateExists = true;
+            bool duplicateExists = false;
 
             try
             {
-                Post existingPost = this.repository.GetByTitle(post.Title);
-
-                if (existingPost.Id == id)
-                {
-                    duplicateExists = false;
-                }
+                this.repository.GetByTitle(post.Title);
             }
             catch (EntityNotFoundException)
-            {
-                duplicateExists = false;
-            }
 
+            {
+                duplicateExists = true;
+            }
             if (duplicateExists)
             {
                 throw new DuplicateEntityException($"Post {post.Title} already exists.");
@@ -83,13 +80,16 @@ namespace ForumManagementSystem.Services
             return updatedPost;
         }
 
-        public Post Delete(int id, User user)
+        public void Delete(int id, User loggedUser)
         {
-            if (!user.IsAdmin)
+            Post post = repository.GetById(id);
+
+            if (!loggedUser.Equals(post.User) && !loggedUser.IsAdmin)
             {
                 throw new UnauthorizedOperationException(ModifyPostErrorMessage);
             }
-            return repository.Delete(id);
+
+            this.repository.Delete(id);
         }
 
 

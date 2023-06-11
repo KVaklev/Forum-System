@@ -26,12 +26,15 @@ namespace ForumManagementSystem
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddSingleton<User>();
 
             //Helpers
             builder.Services.AddScoped<UserMapper>();
             builder.Services.AddScoped<CategoryMapper>();
             builder.Services.AddScoped<PostMapper>();
             builder.Services.AddScoped<CommentMapper>();
+
+          // builder.Services.AddScoped<PostQueryParameters>();
 
             builder.Services.AddScoped<AuthManager>();
 

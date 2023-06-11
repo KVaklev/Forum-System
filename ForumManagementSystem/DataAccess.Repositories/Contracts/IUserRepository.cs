@@ -16,5 +16,6 @@ namespace ForumManagementSystem.Repository
         User Create(User user);
         User Update(int id, User loggedUser);
         User Delete(int id);
+
     }
 }

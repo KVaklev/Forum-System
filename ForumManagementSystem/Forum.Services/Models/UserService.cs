@@ -66,7 +66,7 @@ namespace ForumManagementSystem.Services
 
             if (duplicateExists)
             {
-                throw new DuplicateEntityException($"User with firstname '{user.Username}' already exists.");
+                throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
             }
 
             User updatedUser = this.repository.Update(id, user);

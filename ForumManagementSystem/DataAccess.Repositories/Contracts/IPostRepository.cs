@@ -22,5 +22,9 @@ namespace ForumManagementSystem.Repository
 
         Post Delete(int id);
 
+        Category GetByCategoryId(int categoryId);
+
+        User GetByUserId(int userId);
+
     }
 }

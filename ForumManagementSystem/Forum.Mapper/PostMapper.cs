@@ -1,4 +1,6 @@
-﻿namespace ForumManagementSystem.Models
+﻿using ForumManagementSystem.Repository;
+
+namespace ForumManagementSystem.Models
 {
     public class PostMapper
     {
@@ -9,6 +11,8 @@
             {
                 Title = postDto.Title,
                 Content = postDto.Content,
+                UserId = postDto.UserId,
+                CategoryId = postDto.CategoryId,
             };
         }
     }

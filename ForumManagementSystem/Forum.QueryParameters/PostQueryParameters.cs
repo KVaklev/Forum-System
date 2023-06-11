@@ -15,5 +15,9 @@
         public string? SortBy { get; set; }
 
         public string? SortOrder { get; set; }
+
+        public int UserId { get; set; }
+
+        public int CategoryId { get; set; }
     }
 }

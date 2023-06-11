@@ -8,11 +8,13 @@ namespace ForumManagementSystem.Repository
         private readonly List<Post> posts;
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepository;
+        private readonly User user;
 
-        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository)
+        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository, User user)
         {
             this.userRepository = userRepository;
             this.categoryRepository = categoryRepository;
+            this.user = user;
 
 
             posts = new List<Post>()
@@ -25,7 +27,8 @@ namespace ForumManagementSystem.Repository
                     Title = "BMW 5, 2007",
                     Category = this.categoryRepository.GetById(1),
                     Content = "Have you ever experienced issues when start the engine",
-                    DateTime = DateTime.Now
+                    DateTime = DateTime.Now,
+                    UserId = this.userRepository.GetById(1).Id
                 },
 
                 new Post
@@ -35,7 +38,8 @@ namespace ForumManagementSystem.Repository
                     Title = "Mercedes GLC, 2012",
                     Category = this.categoryRepository.GetById(2),
                     Content = "Have you experienced issues with suspension making strange noise",
-                    DateTime = DateTime.Now
+                    DateTime = DateTime.Now,
+                    UserId = this.userRepository.GetById(2).Id
                 },
 
             };
@@ -53,8 +57,6 @@ namespace ForumManagementSystem.Repository
             return post ?? throw new EntityNotFoundException($"Post with username {user.Username} doesn't exist.");
         }
 
-
-
         public Post GetById(int id)
 
         {
@@ -66,7 +68,17 @@ namespace ForumManagementSystem.Repository
         public Post GetByTitle(string title)
         {
             Post post = this.posts.Where(posts => posts.Title == title).FirstOrDefault();
-            return post ?? throw new EntityNotFoundException($"Post with title = {title} doesn't exist.");
+
+            if (post==null)
+            {
+                post= new Post { Title = title };
+                return post;
+            }
+            else
+            {
+                throw new EntityNotFoundException($"Post with title = {title} already exist.");
+            }
+            
         }
         public Post GetByCategory(string categoryName)
         {
@@ -78,11 +90,14 @@ namespace ForumManagementSystem.Repository
         {
             Post postToUpdate = this.GetById(id);
 
-            postToUpdate.User = post.User;
             postToUpdate.Title = post.Title;
-            postToUpdate.Category = post.Category;
+          
             postToUpdate.Content = post.Content;
-            postToUpdate.Comments = post.Comments;
+          //  postToUpdate.Comments = post.Comments; to fix
+            postToUpdate.CategoryId = post.CategoryId;
+            Category category = this.GetByCategoryId(post.CategoryId);
+            postToUpdate.Category = category;
+            postToUpdate.UserId = post.UserId;
 
             return postToUpdate;
 
@@ -91,7 +106,10 @@ namespace ForumManagementSystem.Repository
         public Post Create(Post post, User user)
         {
             post.Id = this.posts.Count + 1;
-            post.User.Id = user.Id;
+            post.UserId = user.Id;
+            post.User = user;
+            Category category = this.GetByCategoryId(post.CategoryId);
+            post.Category= category;
             this.posts.Add(post);
             return post;
         }
@@ -162,5 +180,20 @@ namespace ForumManagementSystem.Repository
             return result;
 
         }
+
+        public Category GetByCategoryId(int categoryId)
+        {
+            Category category=this.categoryRepository.GetById(categoryId);
+
+            return category;
+        }
+
+        public User GetByUserId(int userId)
+        {
+           User user = this.userRepository.GetById(userId);
+           
+           return user;
+        }
+
     }
 }

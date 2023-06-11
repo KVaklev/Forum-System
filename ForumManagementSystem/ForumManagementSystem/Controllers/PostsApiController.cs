@@ -27,7 +27,6 @@ namespace ForumManagementSystem.Controllers
 
         [HttpGet("")]
         public IActionResult GetPosts([FromQuery] PostQueryParameters filterParameters)
-
         {
             List<Post> result = this.postService.FilterBy(filterParameters);
 
@@ -51,12 +50,14 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreatePost([FromBody] PostDto postDto, [FromHeader] string credentials)
+        public IActionResult CreatePost([FromBody] PostDto postDto, [FromHeader] string credentials) //needs correction on the user:posts
         {
             try
             {
-                Post post = this.postMapper.Map(postDto);
                 User user = this.authManager.TryGetUser(credentials);
+
+                Post post = this.postMapper.Map(postDto);
+                
                 Post createdPost = this.postService.Create(post, user);
 
                 return this.StatusCode(StatusCodes.Status201Created, createdPost);
@@ -74,13 +75,15 @@ namespace ForumManagementSystem.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials)
+        public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials) //needs correction on the user:posts
         {
             try
             {
+                User loggedUser = this.authManager.TryGetUser(credentials);
+
                 Post post = this.postMapper.Map(postDto);
-                User user = this.authManager.TryGetUser(credentials);
-                Post updatedPost = this.postService.Update(id, post, user);
+              
+                Post updatedPost = this.postService.Update(id, post, loggedUser);
 
                 return this.StatusCode(StatusCodes.Status200OK, updatedPost);
             }
@@ -104,9 +107,10 @@ namespace ForumManagementSystem.Controllers
             try
             {
                 User user = this.authManager.TryGetUser(credentials);
-                Post deletedPost = this.postService.Delete(id, user);
 
-                return this.StatusCode(StatusCodes.Status200OK, deletedPost);
+                this.postService.Delete(id, user);
+
+                return this.StatusCode(StatusCodes.Status200OK);
             }
             catch (EntityNotFoundException e)
             {
@@ -117,6 +121,7 @@ namespace ForumManagementSystem.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, e.Message);
             }
         }
+
 
     }
 }
