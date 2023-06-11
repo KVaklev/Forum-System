@@ -129,14 +129,17 @@ namespace ForumManagementSystem.Repository
             //{
             //    result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
             //}
+
             if (!string.IsNullOrEmpty(filterParameters.Title))
             {
                 result = result.FindAll(p => p.Title.Contains(filterParameters.Title));
             }
+
             //if (!string.IsNullOrEmpty(filterParameters.Category.Name))
             //{
             //    result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
             //}
+
             if (filterParameters.FromDateTime.HasValue && filterParameters.ToDateTime.HasValue)
             {
                 result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime && p.DateTime <= filterParameters.ToDateTime).ToList();
