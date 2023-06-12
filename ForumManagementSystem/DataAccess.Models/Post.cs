@@ -1,17 +1,19 @@
-﻿namespace ForumManagementSystem.Models
+﻿using DataAccess.Models;
+
+namespace ForumManagementSystem.Models
 {
     public class Post
     {
 
         public int Id { get; set; }
 
-        public User User { get; set; } // User user or string user? or not needed
+        public User User { get; set; } 
 
         public int UserId { get; set; }
 
         public string Title { get; set; }
 
-        public Category Category { get; set; } // Tag
+        public Category Category { get; set; } 
 
         public int CategoryId { get; set; }
 
@@ -19,12 +21,11 @@
 
         public string Content { get; set; }
 
-        public List<Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; } = new List<Comment> { };
 
         public DateTime DateTime { get; set; }
 
-        //List<string> Tags { get; set; } ??
+        List<Tag> Tags { get; set; } = new List<Tag>();
 
-        //public int Likes { get; set; } - counter?
     }
 }

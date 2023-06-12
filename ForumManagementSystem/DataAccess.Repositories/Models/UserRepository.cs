@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using Business.Exceptions;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
@@ -6,6 +7,9 @@ namespace ForumManagementSystem.Repository
     public class UserRepository : IUserRepository
     {
         private readonly List<User> users;
+
+        private const string ModifyUserErrorMessage = "Only admin can add a phone number.";
+
         public UserRepository()
         {
             this.users = new List<User>()
@@ -70,19 +74,37 @@ namespace ForumManagementSystem.Repository
             this.users.Remove(userToDelete);
             return userToDelete;
         }
-        public User Update(int id, User loggedUser) 
+        public User Update(int id, User loggedUser)
         {
-           User userToUpdate=this.GetById(id);
+            User userToUpdate = this.GetById(id);
 
-           userToUpdate.FirstName = loggedUser.FirstName ?? userToUpdate.FirstName;
-           userToUpdate.LastName = loggedUser.LastName ?? userToUpdate.LastName;
-           userToUpdate.Email = loggedUser.Email ?? userToUpdate.Email;
-           userToUpdate.Password =  loggedUser.Password ?? userToUpdate.Password;
-           userToUpdate.PhoneNumber =  loggedUser.PhoneNumber ?? userToUpdate.PhoneNumber;
+            userToUpdate.FirstName = loggedUser.FirstName ?? userToUpdate.FirstName;
+            userToUpdate.LastName = loggedUser.LastName ?? userToUpdate.LastName;
+            userToUpdate.Email = loggedUser.Email ?? userToUpdate.Email;
+            userToUpdate.Password = loggedUser.Password ?? userToUpdate.Password;
 
+            UpdatePhoneNumber(loggedUser, userToUpdate);
             return userToUpdate;
-
         }
+
+        private static void UpdatePhoneNumber(User loggedUser, User userToUpdate)
+        {
+            if (loggedUser.IsAdmin)
+            {
+                if (loggedUser.PhoneNumber != null)
+                {
+                    userToUpdate.PhoneNumber = loggedUser.PhoneNumber;
+                }
+            }
+            else
+            {
+                if (loggedUser.PhoneNumber != null)
+                {
+                    throw new UnauthorizedOperationException(ModifyUserErrorMessage);
+                }
+            }
+        }
+
         public List<User> FilterBy(UserQueryParameters filterParameters)
         {
             List<User> result = this.users;

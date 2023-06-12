@@ -35,8 +35,21 @@ namespace ForumManagementSystem.Services
             }
             if (duplicateExists)
             {
-                throw new DuplicateEntityException($"Username {user.Username} already exists.");
+                throw new DuplicateEntityException($"User with username {user.Username} already exists.");
             }
+            try
+            {
+                this.repository.GetByEmail(user.Email);
+            }
+            catch (EntityNotFoundException)
+            {
+                duplicateExists = false;
+            }
+            if (duplicateExists)
+            {
+                throw new DuplicateEntityException($"User with email {user.Email} already exists.");
+            }
+
             User createdUser=this.repository.Create(user);
 
             return createdUser;
@@ -44,6 +57,7 @@ namespace ForumManagementSystem.Services
         public User Update(int id, User user, User loggedUser)
         {
             User userToUpdate = this.repository.GetById(id);
+
             if (!userToUpdate.Equals(loggedUser) && !loggedUser.IsAdmin)
             {
                 throw new UnauthorizedOperationException(ModifyUserErrorMessage);
@@ -68,6 +82,25 @@ namespace ForumManagementSystem.Services
             {
                 throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
             }
+            try
+            {
+                User existingUser = this.repository.GetByEmail(userToUpdate.Email);
+
+                if (existingUser.Id == id)
+                {
+                    duplicateExists = false;
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+                duplicateExists = false;
+            }
+
+            if (duplicateExists)
+            {
+                throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
+            }
+
 
             User updatedUser = this.repository.Update(id, user);
 

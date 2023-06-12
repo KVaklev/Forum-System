@@ -4,8 +4,8 @@ namespace ForumManagementSystem.Models
 {
     public class User
     {
-        public List<Post> Posts { get; set; }
-        public List<Comment> Comments { get; set; }
+        public List<Post> Posts { get; set; } = new List<Post>();
+        public List<Comment> Comments { get; set; } = new List<Comment> { };
         public int Id { get; set; }
 
         [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
