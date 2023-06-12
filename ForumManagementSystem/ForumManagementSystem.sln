@@ -11,21 +11,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FA012199-5E93-44F7-BD90-76E80A749263}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Exceptions", "Forum.Exceptions\Business.Exceptions.csproj", "{792700B9-B781-4198-A9CC-76812EA4EBE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Exceptions", "Forum.Exceptions\Business.Exceptions.csproj", "{792700B9-B781-4198-A9CC-76812EA4EBE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Dto", "Forum.Dto\Business.Dto.csproj", "{9CBE36BB-3464-4FF5-BDEC-F36FBA0E59DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Dto", "Forum.Dto\Business.Dto.csproj", "{9CBE36BB-3464-4FF5-BDEC-F36FBA0E59DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Mapper", "Forum.Mapper\Business.Mapper.csproj", "{4A0F0947-03E9-41F4-BBDF-75691BC87902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Mapper", "Forum.Mapper\Business.Mapper.csproj", "{4A0F0947-03E9-41F4-BBDF-75691BC87902}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.QueryParameters", "Forum.QueryParameters\Business.QueryParameters.csproj", "{3E724A99-C1B1-4822-860B-42F005F0B923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.QueryParameters", "Forum.QueryParameters\Business.QueryParameters.csproj", "{3E724A99-C1B1-4822-860B-42F005F0B923}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.Services", "Forum.Services\Business.Services.csproj", "{6ED741C7-93C8-4725-92BB-76B78CDBD3BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.Services", "Forum.Services\Business.Services.csproj", "{6ED741C7-93C8-4725-92BB-76B78CDBD3BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Models", "DataAccess.Models\DataAccess.Models.csproj", "{EF48627A-6D26-420C-97C0-546DAE1AC159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Models", "DataAccess.Models\DataAccess.Models.csproj", "{EF48627A-6D26-420C-97C0-546DAE1AC159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Repositories", "DataAccess.Repositories\DataAccess.Repositories.csproj", "{C5018915-AD85-4FAC-871C-24690495BE81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Repositories", "DataAccess.Repositories\DataAccess.Repositories.csproj", "{C5018915-AD85-4FAC-871C-24690495BE81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Helpers", "Presentation.Helpers\Presentation.Helpers.csproj", "{9BEEF9E1-92AB-45B1-89DE-B85C297AE910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Helpers", "Presentation.Helpers\Presentation.Helpers.csproj", "{9BEEF9E1-92AB-45B1-89DE-B85C297AE910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.DataTables", "DataAccess.DataTables\DataAccess.DataTables.csproj", "{64625EAC-9451-4D1D-8785-B96C1619CD9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{9BEEF9E1-92AB-45B1-89DE-B85C297AE910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BEEF9E1-92AB-45B1-89DE-B85C297AE910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BEEF9E1-92AB-45B1-89DE-B85C297AE910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64625EAC-9451-4D1D-8785-B96C1619CD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64625EAC-9451-4D1D-8785-B96C1619CD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64625EAC-9451-4D1D-8785-B96C1619CD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64625EAC-9451-4D1D-8785-B96C1619CD9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{EF48627A-6D26-420C-97C0-546DAE1AC159} = {7316EEE1-C042-4714-BAC2-AC1E1C94DFEC}
 		{C5018915-AD85-4FAC-871C-24690495BE81} = {7316EEE1-C042-4714-BAC2-AC1E1C94DFEC}
 		{9BEEF9E1-92AB-45B1-89DE-B85C297AE910} = {FA012199-5E93-44F7-BD90-76E80A749263}
+		{64625EAC-9451-4D1D-8785-B96C1619CD9B} = {7316EEE1-C042-4714-BAC2-AC1E1C94DFEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1B6E515-DD6F-48DA-BED0-A38BCC73C777}

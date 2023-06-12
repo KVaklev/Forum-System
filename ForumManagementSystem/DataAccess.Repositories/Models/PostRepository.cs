@@ -125,20 +125,20 @@ namespace ForumManagementSystem.Repository
         {
             List<Post> result = this.posts;
 
-            //if (!string.IsNullOrEmpty(filterParameters.User.Username))
-            //{
-            //    result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
-            //}
+            if (filterParameters.User != null && !string.IsNullOrEmpty(filterParameters.User.Username))
+            {
+                result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
+            }          
 
             if (!string.IsNullOrEmpty(filterParameters.Title))
             {
                 result = result.FindAll(p => p.Title.Contains(filterParameters.Title));
             }
 
-            //if (!string.IsNullOrEmpty(filterParameters.Category.Name))
-            //{
-            //    result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
-            //}
+            if (filterParameters.Category != null && !string.IsNullOrEmpty(filterParameters.Category.Name))
+            {
+                result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
+            }
 
             if (filterParameters.FromDateTime.HasValue && filterParameters.ToDateTime.HasValue)
             {
