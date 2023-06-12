@@ -54,7 +54,7 @@ namespace ForumManagementSystem.Services
         {
             Post postToUpdate = this.repository.GetById(id);
 
-            if (!postToUpdate.User.Equals(loggedUser) && !loggedUser.IsAdmin)
+            if (!postToUpdate.CreatedBy.Equals(loggedUser) && !loggedUser.IsAdmin)
             {
                 throw new UnauthenticatedOperationException(ModifyPostErrorMessage);
             }
@@ -84,7 +84,7 @@ namespace ForumManagementSystem.Services
         {
             Post post = repository.GetById(id);
 
-            if (!loggedUser.Equals(post.User) && !loggedUser.IsAdmin)
+            if (!loggedUser.Equals(post.CreatedBy) && !loggedUser.IsAdmin)
             {
                 throw new UnauthorizedOperationException(ModifyPostErrorMessage);
             }

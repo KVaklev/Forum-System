@@ -8,14 +8,20 @@ namespace ForumManagementSystem.Models
 
         [Required(ErrorMessage = "The {0} field is required")]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")]  //TODO  - MaxValue - user.Count
+       
+        // Foreign key
         public int UserId { get; set; }
-
-        public User User { get; set; }
+        
+        // Navigation property
+        public User CreatedBy { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")] //TODO  - MaxValue - post.Count
+
+        // Foreign key
         public int PostId { get; set; }
 
+        // Navigation property
         public Post Post { get; set; }
 
         [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
@@ -24,5 +30,6 @@ namespace ForumManagementSystem.Models
 
         public DateTime DateTime { get; set; }
 
+        public int Likes { get; set; }
     }
 }

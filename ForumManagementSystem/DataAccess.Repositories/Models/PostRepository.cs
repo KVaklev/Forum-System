@@ -23,7 +23,7 @@ namespace ForumManagementSystem.Repository
                 new Post
                 {
                     Id = 1,
-                    User = this.userRepository.GetById(1),
+                    CreatedBy = this.userRepository.GetById(1),
                     Title = "BMW 5, 2007",
                     Category = this.categoryRepository.GetById(1),
                     Content = "Have you ever experienced issues when start the engine",
@@ -34,7 +34,7 @@ namespace ForumManagementSystem.Repository
                 new Post
                 {
                     Id = 2,
-                    User = this.userRepository.GetById(2),
+                    CreatedBy = this.userRepository.GetById(2),
                     Title = "Mercedes GLC, 2012",
                     Category = this.categoryRepository.GetById(2),
                     Content = "Have you experienced issues with suspension making strange noise",
@@ -53,7 +53,7 @@ namespace ForumManagementSystem.Repository
 
         public Post GetByUser(User user)
         {
-            Post post = this.posts.FirstOrDefault(post => post.User.Id == user.Id);
+            Post post = this.posts.FirstOrDefault(post => post.CreatedBy.Id == user.Id);
             return post ?? throw new EntityNotFoundException($"Post with username {user.Username} doesn't exist.");
         }
 
@@ -107,7 +107,7 @@ namespace ForumManagementSystem.Repository
         {
             post.Id = this.posts.Count + 1;
             post.UserId = user.Id;
-            post.User = user;
+            post.CreatedBy = user;
             Category category = this.GetByCategoryId(post.CategoryId);
             post.Category= category;
             this.posts.Add(post);
@@ -127,7 +127,7 @@ namespace ForumManagementSystem.Repository
 
             if (filterParameters.User != null && !string.IsNullOrEmpty(filterParameters.User.Username))
             {
-                result = result.FindAll(p => p.User.Username.Contains(filterParameters.User.Username));
+                result = result.FindAll(p => p.CreatedBy.Username.Contains(filterParameters.User.Username));
             }          
 
             if (!string.IsNullOrEmpty(filterParameters.Title))
@@ -160,7 +160,7 @@ namespace ForumManagementSystem.Repository
             {
                 if (filterParameters.SortBy.Equals("user", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    result = result.OrderBy(p => p.User).ToList();
+                    result = result.OrderBy(p => p.CreatedBy).ToList();
                 }
                 else if (filterParameters.SortBy.Equals("title", StringComparison.InvariantCultureIgnoreCase))
                 {
