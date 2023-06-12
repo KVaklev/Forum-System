@@ -84,10 +84,11 @@ namespace ForumManagementSystem.Repository
             userToUpdate.Password = loggedUser.Password ?? userToUpdate.Password;
 
             UpdatePhoneNumber(loggedUser, userToUpdate);
+
             return userToUpdate;
         }
 
-        private static void UpdatePhoneNumber(User loggedUser, User userToUpdate)
+        public void UpdatePhoneNumber(User loggedUser, User userToUpdate)
         {
             if (loggedUser.IsAdmin)
             {
