@@ -1,6 +1,7 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Builder;
 using Presentation.Helpers;
 
 namespace ForumManagementSystem
@@ -37,6 +38,7 @@ namespace ForumManagementSystem
           // builder.Services.AddScoped<PostQueryParameters>();
 
             builder.Services.AddScoped<AuthManager>();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
             
@@ -44,6 +46,13 @@ namespace ForumManagementSystem
 
             app.UseDeveloperExceptionPage();
             app.UseRouting();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
