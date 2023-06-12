@@ -41,7 +41,7 @@ namespace ForumManagementSystem.Repository
         }
         public User GetById(int id)
         {
-           User? user=this.users.Where(users => users.Id == id).FirstOrDefault();
+           User user=this.users.Where(users => users.Id == id).FirstOrDefault();
            return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
         }
         public User GetByUsername(string username)
