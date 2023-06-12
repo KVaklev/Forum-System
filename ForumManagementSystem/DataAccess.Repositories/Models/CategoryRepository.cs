@@ -42,7 +42,7 @@ namespace ForumManagementSystem.Repository
             return category;
         }
 
-        public List<Category> FilterBy(CategoryQueryParameter parameters)
+        public List<Category> FilterBy(Models.CategoryQueryParameter parameters)
         {
             List<Category> result = categories;
 

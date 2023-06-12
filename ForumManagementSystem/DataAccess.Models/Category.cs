@@ -20,11 +20,12 @@ namespace ForumManagementSystem.Models
 
         public DateTime DateTime { get; set; }
 
+        // Collection navigation containing dependents
         List<Post> posts { get; set; }
 
         //TODO - Counts in Category
         //public int CountPosts { get; set; }
-        // public int CountComment { get; set; }
+        //public int CountComment { get; set; }
 
     }
 }
