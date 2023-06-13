@@ -26,6 +26,7 @@ namespace ForumManagementSystem
             builder.Services.AddSingleton<IPostRepository, PostRepository>();
             builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
             builder.Services.AddSingleton<ITagRepository, TagRepository>();
+            builder.Services.AddSingleton<ILikeCommentRepository, LikeCommentRepository>();
 
 
             //Services
@@ -34,8 +35,10 @@ namespace ForumManagementSystem
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITagService, TagService>();
+            builder.Services.AddScoped<ILikeCommentService, LikeCommentService>();
 
-           
+
+
             //Helpers
             builder.Services.AddScoped<CustomAutoMapper>();
             builder.Services.AddScoped<AuthManager>();
