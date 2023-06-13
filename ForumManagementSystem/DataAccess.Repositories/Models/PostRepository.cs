@@ -1,4 +1,6 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using DataAccess.Models;
+using DataAccess.Repositories.Contracts;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
@@ -8,11 +10,15 @@ namespace ForumManagementSystem.Repository
         private readonly List<Post> posts;
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepository;
+        private readonly ITagRepository tagRepository;
+        private readonly ICommentRepository commentRepository;
 
-        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository)
+        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository, ITagRepository tagRepository, ICommentRepository commentRepository)
         {
             this.userRepository = userRepository;
             this.categoryRepository = categoryRepository;
+            this.tagRepository = tagRepository;
+            this.commentRepository = commentRepository;
 
             posts = new List<Post>()
 
@@ -25,7 +31,11 @@ namespace ForumManagementSystem.Repository
                     Category = this.categoryRepository.GetById(1),
                     Content = "Have you ever experienced issues when start the engine",
                     DateTime = DateTime.Now,
-                    UserId = this.userRepository.GetById(1).Id
+                    UserId = this.userRepository.GetById(1).Id,
+                    CategoryId=this.categoryRepository.GetById(1).Id,
+                    Tags=this.tagRepository.GetAll(),
+                    Comments=this.commentRepository.GetAll(),
+                    
                 },
 
                 new Post
@@ -36,7 +46,10 @@ namespace ForumManagementSystem.Repository
                     Category = this.categoryRepository.GetById(2),
                     Content = "Have you experienced issues with suspension making strange noise",
                     DateTime = DateTime.Now,
-                    UserId = this.userRepository.GetById(2).Id
+                    UserId = this.userRepository.GetById(2).Id,
+                    CategoryId=this.categoryRepository.GetById(2).Id,
+                    Tags=this.tagRepository.GetAll(),
+                    Comments=this.commentRepository.GetAll(),
                 },
 
             };
@@ -107,6 +120,7 @@ namespace ForumManagementSystem.Repository
             post.CreatedBy = user;
             Category category = this.GetByCategoryId(post.CategoryId);
             post.Category= category;
+            
             this.posts.Add(post);
             return post;
         }
@@ -195,5 +209,11 @@ namespace ForumManagementSystem.Repository
            return user;
         }
 
+        public Tag GetByTag(string tagName)
+        {
+            Tag existingTag = this.tagRepository.GetByName(tagName);
+
+            return existingTag;
+        }
     }
 }

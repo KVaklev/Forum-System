@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumManagementSystem.Models
 {
@@ -21,5 +22,7 @@ namespace ForumManagementSystem.Models
         [Required(ErrorMessage = "The {0} field is required")]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")]
         public int CategoryId { get; set; }
+
+        public List<Tag> Tags { get; set; }
     }
 }
