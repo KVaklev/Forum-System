@@ -51,6 +51,7 @@ namespace ForumManagementSystem.Controllers
 
                 GetUserDto userDto = mapper.Map<GetUserDto>(user);
 
+               
                 return this.StatusCode(StatusCodes.Status200OK, userDto);
             }
             catch (EntityNotFoundException ex)
