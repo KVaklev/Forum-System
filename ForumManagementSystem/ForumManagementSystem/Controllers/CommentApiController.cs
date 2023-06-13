@@ -110,25 +110,21 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
-       // [HttpPut("{id}/like")]
-        //public IActionResult LikeDislikeComment(int id,[FromHeader] string credentials)
-        //{
-        //    try
-        //    {
-        //        User userLoger = this.authManager.TryGetUser(credentials);
-        //        Comment comment = this.commentService.GetByID(id);
-        //        this.likeCommentService.Update(comment,userLoger);
+        [HttpPut("{id}/like")]
+        public IActionResult LikeDislikeComment(int id, [FromHeader] string credentials)
+        {
+            try
+            {
+                User userLoger = this.authManager.TryGetUser(credentials);
+                Comment comment = this.commentService.GetByID(id);
+                this.likeCommentService.Update(comment, userLoger);
 
-        //        return this.StatusCode(StatusCodes.Status200OK);
-        //    }
-        //    catch (EntityNotFoundException ex)
-        //    {
-        //        return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
-        //    }
-        //    catch (UnauthenticatedOperationException ex)
-        //    {
-        //        return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
-        //    }
-        //}
+                return this.StatusCode(StatusCodes.Status200OK);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+        }
     }
 }

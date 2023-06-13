@@ -42,7 +42,7 @@ namespace DataAccess.Repositories.Models
             likes.Add(likeComment);
             return likeComment;
         }
-
+        //TODO - foreach likes with comentId. 
         public LikeComment Delete(Comment comment, User user)
         {
             var likeToDeleted = Get(comment,user);

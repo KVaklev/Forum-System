@@ -2,6 +2,7 @@
 using Business.Services.Contracts;
 using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,7 @@ namespace Business.Services.Models
         {
             this.repository = repository;
         }
-        public LikeComment Create(Comment comment, User user)
-        {
-            return this.repository.Create(comment, user);
-        }
-
+        
         public LikeComment Delete(Comment comment, User user)
         { 
            var likeCommentToDelete = this.repository.Get(comment,user);
@@ -38,13 +35,14 @@ namespace Business.Services.Models
 
         public LikeComment Update(Comment comment, User user)
         {
-            var likeCommentToUpdate = this.repository.Get(comment, user);
-            
-            if (likeCommentToUpdate.UserId != user.Id)
+            try
             {
-                throw new UnauthorizedOperationException(ModifyLikeErrorMessage);
+            var likeCommentToUpdate = this.repository.Get(comment, user);
             }
-            
+            catch (EntityNotFoundException)
+            {
+                return this.repository.Create(comment, user);
+            }
             return this.repository.Update(comment, user);
         }
     }
