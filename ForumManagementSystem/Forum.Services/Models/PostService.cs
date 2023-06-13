@@ -30,7 +30,7 @@ namespace ForumManagementSystem.Services
 
         public Post Create(Post post, User user)
         {
-<<<<<<< HEAD
+
             bool duplicateExists = false;  // predpolagame che nqma takuv post
 =======
             if (user.IsBlocked)
@@ -38,7 +38,7 @@ namespace ForumManagementSystem.Services
                 throw new UnauthorizedAccessException(ModifyPostErrorMessageIfUserIsBlocked);
             }
             bool duplicateExists = false;
->>>>>>> 5d8078097ebdca94a3531d81e59f5767a63c4038
+
 
             try
             {
