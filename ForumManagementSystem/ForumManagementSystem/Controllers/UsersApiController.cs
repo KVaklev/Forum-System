@@ -41,7 +41,7 @@ namespace ForumManagementSystem.Controllers
             {
                 User user = this.userService.GetById(id);
 
-                GetUserDto userDto = UserMapper.MapUserToDtoGet(user);
+                GetUserDto userDto = mapper.Map<GetUserDto>(user);
 
                 return this.StatusCode(StatusCodes.Status200OK, userDto);
             }
