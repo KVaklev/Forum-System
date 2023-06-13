@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AutoMapper;
+using Business.Exceptions;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -12,13 +13,13 @@ namespace ForumManagementSystem.Controllers
     public class CommentApiController : ControllerBase
     {
         private ICommentService commentService;
-        private readonly CommentMapper commentMapper;
+        private readonly IMapper mapper;
         private readonly AuthManager authManager;
 
-        public CommentApiController(ICommentService commentService, CommentMapper commentMapper, AuthManager authManager)
+        public CommentApiController(ICommentService commentService, IMapper mapper, AuthManager authManager)
         {
             this.commentService = commentService;
-            this.commentMapper = commentMapper;
+            this.mapper = mapper;
             this.authManager = authManager;
         }
 
@@ -50,7 +51,7 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                Comment comment = this.commentMapper.Map(commentDto);
+                Comment comment = this.mapper.Map<Comment>(commentDto);
                 User user = this.authManager.TryGetUser(credentials);
                 Comment createdComment = this.commentService.Create(comment, user);
 
@@ -67,7 +68,7 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                Comment comment = this.commentMapper.Map(commentDto);
+                Comment comment = this.mapper.Map<Comment>(commentDto);
                 User user = this.authManager.TryGetUser(credentials);
                 Comment updatedComment = this.commentService.Update(id, comment, user);
 

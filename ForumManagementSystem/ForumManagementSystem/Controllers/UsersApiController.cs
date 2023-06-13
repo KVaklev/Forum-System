@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AutoMapper;
+using Business.Exceptions;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -12,13 +13,13 @@ namespace ForumManagementSystem.Controllers
     public class UsersApiController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly UserMapper userMapper;
+        private readonly IMapper mapper;
         private readonly AuthManager authManager;
 
-        public UsersApiController(IUserService userService, UserMapper userMapper, AuthManager authManager)
+        public UsersApiController(IUserService userService, IMapper mapper, AuthManager authManager)
         {
             this.userService = userService;
-            this.userMapper=userMapper;
+            this.mapper=mapper;
             this.authManager=authManager;
         }
 
@@ -28,7 +29,7 @@ namespace ForumManagementSystem.Controllers
         {
             List<User> result = this.userService.FilterBy(userQueryParameters);
 
-            List<GetUserDto> userDtos = result.Select(user => UserMapper.MapUserToDtoGet(user)).ToList();
+            List<GetUserDto> userDtos = result.Select(user => mapper.Map<GetUserDto>(user)).ToList();
 
             return this.StatusCode(StatusCodes.Status200OK, userDtos);
         }
@@ -39,7 +40,7 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.userMapper.MapUserToDtoCreate(createUserDto);
+                User user = this.mapper.Map<User>(createUserDto);
 
                 User createdUser = this.userService.Create(user);
 
@@ -58,7 +59,7 @@ namespace ForumManagementSystem.Controllers
             try
             {
                 User loggedUser = this.authManager.TryGetUser(credentials);
-                User user = this.userMapper.MapUserToDtoCreate(createUserDto);
+                User user = this.mapper.Map<User>(createUserDto);
 
                 User updatedUser = this.userService.Update(id, user, loggedUser);
 
