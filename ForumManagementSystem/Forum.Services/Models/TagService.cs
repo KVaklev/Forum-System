@@ -1,6 +1,8 @@
 ﻿using Business.Services.Contracts;
 using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Models;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
 namespace Business.Services.Models
