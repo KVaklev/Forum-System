@@ -19,7 +19,7 @@ namespace DataAccess.Models
 
         public User User { get; set; }
 
-        public bool IsLike { get; set; }
+        public bool IsLiked { get; set; }
 
 
      }

@@ -38,7 +38,7 @@ namespace DataAccess.Repositories.Models
             likeComment.Id = this.likes.Count + 1;
             likeComment.UserId=user.Id;
             likeComment.CommentId = comment.Id;
-            likeComment.IsLike = true;
+            likeComment.IsLiked = true;
             likes.Add(likeComment);
             return likeComment;
         }
@@ -53,13 +53,13 @@ namespace DataAccess.Repositories.Models
         public LikeComment Update(Comment comment, User user)
         {
             var likeCommentToUpdate = Get(comment,user);
-            if (likeCommentToUpdate.IsLike)
+            if (likeCommentToUpdate.IsLiked)
             {
-                likeCommentToUpdate.IsLike = false;
+                likeCommentToUpdate.IsLiked = false;
             }
             else
             {
-                likeCommentToUpdate.IsLike = true;
+                likeCommentToUpdate.IsLiked = true;
             }
             return likeCommentToUpdate;
         }

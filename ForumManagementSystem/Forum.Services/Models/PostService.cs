@@ -32,14 +32,11 @@ namespace ForumManagementSystem.Services
         {
 
             bool duplicateExists = false;  // predpolagame che nqma takuv post
-=======
             if (user.IsBlocked)
             {
                 throw new UnauthorizedAccessException(ModifyPostErrorMessageIfUserIsBlocked);
             }
-            bool duplicateExists = false;
-
-
+           
             try
             {
                 this.repository.GetByTitle(post.Title);
