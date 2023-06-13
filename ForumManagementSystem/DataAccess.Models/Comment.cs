@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumManagementSystem.Models
 {
@@ -31,5 +32,7 @@ namespace ForumManagementSystem.Models
         public DateTime DateTime { get; set; }
 
         public int Likes { get; set; }
+
+        public List<LikeComment> likes { get; set; }
     }
 }
