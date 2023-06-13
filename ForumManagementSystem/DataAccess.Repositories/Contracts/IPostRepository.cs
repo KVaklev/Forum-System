@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Models;
+﻿using DataAccess.Models;
+using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
 {
@@ -11,6 +12,7 @@ namespace ForumManagementSystem.Repository
         Post GetByUser(User user);
 
         Post GetByTitle(string title);
+        Tag GetByTag(string tag);
 
         Post GetByCategory(string category);
 

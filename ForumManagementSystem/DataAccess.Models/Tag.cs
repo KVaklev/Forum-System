@@ -8,6 +8,8 @@ namespace DataAccess.Models
 
         public string Name { get; set; }
 
+        public User CreatedBy { get; set; }
+
         //TODO
         // Foreign key
         public int PostId { get; set; }
@@ -16,6 +18,6 @@ namespace DataAccess.Models
         public Post Post { get; set; }
 
         // Collection navigation containing dependents
-        public List<Post> Posts { get; set; }
+        List<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }
