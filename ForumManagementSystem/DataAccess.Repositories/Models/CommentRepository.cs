@@ -7,7 +7,6 @@ namespace ForumManagementSystem.Repository
     public class CommentRepository : ICommentRepository
     {
         private readonly List<Comment> comments;
-        
 
         public CommentRepository()
         {

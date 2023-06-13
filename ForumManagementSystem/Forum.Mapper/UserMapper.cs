@@ -22,6 +22,8 @@
                 Email = createUserDto.Email,
                 Username = createUserDto.Username,
                 Password = createUserDto.Password,
+                PhoneNumber=createUserDto.PhoneNumber,
+                IsAdmin= (bool)createUserDto.IsAdmin
 
             };
         }

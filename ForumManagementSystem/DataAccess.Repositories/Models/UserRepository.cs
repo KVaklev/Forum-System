@@ -74,32 +74,33 @@ namespace ForumManagementSystem.Repository
             this.users.Remove(userToDelete);
             return userToDelete;
         }
-        public User Update(int id, User loggedUser)
+        public User Update(int id, User user)
         {
             User userToUpdate = this.GetById(id);
 
-            userToUpdate.FirstName = loggedUser.FirstName ?? userToUpdate.FirstName;
-            userToUpdate.LastName = loggedUser.LastName ?? userToUpdate.LastName;
-            userToUpdate.Email = loggedUser.Email ?? userToUpdate.Email;
-            userToUpdate.Password = loggedUser.Password ?? userToUpdate.Password;
+            userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
+            userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
+            userToUpdate.Password = user.Password ?? userToUpdate.Password;
+            userToUpdate.IsAdmin = user.IsAdmin;
 
-            UpdatePhoneNumber(loggedUser, userToUpdate);
+            UpdatePhoneNumber(user, userToUpdate);
 
             return userToUpdate;
         }
 
-        public void UpdatePhoneNumber(User loggedUser, User userToUpdate)
+        public void UpdatePhoneNumber(User user, User userToUpdate)
         {
-            if (loggedUser.IsAdmin)
+
+            if (user.IsAdmin)
             {
-                if (loggedUser.PhoneNumber != null)
+                if (userToUpdate.PhoneNumber == null)
                 {
-                    userToUpdate.PhoneNumber = loggedUser.PhoneNumber;
+                    userToUpdate.PhoneNumber = user.PhoneNumber;
                 }
             }
             else
             {
-                if (loggedUser.PhoneNumber != null)
+                if (user.PhoneNumber != null)
                 {
                     throw new UnauthorizedOperationException(ModifyUserErrorMessage);
                 }

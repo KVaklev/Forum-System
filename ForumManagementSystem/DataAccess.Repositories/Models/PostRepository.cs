@@ -8,14 +8,11 @@ namespace ForumManagementSystem.Repository
         private readonly List<Post> posts;
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepository;
-        private readonly User user;
 
-        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository, User user)
+        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
             this.userRepository = userRepository;
             this.categoryRepository = categoryRepository;
-            this.user = user;
-
 
             posts = new List<Post>()
 

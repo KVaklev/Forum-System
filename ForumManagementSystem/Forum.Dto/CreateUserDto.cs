@@ -19,5 +19,9 @@ namespace ForumManagementSystem.Models
         [Required]
         public string Password { get; set; }
 
+        public string? PhoneNumber { get; set; }
+
+        public bool? IsAdmin { get; set; }=false;
+
     }
 }

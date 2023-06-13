@@ -33,6 +33,22 @@ namespace ForumManagementSystem.Controllers
             return this.StatusCode(StatusCodes.Status200OK, userDtos);
         }
 
+        [HttpGet("id")]
+        public IActionResult GetUserById(int id)
+        {
+            try
+            {
+                User user = this.userService.GetById(id);
+
+                GetUserDto userDto = UserMapper.MapUserToDtoGet(user);
+
+                return this.StatusCode(StatusCodes.Status200OK, userDto);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+        }
 
         [HttpPost("")]
         public IActionResult CreateUser([FromBody] CreateUserDto createUserDto) 
@@ -58,6 +74,7 @@ namespace ForumManagementSystem.Controllers
             try
             {
                 User loggedUser = this.authManager.TryGetUser(credentials);
+
                 User user = this.userMapper.MapUserToDtoCreate(createUserDto);
 
                 User updatedUser = this.userService.Update(id, user, loggedUser);
