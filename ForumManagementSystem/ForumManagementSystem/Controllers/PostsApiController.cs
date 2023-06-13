@@ -57,7 +57,7 @@ namespace ForumManagementSystem.Controllers
                 User user = this.authManager.TryGetUser(credentials);
 
                 Post post = this.mapper.Map<Post>(postDto);
-                
+
                 Post createdPost = this.postService.Create(post, user);
 
                 return this.StatusCode(StatusCodes.Status201Created, createdPost);
@@ -67,13 +67,13 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
 
-            catch(UnauthenticatedOperationException e)
+            catch (UnauthenticatedOperationException e)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, e.Message);
             }
         }
 
-
+       
         [HttpPut("{id}")]
         public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials) //needs correction on the user:posts
         {
@@ -82,7 +82,7 @@ namespace ForumManagementSystem.Controllers
                 User loggedUser = this.authManager.TryGetUser(credentials);
 
                 Post post = this.mapper.Map<Post>(postDto);
-              
+
                 Post updatedPost = this.postService.Update(id, post, loggedUser);
 
                 return this.StatusCode(StatusCodes.Status200OK, updatedPost);

@@ -2,22 +2,22 @@
 {
     public class PostQueryParameters
     {
-        public User? User { get; set; }
+        public string? Username { get; set; }
 
         public string? Title { get; set; }
 
-        public Category? Category { get; set; }
+        public string? Category { get; set; }
 
-        public DateTime? FromDateTime { get; set; }
+        public string? FromDateTime { get; set; }
 
-        public DateTime? ToDateTime { get; set; }
+        public string? ToDateTime { get; set; }
 
         public string? SortBy { get; set; }
 
         public string? SortOrder { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

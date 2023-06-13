@@ -29,7 +29,7 @@ namespace ForumManagementSystem.Services
 
         public Post Create(Post post, User user)
         {
-            bool duplicateExists = false;
+            bool duplicateExists = false;  // predpolagame che nqma takuv post
 
             try
             {
@@ -40,6 +40,7 @@ namespace ForumManagementSystem.Services
             {
                 duplicateExists = true;
             }
+
             if (duplicateExists)
             {
                 throw new DuplicateEntityException($"Post {post.Title} already exists.");
@@ -84,7 +85,7 @@ namespace ForumManagementSystem.Services
         {
             Post post = repository.GetById(id);
 
-            if (!loggedUser.Equals(post.CreatedBy) && !loggedUser.IsAdmin)
+            if (!loggedUser.Equals(post.CreatedBy) || !loggedUser.IsAdmin || loggedUser.IsBlocked )
             {
                 throw new UnauthorizedOperationException(ModifyPostErrorMessage);
             }
