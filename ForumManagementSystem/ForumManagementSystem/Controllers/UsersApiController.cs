@@ -5,6 +5,7 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
+using System.Net;
 
 namespace ForumManagementSystem.Controllers
 {
@@ -25,8 +26,15 @@ namespace ForumManagementSystem.Controllers
 
 
         [HttpGet("")]
-        public IActionResult GetUsers([FromQuery] UserQueryParameters userQueryParameters)
+        public IActionResult GetUsers([FromHeader] string credentials, [FromQuery] UserQueryParameters userQueryParameters)
         {
+            User loggedUser = this.authManager.TryGetUser(credentials);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return this.StatusCode(StatusCodes.Status401Unauthorized);
+            }
+
             List<User> result = this.userService.FilterBy(userQueryParameters);
 
             List<GetUserDto> userDtos = result.Select(user => mapper.Map<GetUserDto>(user)).ToList();
