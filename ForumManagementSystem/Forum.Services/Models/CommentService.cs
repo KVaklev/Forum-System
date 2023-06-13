@@ -9,7 +9,7 @@ namespace ForumManagementSystem.Services
     public class CommentService : ICommentService
     {
 
-        private const string ModifyCommentErrorMessage = "Only an admin can modify a comment.";
+        private const string ModifyCommentErrorMessage = "Only an admin or unblock user can create or modify a comment.";
         private readonly ICommentRepository repository;
 
         public CommentService(ICommentRepository repository)
@@ -19,13 +19,17 @@ namespace ForumManagementSystem.Services
 
         public Comment Create(Comment comment, User user)
         {
-           return this.repository.Create(comment, user);
+            if (user.IsBlocked)
+            {
+                throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
+            }
+            return this.repository.Create(comment, user);
         }
 
         public Comment Delete(int id, User user)
         {
             Comment CommentToUpdate = this.repository.GetByID(id);
-            if (CommentToUpdate.UserId != user.Id && !user.IsAdmin)
+            if (CommentToUpdate.UserId != user.Id && !user.IsAdmin && user.IsBlocked)
             {
                 throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
             }
@@ -55,7 +59,7 @@ namespace ForumManagementSystem.Services
         public Comment Update(int id, Comment comment, User user)
         {
             Comment CommentToUpdate = this.repository.GetByID(id);
-            if (CommentToUpdate.UserId!=user.Id && !user.IsAdmin)
+            if (CommentToUpdate.UserId!=user.Id && !user.IsAdmin && user.IsBlocked)
             {
                 throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
             }

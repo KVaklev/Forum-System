@@ -8,7 +8,8 @@ namespace ForumManagementSystem.Services
     public class PostService : IPostService
     {
         private const string ModifyPostErrorMessage = "Only an admin can modify a post.";
-
+        private const string ModifyPostErrorMessageIfUserIsBlocked = "Blocked user cannot create a post.";
+            
         private readonly IPostRepository repository;
         public PostService(IPostRepository repository)
         {
@@ -29,7 +30,15 @@ namespace ForumManagementSystem.Services
 
         public Post Create(Post post, User user)
         {
+<<<<<<< HEAD
             bool duplicateExists = false;  // predpolagame che nqma takuv post
+=======
+            if (user.IsBlocked)
+            {
+                throw new UnauthorizedAccessException(ModifyPostErrorMessageIfUserIsBlocked);
+            }
+            bool duplicateExists = false;
+>>>>>>> 5d8078097ebdca94a3531d81e59f5767a63c4038
 
             try
             {

@@ -113,12 +113,6 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
-        //[HttpDelete("{postId}")]
-        //public IActionResult DeletePost(int postId, [FromHeader] string credentials) //needs implementation
-        //{
-        // 
-        //}
-
         [HttpPut("{id}/promote")]
         public IActionResult Promote(int id, [FromHeader] string credentials)
         {

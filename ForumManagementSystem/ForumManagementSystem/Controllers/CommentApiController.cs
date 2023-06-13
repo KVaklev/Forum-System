@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Business.Exceptions;
+using Business.Services.Contracts;
+using DataAccess.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -15,12 +17,18 @@ namespace ForumManagementSystem.Controllers
         private ICommentService commentService;
         private readonly IMapper mapper;
         private readonly AuthManager authManager;
+        private readonly ILikeCommentService likeCommentService;
 
-        public CommentApiController(ICommentService commentService, IMapper mapper, AuthManager authManager)
+        public CommentApiController(
+            ICommentService commentService, 
+            IMapper mapper, 
+            AuthManager authManager,
+            ILikeCommentService likeCommentService)
         {
             this.commentService = commentService;
             this.mapper = mapper;
             this.authManager = authManager;
+            this.likeCommentService = likeCommentService;
         }
 
         [HttpGet("")]
@@ -92,6 +100,26 @@ namespace ForumManagementSystem.Controllers
                 var deletedComment = this.commentService.Delete(id,user);
 
                 return this.StatusCode(StatusCodes.Status200OK, deletedComment);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+        }
+        [HttpPut("{id}/like")]
+        public IActionResult LikeDislikeComment(int id,[FromHeader] string credentials)
+        {
+            try
+            {
+                User userLoger = this.authManager.TryGetUser(credentials);
+                Comment comment = this.commentService.GetByID(id);
+                LikeComment likecomment = this.likeCommentService.Update(comment,userLoger);
+
+                return this.StatusCode(StatusCodes.Status200OK);
             }
             catch (EntityNotFoundException ex)
             {

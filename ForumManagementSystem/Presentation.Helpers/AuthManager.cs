@@ -26,7 +26,7 @@ namespace Presentation.Helpers
             try
             {
                 var user = this.userService.GetByUserName(username);
-                if (user.Password == password)
+                if (user.Password == encodedPassword)
                 {
                     return user;
                 }

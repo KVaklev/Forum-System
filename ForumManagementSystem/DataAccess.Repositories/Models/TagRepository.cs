@@ -38,10 +38,9 @@ namespace DataAccess.Repositories.Models
                 }
             };
         }
-        public Tag Create(Tag tag, Post post)
+        public Tag Create(Tag tag)
         {
             tag.Id = this.tags.Count + 1;
-            tag.PostId = post.Id;
             this.tags.Add(tag);
             return tag;
         }

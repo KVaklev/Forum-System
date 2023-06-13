@@ -1,3 +1,7 @@
+using Business.Services.Contracts;
+using Business.Services.Models;
+using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Models;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
@@ -21,6 +25,7 @@ namespace ForumManagementSystem
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IPostRepository, PostRepository>();
             builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
+            builder.Services.AddSingleton<ITagRepository, TagRepository>();
 
 
             //Services
@@ -28,15 +33,11 @@ namespace ForumManagementSystem
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ICommentService, CommentService>();
-            builder.Services.AddSingleton<User>();
+            builder.Services.AddScoped<ITagService, TagService>();
 
+           
             //Helpers
-           // builder.Services.AddScoped<UserMapper>();
-           // builder.Services.AddScoped<PostMapper>();
             builder.Services.AddScoped<CustomAutoMapper>();
-
-            // builder.Services.AddScoped<PostQueryParameters>();
-
             builder.Services.AddScoped<AuthManager>();
             builder.Services.AddSwaggerGen();
 
