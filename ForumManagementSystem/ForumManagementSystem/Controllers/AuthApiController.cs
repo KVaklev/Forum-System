@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using AutoMapper;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,13 @@ namespace ForumManagementSystem.Controllers
     public class AuthApiController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly UserMapper userMapper;
+        private readonly IMapper mapper;
         private readonly AuthManager authManager;
 
-        public AuthApiController(IUserService userService, UserMapper userMapper, AuthManager authManager)
+        public AuthApiController(IUserService userService, IMapper mapper, AuthManager authManager)
         {
             this.userService = userService;
-            this.userMapper = userMapper;
+            this.mapper = mapper;
             this.authManager = authManager;
         }
 

@@ -2,7 +2,7 @@
 
 namespace ForumManagementSystem.Models
 {
-    public class CategoryDTO
+    public class CategoryDto
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "The {0} field is required and must not be an empty string.")]
         [MaxLength(25, ErrorMessage = "The {0} field must be less than {1} characters.")]

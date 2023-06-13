@@ -14,14 +14,14 @@ namespace ForumManagementSystem.Controllers
     {
 
         private readonly IPostService postService;
-        private readonly PostMapper postMapper;
+        private readonly IMapper mapper;
         private readonly AuthManager authManager;
 
-        public PostsApiController(IPostService postService, PostMapper postMapper, AuthManager authManager)
+        public PostsApiController(IPostService postService, IMapper mapper, AuthManager authManager)
 
         {
             this.postService = postService;
-            this.postMapper = postMapper;
+            this.mapper = mapper;
             this.authManager = authManager;
         }
 
@@ -56,7 +56,7 @@ namespace ForumManagementSystem.Controllers
             {
                 User user = this.authManager.TryGetUser(credentials);
 
-                Post post = this.postMapper.Map(postDto);
+                Post post = this.mapper.Map<Post>(postDto);
                 
                 Post createdPost = this.postService.Create(post, user);
 
@@ -81,7 +81,7 @@ namespace ForumManagementSystem.Controllers
             {
                 User loggedUser = this.authManager.TryGetUser(credentials);
 
-                Post post = this.postMapper.Map(postDto);
+                Post post = this.mapper.Map<Post>(postDto);
               
                 Post updatedPost = this.postService.Update(id, post, loggedUser);
 

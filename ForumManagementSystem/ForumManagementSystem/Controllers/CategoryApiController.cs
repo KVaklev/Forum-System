@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AutoMapper;
+using Business.Exceptions;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -12,16 +13,13 @@ namespace ForumManagementSystem.Controllers
     public class CategoryApiController : ControllerBase
     {
         private readonly ICategoryService categoryService;
-        private readonly CategoryMapper categoryMapper;
+        private readonly IMapper mapper;
         private readonly AuthManager authManager;
 
-        public CategoryApiController
-            (ICategoryService categoryService, 
-             CategoryMapper categoryMapper, 
-             AuthManager authManager)
+        public CategoryApiController(ICategoryService categoryService, IMapper mapper, AuthManager authManager)
         {
             this.categoryService = categoryService;
-            this.categoryMapper = categoryMapper;
+            this.mapper = mapper;
             this.authManager = authManager;
         }
 
@@ -49,11 +47,11 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreateCategory([FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryDto, [FromHeader] string credentials)
         {
             try
             {
-                Category category = this.categoryMapper.Map(categoryDto);
+                Category category = this.mapper.Map<Category>(categoryDto);
                 User user = this.authManager.TryGetUser(credentials);
                 var createdCategory = this.categoryService.Create(category, user);
                 return this.StatusCode(StatusCodes.Status201Created, createdCategory);
@@ -68,11 +66,11 @@ namespace ForumManagementSystem.Controllers
             }
         }
         [HttpPut("categories/{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] CategoryDTO categoryDto, [FromHeader] string credentials)
+        public IActionResult UpdateCategory(int id, [FromBody] CategoryDto categoryDto, [FromHeader] string credentials)
         {
             try
             {
-                Category category = this.categoryMapper.Map(categoryDto);
+                Category category = this.mapper.Map<Category>(categoryDto);
                 User user = this.authManager.TryGetUser(credentials);
                 Category updatedCategory = this.categoryService.Update(id, category,user);
                 return this.StatusCode(StatusCodes.Status200OK, updatedCategory);
