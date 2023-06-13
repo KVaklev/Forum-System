@@ -136,9 +136,9 @@ namespace ForumManagementSystem.Repository
         {
             List<Post> result = this.posts;
 
-            if (filterParameters.User != null && !string.IsNullOrEmpty(filterParameters.User.Username))
+            if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
             {
-                result = result.FindAll(p => p.CreatedBy.Username.Contains(filterParameters.User.Username));
+                result = result.FindAll(p => p.CreatedBy.Username.Contains(filterParameters.Username));
             }          
 
             if (!string.IsNullOrEmpty(filterParameters.Title))
@@ -146,26 +146,26 @@ namespace ForumManagementSystem.Repository
                 result = result.FindAll(p => p.Title.Contains(filterParameters.Title));
             }
 
-            if (filterParameters.Category != null && !string.IsNullOrEmpty(filterParameters.Category.Name))
+            if (filterParameters.Category != null && !string.IsNullOrEmpty(filterParameters.Category))
             {
-                result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category.Name));
+                result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category));
             }
 
-            if (filterParameters.FromDateTime.HasValue && filterParameters.ToDateTime.HasValue)
+            if (filterParameters.FromDateTime!=null && filterParameters.ToDateTime!=null)
             {
-                result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime && p.DateTime <= filterParameters.ToDateTime).ToList();
+                //result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime && p.DateTime <= filterParameters.ToDateTime).ToList();
             }
-            else
-            {
-                if ((filterParameters.FromDateTime.HasValue))
-                {
-                    result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime).ToList();
-                }
-                if (filterParameters.ToDateTime.HasValue)
-                {
-                    result = result.FindAll(p => p.DateTime <= filterParameters.ToDateTime).ToList();
-                }
-            }
+            //else
+            //{
+            //    if ((filterParameters.FromDateTime.HasValue))
+            //    {
+            //        result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime).ToList();
+            //    }
+            //    if (filterParameters.ToDateTime.HasValue)
+            //    {
+            //        result = result.FindAll(p => p.DateTime <= filterParameters.ToDateTime).ToList();
+            //    }
+            //}
 
             if (!string.IsNullOrEmpty(filterParameters.SortBy))
             {
