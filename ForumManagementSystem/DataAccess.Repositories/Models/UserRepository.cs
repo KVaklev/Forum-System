@@ -22,11 +22,6 @@ namespace ForumManagementSystem.Repository
                      Email = "i.draganov@gmail.com",
                      Username = "ivanchoDraganchov",
                      Password = "MTIz",//123
-<<<<<<< HEAD
-                                        
-
-=======
->>>>>>> a2741c71ccc12fdf0d8de877212cd4bd2642beb4
                      IsAdmin = true,
                  },
                  new User()
@@ -36,30 +31,19 @@ namespace ForumManagementSystem.Repository
                      LastName = "Petrova",
                      Email = "m.petrova@gmail.com",
                      Username = "mariicheto",
-<<<<<<< HEAD
-
                      Password = "@sfjsddawdljsl",//QHNmanNkZGF3ZGxqc2w=
-                     IsAdmin = false,
-                     IsBlocked = true
-                                         
-
-=======
-                     Password = "@sfjsddawdljsl",//QHNmanNkZGF3ZGxqc2w=
-                     IsAdmin = false,
-                     IsBlocked = true,
-                     //Password = "QHNmanNkZGF3ZGxqc2w=" //@sfjsddawdljsl
->>>>>>> a2741c71ccc12fdf0d8de877212cd4bd2642beb4
+                     IsAdmin = false                     
                  }
             };
         }
         public List<User> GetAll()
         {
-           return this.users;
+            return this.users;
         }
         public User GetById(int id)
         {
-           User user=this.users.Where(users => users.Id == id).FirstOrDefault();
-           return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
+            User user = this.users.Where(users => users.Id == id).FirstOrDefault();
+            return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
         }
         public User GetByUsername(string username)
         {

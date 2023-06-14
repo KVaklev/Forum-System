@@ -9,7 +9,7 @@ namespace ForumManagementSystem.Services
     {
         private const string ModifyPostErrorMessage = "Only an admin can modify a post.";
         private const string ModifyPostErrorMessageIfUserIsBlocked = "Blocked user cannot create a post.";
-            
+
         private readonly IPostRepository repository;
         public PostService(IPostRepository repository)
         {
@@ -31,20 +31,13 @@ namespace ForumManagementSystem.Services
         public Post Create(Post post, User user)
         {
 
-<<<<<<< HEAD
-=======
-            bool duplicateExists = false;  // predpolagame che nqma takuv post
->>>>>>> a2741c71ccc12fdf0d8de877212cd4bd2642beb4
             if (user.IsBlocked)
             {
                 throw new UnauthorizedAccessException(ModifyPostErrorMessageIfUserIsBlocked);
             }
-<<<<<<< HEAD
+
             bool duplicateExists = false;
 
-=======
-           
->>>>>>> a2741c71ccc12fdf0d8de877212cd4bd2642beb4
             try
             {
                 this.repository.GetByTitle(post.Title);
@@ -64,7 +57,7 @@ namespace ForumManagementSystem.Services
 
             return createdPost;
         }
-                
+
         public Post Update(int id, Post post, User loggedUser)
         {
             Post postToUpdate = this.repository.GetById(id);
@@ -99,7 +92,7 @@ namespace ForumManagementSystem.Services
         {
             Post post = repository.GetById(id);
 
-            if (!loggedUser.Equals(post.CreatedBy) || !loggedUser.IsAdmin || loggedUser.IsBlocked )
+            if (!loggedUser.Equals(post.CreatedBy) || !loggedUser.IsAdmin || loggedUser.IsBlocked)
             {
                 throw new UnauthorizedOperationException(ModifyPostErrorMessage);
             }
