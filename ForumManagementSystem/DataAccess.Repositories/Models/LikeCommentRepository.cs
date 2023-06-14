@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using System;
@@ -12,15 +13,15 @@ namespace DataAccess.Repositories.Models
 {
     public class LikeCommentRepository : ILikeCommentRepository
     {
-        private readonly List<LikeComment> likes;
-        public LikeCommentRepository() 
+        private readonly ApplicationContext context;
+        public LikeCommentRepository(ApplicationContext context)
         {
-            this.likes = new List<LikeComment>();
+            this.context = context;
         }
 
         public LikeComment Get(Comment comment, User user)
         {
-            var likeComment = this.likes
+            LikeComment likeComment = this.context.LikeComments
                 .Where(u => u.UserId == user.Id)
                 .Where(c => c.CommentId == comment.Id)
                 .FirstOrDefault();
@@ -35,18 +36,19 @@ namespace DataAccess.Repositories.Models
         public LikeComment Create(Comment comment, User user)
         {
             LikeComment likeComment = new LikeComment();
-            likeComment.Id = this.likes.Count + 1;
+         
             likeComment.UserId=user.Id;
             likeComment.CommentId = comment.Id;
             likeComment.IsLiked = true;
-            likes.Add(likeComment);
+            context.SaveChanges();
             return likeComment;
         }
         //TODO - foreach likes with comentId. 
         public LikeComment Delete(Comment comment, User user)
         {
             var likeToDeleted = Get(comment,user);
-            likes.Remove(likeToDeleted);
+            context.LikeComments.Remove(likeToDeleted);
+            context.SaveChanges();
             return likeToDeleted;
         }
 
@@ -61,6 +63,7 @@ namespace DataAccess.Repositories.Models
             {
                 likeCommentToUpdate.IsLiked = true;
             }
+            context.SaveChanges();
             return likeCommentToUpdate;
         }
     }

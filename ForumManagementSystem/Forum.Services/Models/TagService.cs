@@ -61,7 +61,7 @@ namespace Business.Services.Models
 
             Tag createdTag = new Tag { Name = tagName };
             
-            this.repository.Create(createdTag, loggedUser);
+            this.repository.Create(createdTag);
 
             return createdTag;
 

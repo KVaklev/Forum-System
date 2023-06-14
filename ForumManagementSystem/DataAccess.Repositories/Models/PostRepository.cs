@@ -8,7 +8,7 @@ namespace ForumManagementSystem.Repository
 {
     public class PostRepository : IPostRepository
     {
-        private readonly List<Post> posts;
+        
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly ITagRepository tagRepository;
