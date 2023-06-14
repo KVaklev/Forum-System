@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using System;
@@ -13,27 +14,10 @@ namespace DataAccess.Repositories.Models
     public class TagRepository : ITagRepository
     {
         private readonly List<Tag> tags;
-
-        public TagRepository()
+        private readonly ApplicationContext context;
+        public TagRepository(ApplicationContext context)
         {
-            this.tags = new List<Tag>()
-            {
-                new Tag()
-                {
-                    Id= 1,
-                    Name = "Bmw"
-                },
-                new Tag()
-                {
-                    Id= 2,
-                    Name = "Fiat",
-                },
-                 new Tag()
-                {
-                    Id= 3,
-                    Name = "Toyota",
-                }
-            };
+           this.context = context;
         }
         public List<Tag> GetAll()
         {

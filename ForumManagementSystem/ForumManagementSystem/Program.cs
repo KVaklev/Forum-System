@@ -1,11 +1,13 @@
 using Business.Services.Contracts;
 using Business.Services.Models;
 using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Data;
 using DataAccess.Repositories.Models;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Presentation.Helpers;
 
 
@@ -19,6 +21,11 @@ namespace ForumManagementSystem
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(typeof(CustomAutoMapper).Assembly);
+
+            builder.Services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             // Repositories
             builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
@@ -36,7 +43,6 @@ namespace ForumManagementSystem
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<ILikeCommentService, LikeCommentService>();
-
 
 
             //Helpers

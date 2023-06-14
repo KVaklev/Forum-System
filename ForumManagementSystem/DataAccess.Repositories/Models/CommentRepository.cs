@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using DataAccess.Repositories.Data;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using System.Net;
 
@@ -7,49 +8,33 @@ namespace ForumManagementSystem.Repository
     public class CommentRepository : ICommentRepository
     {
         private readonly List<Comment> comments;
+        private readonly ApplicationContext context;
 
-        public CommentRepository()
+        public CommentRepository(ApplicationContext context)
         {
-            
-
-            this.comments = new List<Comment>()
-            {
-                new Comment()
-                {
-                    Id= 1,
-                    UserId=1,
-                    PostId = 1,
-                    Content = "The best town!",
-                    DateTime = DateTime.Now
-                },
-                new Comment()
-                {
-                    Id= 2,
-                    UserId=2,
-                    PostId = 2,
-                    Content = "The worst town!",
-                    DateTime = DateTime.Now
-                }
-            };
+            this.context = context;
         }
         public Comment Create(Comment comment, User user)
         {
-            comment.Id = this.comments.Count + 1;
             comment.UserId = user.Id;
-            this.comments.Add(comment);
+            context.Comments.Add(comment);
+            context.SaveChanges();
+
             return comment;
         }
 
         public Comment Delete(int id)
         {
             Comment commentToDelete = this.GetByID(id);
-            this.comments.Remove(commentToDelete);
+            context.Comments.Remove(commentToDelete);
+            context.SaveChanges();
+
             return commentToDelete;
         }
         
         public List<Comment> FilterBy(CommentQueryParameters parameters)
         {
-            List<Comment> result = this.comments;
+            List<Comment> result = context.Comments.ToList();
 
             if (parameters.UserId.HasValue)
             {
@@ -84,18 +69,18 @@ namespace ForumManagementSystem.Repository
 
         public List<Comment> GetAll()
         {
-            return this.comments;
+            return context.Comments.ToList();
         }
 
         public Comment GetByID(int id)
         {
-            var comment = this.comments.FirstOrDefault(comment => comment.Id == id);
+            var comment = context.Comments.FirstOrDefault(comment => comment.Id == id);
             return comment ?? throw new EntityNotFoundException($"Comment with ID = {id} doesn't exist.");
         }
         
         public Comment GetByUser(User user)
         {
-            var comment = this.comments.FirstOrDefault(comment => comment.UserId==user.Id);
+            var comment = context.Comments.FirstOrDefault(comment => comment.UserId==user.Id);
             return comment ?? throw new EntityNotFoundException($"Comment with username {user.Username} doesn't exist.");
         }
 
@@ -104,6 +89,7 @@ namespace ForumManagementSystem.Repository
             Comment commentToUpdate = this.GetByID(id);
             commentToUpdate.Content = comment.Content;
             commentToUpdate.DateTime = DateTime.Now;
+            context.SaveChanges();
 
             return commentToUpdate;
         }

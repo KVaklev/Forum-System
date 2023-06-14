@@ -21,7 +21,7 @@ namespace ForumManagementSystem.Models
         public DateTime DateTime { get; set; }
 
         // Collection navigation containing dependents
-        List<Post> posts { get; set; }
+        public List<Post> Posts { get; set; }
 
         //TODO - Counts in Category
         //public int CountPosts { get; set; }

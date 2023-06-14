@@ -1,50 +1,38 @@
-﻿using ForumManagementSystem.Exceptions;
+﻿using DataAccess.Repositories.Data;
+using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
 {
     public class CategoryRepository : ICategoryRepository
     {
+        private readonly ApplicationContext context;
         private readonly List<Category> categories;
 
-        public CategoryRepository()
+        public CategoryRepository(ApplicationContext context)
         {
-            this.categories = new List<Category>()
-            {
-                new Category
-                 {
-                    Id = 1,
-                    Name = "Asian",
-                    Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
-                    DateTime = DateTime.Now
-                 },
-                new Category
-                {
-                    Id = 2,
-                    Name = "Europe",
-                    Description = "European countries related discussions in this forum and that includes the UK as well you dumbo!",
-                    DateTime = DateTime.Now
-                }
-            };
-        
+            this.context = context;        
         }
         public Category Create(Category category)
         {
-            category.Id = categories.Count + 1;
-            categories.Add(category);
+            context.Categories.Add(category);
+            context.SaveChanges();
+
             return category;
         }
 
         public Category Delete(int id)
         {
             var category = GetById(id);
-            categories.Remove(category);
+            context.Categories.Remove(category);
+            context.SaveChanges();
+
             return category;
         }
 
         public List<Category> FilterBy(Models.CategoryQueryParameter parameters)
         {
-            List<Category> result = categories;
+            List<Category> result = context.Categories.ToList();
 
             if (!string.IsNullOrEmpty(parameters.Name))
             {
@@ -76,17 +64,17 @@ namespace ForumManagementSystem.Repository
 
         public List<Category> GetAll()
         {
-            return categories;
+            return context.Categories.ToList();
         }
 
         public Category GetById(int id)
         {
-            var category = categories.FirstOrDefault(c => c.Id == id);
+            var category = context.Categories.FirstOrDefault(c => c.Id == id);
             return category ?? throw new EntityNotFoundException($"Category with id={id} doesn't exist.");
         }
         public Category GetByName(string name)
         {
-            var category = categories.Where(c => c.Name == name).FirstOrDefault();
+            var category = context.Categories.Where(c => c.Name == name).FirstOrDefault();
             return category ?? throw new EntityNotFoundException($"Category with name={name} doesn't exist.");
         }
 
@@ -96,6 +84,8 @@ namespace ForumManagementSystem.Repository
             categoryToUpdate.Name = category.Name;
             categoryToUpdate.Description = category.Description;
             categoryToUpdate.DateTime = DateTime.Now;
+            context.SaveChanges();
+
             return categoryToUpdate;
         }
     }

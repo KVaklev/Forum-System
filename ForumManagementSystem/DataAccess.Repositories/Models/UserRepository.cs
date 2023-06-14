@@ -1,4 +1,5 @@
 ﻿using Business.Exceptions;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
@@ -10,69 +11,51 @@ namespace ForumManagementSystem.Repository
 
         private const string ModifyUserErrorMessage = "Only admin can add a phone number.";
 
-        public UserRepository()
+        private readonly ApplicationContext context;
+        public UserRepository(ApplicationContext context)
         {
-            this.users = new List<User>()
-            {
-                     new User()
-                 {
-                     Id = 1,
-                     FirstName = "Ivan",
-                     LastName = "Draganov",
-                     Email = "i.draganov@gmail.com",
-                     Username = "ivanchoDraganchov",
-                     Password = "MTIz",//123
-                     IsAdmin = true,
-                 },
-                 new User()
-                 {
-                     Id = 2,
-                     FirstName = "Mariq",
-                     LastName = "Petrova",
-                     Email = "m.petrova@gmail.com",
-                     Username = "mariicheto",
-                     Password = "@sfjsddawdljsl",//QHNmanNkZGF3ZGxqc2w=
-                     IsAdmin = false                     
-                 }
-            };
+            this.context = context;
         }
         public List<User> GetAll()
         {
-            return this.users;
+            return context.Users.ToList();
         }
         public User GetById(int id)
         {
-            User user = this.users.Where(users => users.Id == id).FirstOrDefault();
+            User user = context.Users.Where(users => users.Id == id).FirstOrDefault();
             return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
         }
         public User GetByUsername(string username)
         {
-            User user = this.users.Where(users => users.Username == username).FirstOrDefault();
+            User user = context.Users.Where(users => users.Username == username).FirstOrDefault();
 
             return user ?? throw new EntityNotFoundException($"User with username '{username}' doesn't exist.");
         }
         public User GetByEmail(string email)
         {
-            User user = this.users.Where(users => users.Email == email).FirstOrDefault();
+            User user = context.Users.Where(users => users.Email == email).FirstOrDefault();
 
             return user ?? throw new EntityNotFoundException($"User with email '{email}' doesn't exist.");
         }
         public User GetByFirstName(string firstName)
         {
-            User user = this.users.Where(users => users.FirstName == firstName).FirstOrDefault();
+            User user = context.Users.Where(users => users.FirstName == firstName).FirstOrDefault();
 
             return user ?? throw new EntityNotFoundException($"User with first name '{firstName}' doesn't exist.");
         }
         public User Create(User user)
         {
-            user.Id = this.users.Count + 1;
-            this.users.Add(user);
+            context.Users.Add(user);
+            context.SaveChanges();
+
             return user;
         }
         public User Delete(int id)
         {
             User userToDelete = this.GetById(id);
-            this.users.Remove(userToDelete);
+            context.Users.Remove(userToDelete);
+            context.SaveChanges();
+
             return userToDelete;
         }
         public User Update(int id, User user)
@@ -83,8 +66,8 @@ namespace ForumManagementSystem.Repository
             userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
             userToUpdate.Password = user.Password ?? userToUpdate.Password;
             userToUpdate.IsAdmin = user.IsAdmin;
-
             UpdatePhoneNumber(user, userToUpdate);
+            context.SaveChanges();
 
             return userToUpdate;
         }
@@ -110,7 +93,7 @@ namespace ForumManagementSystem.Repository
 
         public List<User> FilterBy(UserQueryParameters filterParameters)
         {
-            List<User> result = this.users;
+            List<User> result = context.Users.ToList();
 
             //Search by name, email, username, posts
 
@@ -157,6 +140,8 @@ namespace ForumManagementSystem.Repository
             {
                 user.IsAdmin = true;
             }
+            context.SaveChanges();
+
             return user;
         }
 
@@ -166,6 +151,8 @@ namespace ForumManagementSystem.Repository
             {
                 user.IsBlocked = true;
             }
+            context.SaveChanges();
+
             return user;
         }
 
@@ -175,6 +162,8 @@ namespace ForumManagementSystem.Repository
             {
                 user.IsBlocked = false;
             }
+            context.SaveChanges();
+
             return user;
         }
     }

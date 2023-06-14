@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
@@ -12,72 +13,35 @@ namespace ForumManagementSystem.Repository
         private readonly ICategoryRepository categoryRepository;
         private readonly ITagRepository tagRepository;
         private readonly ICommentRepository commentRepository;
+        private readonly ApplicationContext context;
 
-        public PostRepository(IUserRepository userRepository, ICategoryRepository categoryRepository, ITagRepository tagRepository, ICommentRepository commentRepository)
+        public PostRepository(ApplicationContext context)
         {
-            this.userRepository = userRepository;
-            this.categoryRepository = categoryRepository;
-            this.tagRepository = tagRepository;
-            this.commentRepository = commentRepository;
-
-            posts = new List<Post>()
-
-            {
-                new Post
-                {
-                    Id = 1,
-                    CreatedBy = this.userRepository.GetById(1),
-                    Title = "BMW 5, 2007",
-                    Category = this.categoryRepository.GetById(1),
-                    Content = "Have you ever experienced issues when start the engine",
-                    DateTime = DateTime.Now,
-                    UserId = this.userRepository.GetById(1).Id,
-                    CategoryId=this.categoryRepository.GetById(1).Id,
-                    Tags=this.tagRepository.GetAll(),
-                    Comments=this.commentRepository.GetAll(),
-                    
-                },
-
-                new Post
-                {
-                    Id = 2,
-                    CreatedBy = this.userRepository.GetById(2),
-                    Title = "Mercedes GLC, 2012",
-                    Category = this.categoryRepository.GetById(2),
-                    Content = "Have you experienced issues with suspension making strange noise",
-                    DateTime = DateTime.Now,
-                    UserId = this.userRepository.GetById(2).Id,
-                    CategoryId=this.categoryRepository.GetById(2).Id,
-                    Tags=this.tagRepository.GetAll(),
-                    Comments=this.commentRepository.GetAll(),
-                },
-
-            };
+           this.context = context;
         }
-
 
         public List<Post> GetAll()
         {
-            return this.posts;
+            return context.Posts.ToList();
         }
 
         public Post GetByUser(User user)
         {
-            Post post = this.posts.FirstOrDefault(post => post.CreatedBy.Id == user.Id);
+            Post post = context.Posts.FirstOrDefault(post => post.CreatedBy.Id == user.Id);
             return post ?? throw new EntityNotFoundException($"Post with username {user.Username} doesn't exist.");
         }
 
         public Post GetById(int id)
 
         {
-            Post post = this.posts.Where(posts => posts.Id == id).FirstOrDefault();
+            Post post = context.Posts.Where(posts => posts.Id == id).FirstOrDefault();
             return post ?? throw new EntityNotFoundException($"Post with ID = {id} doesn't exist.");
 
         }
 
         public Post GetByTitle(string title)
         {
-            Post post = this.posts.Where(posts => posts.Title == title).FirstOrDefault();
+            Post post = context.Posts.Where(posts => posts.Title == title).FirstOrDefault();
 
             if (post==null)
             {
@@ -92,7 +56,7 @@ namespace ForumManagementSystem.Repository
         }
         public Post GetByCategory(string categoryName)
         {
-            Post post = this.posts.Where(posts => posts.Category.Name == categoryName).FirstOrDefault();
+            Post post = context.Posts.Where(posts => posts.Category.Name == categoryName).FirstOrDefault();
             return post ?? throw new EntityNotFoundException($"Post with category = {categoryName} doesn't exist.");
         }
 
@@ -103,11 +67,12 @@ namespace ForumManagementSystem.Repository
             postToUpdate.Title = post.Title;
           
             postToUpdate.Content = post.Content;
-          //  postToUpdate.Comments = post.Comments; to fix
+          //postToUpdate.Comments = post.Comments; to fix
             postToUpdate.CategoryId = post.CategoryId;
             Category category = this.GetByCategoryId(post.CategoryId);
             postToUpdate.Category = category;
             postToUpdate.UserId = post.UserId;
+            context.SaveChanges();
 
             return postToUpdate;
 
@@ -115,26 +80,28 @@ namespace ForumManagementSystem.Repository
 
         public Post Create(Post post, User user)
         {
-            post.Id = this.posts.Count + 1;
             post.UserId = user.Id;
             post.CreatedBy = user;
             Category category = this.GetByCategoryId(post.CategoryId);
             post.Category= category;
-            
-            this.posts.Add(post);
+            context.Posts.Add(post);
+            context.SaveChanges();
+
             return post;
         }
 
         public Post Delete(int id)
         {
             Post postToDelete = this.GetById(id);
-            this.posts.Remove(postToDelete);
+            context.Posts.Remove(postToDelete);
+            context.SaveChanges();
+
             return postToDelete;
         }
 
         public List<Post> FilterBy(PostQueryParameters filterParameters)
         {
-            List<Post> result = this.posts;
+            List<Post> result = context.Posts.ToList();
 
             if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
             {
