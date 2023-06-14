@@ -43,16 +43,25 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpGet("id")]
-        public IActionResult GetUserById(int id)
+        public IActionResult GetUserById([FromHeader] string credentials, int id)
         {
             try
             {
+                User loggedUser = this.authManager.TryGetUser(credentials);
+
+                if (loggedUser == null || !loggedUser.IsAdmin)
+                {
+                    return this.StatusCode(StatusCodes.Status401Unauthorized);
+                }
                 User user = this.userService.GetById(id);
 
                 GetUserDto userDto = mapper.Map<GetUserDto>(user);
 
-               
                 return this.StatusCode(StatusCodes.Status200OK, userDto);
+            }
+            catch (UnauthorizedOperationException e)
+            {
+                return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (EntityNotFoundException ex)
             {
@@ -75,7 +84,6 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
-          
         }
 
         [HttpPut("{id}")] 
@@ -84,11 +92,16 @@ namespace ForumManagementSystem.Controllers
             try
             {
                 User loggedUser = this.authManager.TryGetUser(credentials);
+                
                 User user = this.mapper.Map<User>(createUserDto);
 
                 User updatedUser = this.userService.Update(id, user, loggedUser);
 
                 return this.StatusCode(StatusCodes.Status200OK, updatedUser);
+            }
+            catch (UnauthorizedOperationException e)
+            {
+                return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (EntityNotFoundException e)
             {
@@ -126,20 +139,25 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                var loggedUser = authManager.TryGetUser(credentials);
+                User loggedUser = authManager.TryGetUser(credentials);
+
                 if (loggedUser.IsAdmin)
                 {
-                    var user = this.userService.GetById(id);
+                    User user = this.userService.GetById(id);
 
-                    var promotedUser = this.userService.Promote(user);
+                    User promotedUser = this.userService.Promote(user);
 
                     return StatusCode(StatusCodes.Status200OK, promotedUser);
                 }
                 return StatusCode(StatusCodes.Status405MethodNotAllowed);
             }
+            catch (UnauthorizedOperationException e)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+            }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
@@ -148,7 +166,8 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                var loggedUser = authManager.TryGetUser(credentials);
+                User loggedUser = authManager.TryGetUser(credentials);
+
                 if (loggedUser.IsAdmin)
                 {
                     var user = this.userService.GetById(id);
@@ -159,9 +178,13 @@ namespace ForumManagementSystem.Controllers
                 }
                 return StatusCode(StatusCodes.Status405MethodNotAllowed);
             }
+            catch (UnauthorizedOperationException e)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+            }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
@@ -171,19 +194,25 @@ namespace ForumManagementSystem.Controllers
             try
             {
                 var loggedUser = authManager.TryGetUser(credentials);
+
                 if (loggedUser.IsAdmin)
                 {
-                    var user = this.userService.GetById(id);
+                    User user = this.userService.GetById(id);
 
-                    var promotedUser = this.userService.UnblockUser(user);
+                    User promotedUser = this.userService.UnblockUser(user);
 
                     return StatusCode(StatusCodes.Status200OK, promotedUser);
                 }
+
                 return StatusCode(StatusCodes.Status405MethodNotAllowed);
+            }
+            catch (UnauthorizedOperationException e)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
     }

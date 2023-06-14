@@ -11,8 +11,14 @@ namespace Business.Services.Contracts
 
         Tag GetByName(string name);
 
-        Tag Create(Tag tag);
+        Tag Create(Tag tag, User loggedUser);
+
+        Tag Edit(int id, Tag tag, User loggedUsed);
 
         void Delete(int id, User loggedUser);
+
+        void AddTagToPost(int postId, User loggedUser);
+
+        void RemoveTagFromPost(int postId, User loggedUser);
     }
 }

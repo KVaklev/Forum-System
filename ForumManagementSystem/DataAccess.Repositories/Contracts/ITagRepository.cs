@@ -11,9 +11,15 @@ namespace DataAccess.Repositories.Contracts
 
         Tag GetByName(string name);
 
-        Tag Create(Tag tag);
+        Tag Create(Tag tag, User loggedUser);
+
+        Tag Edit(int id, Tag tag);
 
         Tag Delete(int id);
+
+        void AddTagToPost(int postId, User loggedUser);
+
+        void RemoveTagFromPost(int postId, User loggedUser);
 
     }
 }

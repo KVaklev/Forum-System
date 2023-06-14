@@ -21,24 +21,38 @@ namespace DataAccess.Repositories.Models
                 new Tag()
                 {
                     Id= 1,
-                    PostId = 1,
                     Name = "Bmw"
                 },
                 new Tag()
                 {
                     Id= 2,
-                    PostId = 1,
                     Name = "Fiat",
                 },
                  new Tag()
                 {
                     Id= 3,
-                    PostId = 2,
                     Name = "Toyota",
                 }
             };
         }
-        public Tag Create(Tag tag)
+        public List<Tag> GetAll()
+        {
+            return this.tags;
+        }
+
+        public Tag GetById(int id)
+        {
+            Tag tag = this.tags.FirstOrDefault(tag => tag.Id == id);
+            return tag ?? throw new EntityNotFoundException($"Tag with id {tag.Id} doesn't exist.");
+        }
+
+        public Tag GetByName(string name)
+        {
+            Tag tag = this.tags.FirstOrDefault(tag => tag.Name == name);
+            return tag ?? throw new EntityNotFoundException($"Tag with name {tag.Id} doesn't exist.");
+        }
+
+        public Tag Create(Tag tag, User loggedUser)
         {
             tag.Id = this.tags.Count + 1;
             this.tags.Add(tag);
@@ -52,22 +66,23 @@ namespace DataAccess.Repositories.Models
             return tagToDelete;
         }
 
-        public List<Tag> GetAll()
+        public Tag Edit(int id, Tag tag)
         {
-            return this.tags;
+            Tag tagToEdit = this.GetById(id);
+
+            tagToEdit.Name = tag.Name;
+
+            return tagToEdit;
         }
 
-        public Tag GetById(int id)
+        public void AddTagToPost(int postId, User loggedUser)
         {
-            Tag tag = this.tags.FirstOrDefault(tag => tag.Id == id);
-            return tag ?? throw new EntityNotFoundException($"Tag with id {tag.Id} doesn't exist.");
+            throw new NotImplementedException();
         }
-        public Tag GetByName(string name)
+        public void RemoveTagFromPost(int postId, User loggedUser)
         {
-            Tag tag = this.tags.FirstOrDefault(tag => tag.Name == name);
-            return tag ?? throw new EntityNotFoundException($"Tag with name {tag.Id} doesn't exist.");
+            throw new NotImplementedException();
         }
+
     }
-
-    
 }

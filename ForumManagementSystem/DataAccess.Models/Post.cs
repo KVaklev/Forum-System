@@ -44,7 +44,6 @@ namespace ForumManagementSystem.Models
 
         public DateTime DateTime { get; set; }
 
-        public List<Tag> Tags { get; set; } = new List<Tag> { };
 
         // Collection navigation containing dependents
         public List<PostTag> PostTags { get; set; } = new List<PostTag>();

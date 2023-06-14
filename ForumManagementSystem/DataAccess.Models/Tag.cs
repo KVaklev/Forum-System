@@ -8,16 +8,7 @@ namespace DataAccess.Models
 
         public string Name { get; set; }
 
-        public User CreatedBy { get; set; }
-
-        //TODO
-        // Foreign key
-        public int PostId { get; set; }
-
-        // Navigation property
-        public Post Post { get; set; }
-
         // Collection navigation containing dependents
-        List<PostTag> PostTags { get; set; } = new List<PostTag>();
+        public List<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }
