@@ -31,7 +31,7 @@ namespace ForumManagementSystem.Models
 
         public DateTime DateTime { get; set; }
 
-        public int Likes { get; set; }
+        public int LikesCount { get; set; }
 
         public List<LikeComment> Likes { get; set; }
     }

@@ -22,8 +22,11 @@ namespace ForumManagementSystem.Repository
                      Email = "i.draganov@gmail.com",
                      Username = "ivanchoDraganchov",
                      Password = "MTIz",//123
+<<<<<<< HEAD
                                         
 
+=======
+>>>>>>> a2741c71ccc12fdf0d8de877212cd4bd2642beb4
                      IsAdmin = true,
                  },
                  new User()
@@ -33,12 +36,19 @@ namespace ForumManagementSystem.Repository
                      LastName = "Petrova",
                      Email = "m.petrova@gmail.com",
                      Username = "mariicheto",
+<<<<<<< HEAD
 
                      Password = "@sfjsddawdljsl",//QHNmanNkZGF3ZGxqc2w=
                      IsAdmin = false,
                      IsBlocked = true
                                          
 
+=======
+                     Password = "@sfjsddawdljsl",//QHNmanNkZGF3ZGxqc2w=
+                     IsAdmin = false,
+                     IsBlocked = true,
+                     //Password = "QHNmanNkZGF3ZGxqc2w=" //@sfjsddawdljsl
+>>>>>>> a2741c71ccc12fdf0d8de877212cd4bd2642beb4
                  }
             };
         }

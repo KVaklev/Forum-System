@@ -29,7 +29,7 @@ namespace ForumManagementSystem.Services
         public Comment Delete(int id, User user)
         {
             Comment CommentToUpdate = this.repository.GetByID(id);
-            if (CommentToUpdate.UserId != user.Id && !user.IsAdmin && user.IsBlocked)
+            if ((CommentToUpdate.UserId != user.Id && !user.IsAdmin) || user.IsBlocked)
             {
                 throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
             }
@@ -59,7 +59,7 @@ namespace ForumManagementSystem.Services
         public Comment Update(int id, Comment comment, User user)
         {
             Comment CommentToUpdate = this.repository.GetByID(id);
-            if (CommentToUpdate.UserId!=user.Id && !user.IsAdmin && user.IsBlocked)
+            if ((CommentToUpdate.UserId!=user.Id && !user.IsAdmin) || user.IsBlocked)
             {
                 throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
             }
