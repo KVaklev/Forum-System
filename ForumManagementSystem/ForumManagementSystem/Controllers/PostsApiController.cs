@@ -50,7 +50,7 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreatePost([FromBody] PostDto postDto, [FromHeader] string credentials) //needs correction on the user:posts
+        public IActionResult CreatePost([FromBody] PostDto postDto, [FromHeader] string credentials) 
         {
             try
             {
@@ -58,7 +58,7 @@ namespace ForumManagementSystem.Controllers
 
                 Post post = this.mapper.Map<Post>(postDto);
 
-                Post createdPost = this.postService.Create(post, user);
+                Post createdPost = this.postService.Create(post, user, postDto.Tags);
 
                 return this.StatusCode(StatusCodes.Status201Created, createdPost);
             }
@@ -75,7 +75,7 @@ namespace ForumManagementSystem.Controllers
 
        
         [HttpPut("{id}")]
-        public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials) //needs correction on the user:posts
+        public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials) 
         {
             try
             {

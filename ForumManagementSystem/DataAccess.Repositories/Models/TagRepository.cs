@@ -21,51 +21,45 @@ namespace DataAccess.Repositories.Models
         }
         public List<Tag> GetAll()
         {
-            return this.tags;
+            return context.Tags.ToList();
         }
 
         public Tag GetById(int id)
         {
-            Tag tag = this.tags.FirstOrDefault(tag => tag.Id == id);
+            Tag tag = context.Tags.FirstOrDefault(tag => tag.Id == id);
             return tag ?? throw new EntityNotFoundException($"Tag with id {tag.Id} doesn't exist.");
         }
 
         public Tag GetByName(string name)
         {
-            Tag tag = this.tags.FirstOrDefault(tag => tag.Name == name);
+            Tag tag = context.Tags.FirstOrDefault(tag => tag.Name == name);
             return tag ?? throw new EntityNotFoundException($"Tag with name {tag.Id} doesn't exist.");
         }
 
         public Tag Create(Tag tag, User loggedUser)
         {
-            tag.Id = this.tags.Count + 1;
-            this.tags.Add(tag);
+            context.Tags.Add(tag);
+            context.SaveChanges();
+
             return tag;
         }
 
         public Tag Delete(int id)
         {
             Tag tagToDelete = this.GetById(id);
-            this.tags.Remove(tagToDelete);
+            context.Tags.Remove(tagToDelete);
+            context.SaveChanges();
+
             return tagToDelete;
         }
 
         public Tag Edit(int id, Tag tag)
         {
             Tag tagToEdit = this.GetById(id);
-
             tagToEdit.Name = tag.Name;
+            context.SaveChanges();
 
             return tagToEdit;
-        }
-
-        public void AddTagToPost(int postId, User loggedUser)
-        {
-            throw new NotImplementedException();
-        }
-        public void RemoveTagFromPost(int postId, User loggedUser)
-        {
-            throw new NotImplementedException();
         }
 
     }

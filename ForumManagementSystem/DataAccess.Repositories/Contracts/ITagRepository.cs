@@ -17,9 +17,5 @@ namespace DataAccess.Repositories.Contracts
 
         Tag Delete(int id);
 
-        void AddTagToPost(int postId, User loggedUser);
-
-        void RemoveTagFromPost(int postId, User loggedUser);
-
     }
 }

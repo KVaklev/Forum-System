@@ -35,7 +35,7 @@ namespace Business.Services.Models
         {
             return this.repository.GetByName(name);
         }
-        public Tag Create(Tag tag, User loggedUser)
+        public Tag Create(string tagName, User loggedUser)
         {
             bool duplicateExists = false;
 
@@ -46,7 +46,7 @@ namespace Business.Services.Models
                     throw new UnauthenticatedOperationException(ModifyCreateTagErrorMessage);
                 }
 
-                Tag existingTag = this.repository.GetByName(tag.Name);
+                Tag existingTag = this.repository.GetByName(tagName);
             }
 
             catch (EntityNotFoundException)
@@ -56,10 +56,12 @@ namespace Business.Services.Models
 
             if (duplicateExists)
             {
-                throw new DuplicateEntityException($"Tag with name '{tag.Name}' already exists.");
+                throw new DuplicateEntityException($"Tag with name '{tagName}' already exists.");
             }
 
-            Tag createdTag = this.repository.Create(tag, loggedUser);
+            Tag createdTag = new Tag { Name = tagName };
+            
+            this.repository.Create(createdTag, loggedUser);
 
             return createdTag;
 
@@ -105,19 +107,5 @@ namespace Business.Services.Models
             return editedTag;
         }
 
-        public void AddTagToPost(int postId, User loggedUser)
-        {
-            Post post=this.postRepository.GetById(postId);
-
-            if (post.UserId != loggedUser.Id || !loggedUser.IsAdmin)
-            {
-                throw new UnauthorizedOperationException(AddToPostErrorMessage);
-            }
-        }
-
-        public void RemoveTagFromPost(int postId, User loggedUser)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

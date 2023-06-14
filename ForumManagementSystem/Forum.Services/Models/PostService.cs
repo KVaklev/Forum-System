@@ -2,18 +2,22 @@
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using Business.Exceptions;
+using Business.Services.Contracts;
+using DataAccess.Models;
 
 namespace ForumManagementSystem.Services
 {
     public class PostService : IPostService
     {
-        private const string ModifyPostErrorMessage = "Only an admin can modify a post.";
+        private const string ModifyPostErrorMessage = "Only an admin or post creator can modify a post.";
         private const string ModifyPostErrorMessageIfUserIsBlocked = "Blocked user cannot create a post.";
 
         private readonly IPostRepository repository;
-        public PostService(IPostRepository repository)
+        private readonly ITagService tagService;
+        public PostService(IPostRepository repository, ITagService tagService)
         {
             this.repository = repository;
+            this.tagService = tagService;
         }
         public List<Post> GetAll()
         {
@@ -28,7 +32,7 @@ namespace ForumManagementSystem.Services
             return this.repository.GetByUser(user);
         }
 
-        public Post Create(Post post, User user)
+        public Post Create(Post post, User user, List<string> tagNames)
         {
 
             if (user.IsBlocked)
@@ -54,6 +58,13 @@ namespace ForumManagementSystem.Services
             }
 
             Post createdPost = this.repository.Create(post, user);
+
+            foreach (var name in tagNames)
+            {
+                Tag tag = this.tagService.Create(name, user);
+
+                this.repository.AddTagToPost(tag.Id, createdPost.Id);
+            }
 
             return createdPost;
         }

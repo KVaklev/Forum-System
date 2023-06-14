@@ -28,5 +28,9 @@ namespace ForumManagementSystem.Repository
 
         User GetByUserId(int userId);
 
+        void AddTagToPost(int tagId, int postId);
+
+        void RemoveTagFromPost(int tagId, int postId, User user);
+
     }
 }

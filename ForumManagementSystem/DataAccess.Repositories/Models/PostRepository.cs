@@ -182,5 +182,27 @@ namespace ForumManagementSystem.Repository
 
             return existingTag;
         }
+
+        public void AddTagToPost(int tagId, int postId)
+        {
+           PostTag postTag = new PostTag()
+           {
+               TagId = tagId,
+               PostId = postId
+           };
+            this.context.PostTags.Add(postTag);
+            context.SaveChanges();
+        }
+
+        public void RemoveTagFromPost(int tagId, int postId, User user)
+        {
+            PostTag postTag = this.context.PostTags.FirstOrDefault(pt => pt.TagId == tagId && pt.PostId == postId);
+
+            if (postTag != null)
+            {
+                this.context.PostTags.Remove(postTag);
+            }
+            context.SaveChanges();
+        }
     }
 }
