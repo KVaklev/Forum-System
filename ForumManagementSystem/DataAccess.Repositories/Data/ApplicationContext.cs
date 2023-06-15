@@ -174,26 +174,63 @@ namespace DataAccess.Repositories.Data
 
             //Seed tags
 
-            //List<Tag> tags = new List<Tag>()
-            //{
-            //    new Tag()
-            //    {
-            //        Id= 1,
-            //        Name = "Bmw"
-            //    },
-            //    new Tag()
-            //    {
-            //        Id= 2,
-            //        Name = "Fiat",
-            //    },
-            //     new Tag()
-            //    {
-            //        Id= 3,
-            //        Name = "Toyota",
-            //    }
-            //};
+            List<Tag> tags = new List<Tag>()
+            {
+                new Tag()
+                {
+                    Id= 1,
+                    Name = "Bmw"
+                },
 
-            //modelBuilder.Entity<Tag>().HasData(tags);
+                new Tag()
+                {
+                    Id= 2,
+                    Name = "Fiat",
+                },
+
+                new Tag()
+                {
+                    Id= 3,
+                    Name = "Toyota",
+                }
+            };
+
+            modelBuilder.Entity<Tag>().HasData(tags);
+
+            //Seed postTags
+
+            List<PostTag> postTags = new List<PostTag>()
+            {
+                new PostTag()
+                {
+                    Id= 1,
+                    PostId=1,
+                    TagId=1,
+                },
+
+                new PostTag()
+                {
+                    Id= 2,
+                    PostId=1,
+                    TagId=2,
+                },
+
+                new PostTag()
+                {
+                    Id= 3,
+                    PostId=2,
+                    TagId=1,
+                },
+
+                new PostTag()
+                {
+                    Id= 4,
+                    PostId=2,
+                    TagId=2,
+                }
+            };
+
+            modelBuilder.Entity<PostTag>().HasData(postTags);
         }
 
     }

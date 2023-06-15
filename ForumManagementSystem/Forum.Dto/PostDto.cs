@@ -24,5 +24,6 @@ namespace ForumManagementSystem.Models
         public int CategoryId { get; set; }
 
         public List<string> Tags { get; set; }
+
     }
 }

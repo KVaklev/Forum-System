@@ -2,18 +2,11 @@
 using DataAccess.Repositories.Contracts;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
-using ForumManagementSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.Models
 {
     public class TagRepository : ITagRepository
     {
-        
         private readonly ApplicationContext context;
         public TagRepository(ApplicationContext context)
         {
