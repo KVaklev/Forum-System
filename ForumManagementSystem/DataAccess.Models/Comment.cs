@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ForumManagementSystem.Models
 {
@@ -9,8 +10,9 @@ namespace ForumManagementSystem.Models
 
         [Required(ErrorMessage = "The {0} field is required")]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")]  //TODO  - MaxValue - user.Count
-       
+
         // Foreign key
+        [JsonIgnore]
         public int UserId { get; set; }
         
         // Navigation property

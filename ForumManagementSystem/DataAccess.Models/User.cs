@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumManagementSystem.Models
 {
@@ -31,6 +32,9 @@ namespace ForumManagementSystem.Models
         public bool IsBlocked = false;
 
         public bool IsAdmin = false;
+
+        public List<LikeComment> LikeComments { get; set; } = new List<LikeComment>();
+        public List<LikePost> LikePosts { get; set;} = new List<LikePost>();
 
     }
 }

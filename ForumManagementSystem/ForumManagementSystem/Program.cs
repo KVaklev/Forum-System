@@ -28,13 +28,13 @@ namespace ForumManagementSystem
             });
 
             // Repositories
-            builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddSingleton<IUserRepository, UserRepository>();
-            builder.Services.AddSingleton<IPostRepository, PostRepository>();
-            builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
-            builder.Services.AddSingleton<ITagRepository, TagRepository>();
-            builder.Services.AddSingleton<ILikeCommentRepository, LikeCommentRepository>();
-            builder.Services.AddSingleton<ILikePostRepository, LikePostRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<ITagRepository, TagRepository>();
+            builder.Services.AddScoped<ILikeCommentRepository, LikeCommentRepository>();
+            builder.Services.AddScoped<ILikePostRepository, LikePostRepository>();
 
 
             //Services

@@ -53,6 +53,7 @@ namespace DataAccess.Repositories.Data
                      Email = "m.petrova@gmail.com",
                      Username = "mariicheto",
                      Password = "wdljsl",
+                     PhoneNumber = "0897554285",
                      IsAdmin = false,
                      IsBlocked = false
                 },
@@ -65,6 +66,7 @@ namespace DataAccess.Repositories.Data
                      Email = "m.dobreva@gmail.com",
                      Username = "marcheto",
                      Password = "fjsdda",
+                     PhoneNumber = "0797556285",
                      IsAdmin = false,
                      IsBlocked = false
                 }
