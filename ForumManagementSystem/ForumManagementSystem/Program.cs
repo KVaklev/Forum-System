@@ -34,6 +34,7 @@ namespace ForumManagementSystem
             builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
             builder.Services.AddSingleton<ITagRepository, TagRepository>();
             builder.Services.AddSingleton<ILikeCommentRepository, LikeCommentRepository>();
+            builder.Services.AddSingleton<ILikePostRepository, LikePostRepository>();
 
 
             //Services
@@ -43,6 +44,7 @@ namespace ForumManagementSystem
             builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<ITagService, TagService>();
             builder.Services.AddScoped<ILikeCommentService, LikeCommentService>();
+            builder.Services.AddScoped<ILikePostService, LikePostService>();
 
 
             //Helpers

@@ -32,7 +32,7 @@ namespace ForumManagementSystem.Models
         // Foreign key
         public int CategoryId { get; set; }
 
-        public int Likes { get; set; }
+        public int PostLikesCount { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "The {0} field is required and must not be an empty string.")]
         [MinLength(32, ErrorMessage = "The {0} field must be at least {1} character.")]

@@ -20,6 +20,7 @@ namespace DataAccess.Repositories.Data
         public DbSet<PostTag> PostTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<LikeComment> LikeComments { get; set; }
+        public DbSet <LikePost> LikePosts { get; set; }
 
 
         //Seed database

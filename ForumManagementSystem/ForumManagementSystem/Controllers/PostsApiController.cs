@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Business.Exceptions;
+using Business.Services.Contracts;
+using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -16,13 +18,15 @@ namespace ForumManagementSystem.Controllers
         private readonly IPostService postService;
         private readonly IMapper mapper;
         private readonly AuthManager authManager;
+        private readonly ILikePostService likePostService; 
 
-        public PostsApiController(IPostService postService, IMapper mapper, AuthManager authManager)
+        public PostsApiController(IPostService postService, IMapper mapper, AuthManager authManager, ILikePostService likePostService)
 
         {
             this.postService = postService;
             this.mapper = mapper;
             this.authManager = authManager;
+            this.likePostService = likePostService;
         }
 
         [HttpGet("")] // TO CREATE GETPOSTDTO AND ADD IT HERE
@@ -83,7 +87,7 @@ namespace ForumManagementSystem.Controllers
 
                 Post post = this.mapper.Map<Post>(createPostDto);
 
-                Post updatedPost = this.postService.Update(id, post, loggedUser, postDto.Tags);
+                Post updatedPost = this.postService.Update(id, post, loggedUser, createPostDto.Tags);
 
                 return this.StatusCode(StatusCodes.Status200OK, updatedPost);
             }
@@ -122,6 +126,23 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
+        [HttpPut("{id}/like")]
 
+        public IActionResult LikeDislikePost(int id, [FromHeader] string credentials)
+        {
+            try
+            {
+                User loggedUser = this.authManager.TryGetUser(credentials);
+                Post post = this.postService.GetById(id);
+                this.likePostService.Update(post, loggedUser);
+
+                return this.StatusCode(StatusCodes.Status200OK);
+            }
+
+            catch (EntityNotFoundException e)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, e.Message) ;
+            }
+        }
     }
 }
