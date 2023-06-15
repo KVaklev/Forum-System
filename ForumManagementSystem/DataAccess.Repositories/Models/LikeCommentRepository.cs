@@ -25,6 +25,7 @@ namespace DataAccess.Repositories.Models
                 .Where(u => u.UserId == user.Id)
                 .Where(c => c.CommentId == comment.Id)
                 .FirstOrDefault();
+           
 
             if (likeComment==null)
             {
@@ -40,6 +41,7 @@ namespace DataAccess.Repositories.Models
             likeComment.UserId=user.Id;
             likeComment.CommentId = comment.Id;
             likeComment.IsLiked = true;
+            comment.LikesCount++;
             context.SaveChanges();
             return likeComment;
         }
@@ -58,10 +60,12 @@ namespace DataAccess.Repositories.Models
             if (likeCommentToUpdate.IsLiked)
             {
                 likeCommentToUpdate.IsLiked = false;
+                comment.LikesCount--;
             }
             else
             {
                 likeCommentToUpdate.IsLiked = true;
+                comment.LikesCount++;
             }
             context.SaveChanges();
             return likeCommentToUpdate;

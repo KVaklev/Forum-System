@@ -24,8 +24,9 @@ namespace ForumManagementSystem.Models
         public List<Post> Posts { get; set; }
 
         //TODO - Counts in Category
-        //public int CountPosts { get; set; }
-        //public int CountComment { get; set; }
+        public int CountPosts { get; set; }
+        
+        public int CountComment { get; set; }
 
     }
 }

@@ -28,10 +28,6 @@ namespace Business.Services.Models
            return likeCommentToDelete;
         }
 
-        public LikeComment Get(Comment comment, User user)
-        {
-            return this.repository.Get(comment, user);
-        }
 
         public LikeComment Update(Comment comment, User user)
         {

@@ -9,7 +9,7 @@ namespace DataAccess.Models
         public int TagId { get; set; }
 
         // Navigation property
-        public Post Post { get; set; } = null!;
+        public Post Post { get; set; }
         public Tag Tag { get; set; }
     }
 }

@@ -13,7 +13,5 @@ namespace Business.Services.Contracts
         LikeComment Update(Comment comment, User user);
 
         LikeComment Delete(Comment comment, User user);
-
-        LikeComment Get(Comment comment, User user);
     }
 }
