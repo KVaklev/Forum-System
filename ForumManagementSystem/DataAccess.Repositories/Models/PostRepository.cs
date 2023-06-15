@@ -8,11 +8,9 @@ namespace ForumManagementSystem.Repository
 {
     public class PostRepository : IPostRepository
     {
-        private readonly List<Post> posts;
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly ITagRepository tagRepository;
-        private readonly ICommentRepository commentRepository;
         private readonly ApplicationContext context;
 
         public PostRepository(ApplicationContext context)
@@ -65,9 +63,7 @@ namespace ForumManagementSystem.Repository
             Post postToUpdate = this.GetById(id);
 
             postToUpdate.Title = post.Title;
-          
             postToUpdate.Content = post.Content;
-          //postToUpdate.Comments = post.Comments; to fix
             postToUpdate.CategoryId = post.CategoryId;
             Category category = this.GetByCategoryId(post.CategoryId);
             postToUpdate.Category = category;
@@ -151,7 +147,6 @@ namespace ForumManagementSystem.Repository
                     result.Reverse();
                 }
             }
-
             return result;
 
         }
@@ -185,17 +180,6 @@ namespace ForumManagementSystem.Repository
                PostId = postId
            };
             this.context.PostTags.Add(postTag);
-            context.SaveChanges();
-        }
-
-        public void RemoveTagFromPost(int tagId, int postId, User user)
-        {
-            PostTag postTag = this.context.PostTags.FirstOrDefault(pt => pt.TagId == tagId && pt.PostId == postId);
-
-            if (postTag != null)
-            {
-                this.context.PostTags.Remove(postTag);
-            }
             context.SaveChanges();
         }
     }

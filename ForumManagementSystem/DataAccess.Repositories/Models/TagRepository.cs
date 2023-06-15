@@ -2,18 +2,11 @@
 using DataAccess.Repositories.Contracts;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
-using ForumManagementSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.Models
 {
     public class TagRepository : ITagRepository
     {
-        private readonly List<Tag> tags;
         private readonly ApplicationContext context;
         public TagRepository(ApplicationContext context)
         {
@@ -33,10 +26,10 @@ namespace DataAccess.Repositories.Models
         public Tag GetByName(string name)
         {
             Tag tag = context.Tags.FirstOrDefault(tag => tag.Name == name);
-            return tag ?? throw new EntityNotFoundException($"Tag with name {tag.Id} doesn't exist.");
+            return tag ?? throw new EntityNotFoundException($"Tag with name {tag.Name} doesn't exist.");
         }
 
-        public Tag Create(Tag tag, User loggedUser)
+        public Tag Create(Tag tag)
         {
             context.Tags.Add(tag);
             context.SaveChanges();

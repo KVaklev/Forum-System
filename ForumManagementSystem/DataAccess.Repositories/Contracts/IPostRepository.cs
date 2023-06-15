@@ -30,7 +30,5 @@ namespace ForumManagementSystem.Repository
 
         void AddTagToPost(int tagId, int postId);
 
-        void RemoveTagFromPost(int tagId, int postId, User user);
-
     }
 }

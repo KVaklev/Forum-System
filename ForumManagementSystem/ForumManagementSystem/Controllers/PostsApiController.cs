@@ -83,7 +83,7 @@ namespace ForumManagementSystem.Controllers
 
                 Post post = this.mapper.Map<Post>(createPostDto);
 
-                Post updatedPost = this.postService.Update(id, post, loggedUser);
+                Post updatedPost = this.postService.Update(id, post, loggedUser, postDto.Tags);
 
                 return this.StatusCode(StatusCodes.Status200OK, updatedPost);
             }

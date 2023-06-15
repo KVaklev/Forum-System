@@ -2,26 +2,20 @@
 using Business.Services.Contracts;
 using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
-using DataAccess.Repositories.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
-using ForumManagementSystem.Repository;
 
 namespace Business.Services.Models
 {
     public class TagService : ITagService
     {
         private readonly ITagRepository repository;
-        private const string ModifyTagErrorMessage = "Only an admin or user created the tag can modify the tag.";
-        private const string ModifyCreateTagErrorMessage = "Only an admin can delete tag.";
-        private const string AddToPostErrorMessage = "Only the post owner or admins can add tags to the post.";
 
-        private readonly ITagRepository tagRepository;
-        private readonly IPostRepository postRepository;
-        public TagService(ITagRepository tagRepository, IPostRepository postRepository)
+        private const string ModifyTagErrorMessage = "Only an admin can modify the tag.";
+        private const string ModifyCreateTagErrorMessage = "Only an admin or registered user can create tag.";
+        public TagService(ITagRepository repository)
         {
-            this.tagRepository = tagRepository;
-            this.postRepository = postRepository;
+           this.repository=repository;
         }
         public List<Tag> GetAll()
         {
@@ -61,7 +55,7 @@ namespace Business.Services.Models
 
             Tag createdTag = new Tag { Name = tagName };
             
-            this.repository.Create(createdTag, loggedUser);
+            this.repository.Create(createdTag);
 
             return createdTag;
 
