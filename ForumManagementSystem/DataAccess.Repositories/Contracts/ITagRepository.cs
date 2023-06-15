@@ -11,7 +11,7 @@ namespace DataAccess.Repositories.Contracts
 
         Tag GetByName(string name);
 
-        Tag Create(Tag tag, User loggedUser);
+        Tag Create(Tag tag);
 
         Tag Edit(int id, Tag tag);
 

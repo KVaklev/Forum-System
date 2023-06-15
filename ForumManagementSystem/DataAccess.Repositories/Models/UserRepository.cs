@@ -7,7 +7,7 @@ namespace ForumManagementSystem.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly List<User> users;
+        
 
         private const string ModifyUserErrorMessage = "Only admin can add a phone number.";
 

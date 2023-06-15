@@ -7,7 +7,7 @@ namespace ForumManagementSystem.Repository
     public class CategoryRepository : ICategoryRepository
     {
         private readonly ApplicationContext context;
-        private readonly List<Category> categories;
+        
 
         public CategoryRepository(ApplicationContext context)
         {
