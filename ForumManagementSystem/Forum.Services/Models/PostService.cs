@@ -69,7 +69,7 @@ namespace ForumManagementSystem.Services
             return createdPost;
         }
 
-        public Post Update(int id, Post post, User loggedUser, List<string> tagsToAdd, List<string> tagsToRemove)
+        public Post Update(int id, Post post, User loggedUser, List<string> tagsToAdd)
         {
             Post postToUpdate = this.repository.GetById(id);
 
@@ -96,18 +96,13 @@ namespace ForumManagementSystem.Services
 
             Post updatedPost = this.repository.Update(id, post);
 
+            updatedPost.PostTags.Clear();
+
             foreach (var name in tagsToAdd)
             {
                 Tag tag = this.tagService.Create(name, loggedUser);
 
                 this.repository.AddTagToPost(tag.Id, updatedPost.Id);
-            }
-
-            foreach (var name in tagsToRemove)
-            {
-                Tag tag=this.repository.GetByTag(name);
-
-                this.repository.RemoveTagFromPost(tag.Id, updatedPost.Id, loggedUser);
             }
 
             return updatedPost;

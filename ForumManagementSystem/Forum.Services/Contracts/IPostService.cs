@@ -9,7 +9,7 @@ namespace ForumManagementSystem.Services
         Post GetById(int id);
         Post GetByUser(User user);
         Post Create(Post post, User user, List<string> tagNames);
-        Post Update(int id, Post post, User loggedUser, List<string> tagsToAdd, List<string> tagsToRemove);
+        Post Update(int id, Post post, User loggedUser, List<string> tagNames);
         void Delete(int id, User loggedUser);
         
     }

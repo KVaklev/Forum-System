@@ -8,7 +8,6 @@ namespace ForumManagementSystem.Repository
     {
         private readonly ApplicationContext context;
         
-
         public CategoryRepository(ApplicationContext context)
         {
             this.context = context;        

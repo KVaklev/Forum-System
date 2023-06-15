@@ -7,8 +7,6 @@ namespace ForumManagementSystem.Repository
 {
     public class UserRepository : IUserRepository
     {
-        
-
         private const string ModifyUserErrorMessage = "Only admin can add a phone number.";
 
         private readonly ApplicationContext context;
@@ -94,8 +92,6 @@ namespace ForumManagementSystem.Repository
         public List<User> FilterBy(UserQueryParameters filterParameters)
         {
             List<User> result = context.Users.ToList();
-
-            //Search by name, email, username, posts
 
             if (!string.IsNullOrEmpty(filterParameters.FirstName))
             {

@@ -174,26 +174,26 @@ namespace DataAccess.Repositories.Data
 
             //Seed tags
 
-            //List<Tag> tags = new List<Tag>()
-            //{
-            //    new Tag()
-            //    {
-            //        Id= 1,
-            //        Name = "Bmw"
-            //    },
-            //    new Tag()
-            //    {
-            //        Id= 2,
-            //        Name = "Fiat",
-            //    },
-            //     new Tag()
-            //    {
-            //        Id= 3,
-            //        Name = "Toyota",
-            //    }
-            //};
+            List<Tag> tags = new List<Tag>()
+            {
+                new Tag()
+                {
+                    Id= 1,
+                    Name = "Bmw"
+                },
+                new Tag()
+                {
+                    Id= 2,
+                    Name = "Fiat",
+                },
+                 new Tag()
+                {
+                    Id= 3,
+                    Name = "Toyota",
+                }
+            };
 
-            //modelBuilder.Entity<Tag>().HasData(tags);
+            modelBuilder.Entity<Tag>().HasData(tags);
         }
 
     }
