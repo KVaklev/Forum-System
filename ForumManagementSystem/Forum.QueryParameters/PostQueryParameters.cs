@@ -8,9 +8,9 @@
 
         public string? Category { get; set; }
 
-        public string? FromDateTime { get; set; }
+        public DateTime? FromDateTime { get; set; }
 
-        public string? ToDateTime { get; set; }
+        public DateTime? ToDateTime { get; set; }
 
         public string? SortBy { get; set; }
 

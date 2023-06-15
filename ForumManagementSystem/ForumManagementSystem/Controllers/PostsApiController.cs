@@ -25,7 +25,7 @@ namespace ForumManagementSystem.Controllers
             this.authManager = authManager;
         }
 
-        [HttpGet("")]
+        [HttpGet("")] // TO CREATE GETPOSTDTO AND ADD IT HERE
         public IActionResult GetPosts([FromQuery] PostQueryParameters filterParameters)
         {
             List<Post> result = this.postService.FilterBy(filterParameters);
@@ -50,15 +50,15 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreatePost([FromBody] PostDto postDto, [FromHeader] string credentials) 
+        public IActionResult CreatePost([FromBody] CreatePostDto createPostDto, [FromHeader] string credentials) 
         {
             try
             {
                 User user = this.authManager.TryGetUser(credentials);
 
-                Post post = this.mapper.Map<Post>(postDto);
+                Post post = this.mapper.Map<Post>(createPostDto);
 
-                Post createdPost = this.postService.Create(post, user, postDto.Tags);
+                Post createdPost = this.postService.Create(post, user, createPostDto.Tags);
 
                 return this.StatusCode(StatusCodes.Status201Created, createdPost);
             }
@@ -75,13 +75,13 @@ namespace ForumManagementSystem.Controllers
 
        
         [HttpPut("{id}")]
-        public IActionResult UpdatePost(int id, [FromBody] PostDto postDto, [FromHeader] string credentials) 
+        public IActionResult UpdatePost(int id, [FromBody] CreatePostDto createPostDto, [FromHeader] string credentials) 
         {
             try
             {
                 User loggedUser = this.authManager.TryGetUser(credentials);
 
-                Post post = this.mapper.Map<Post>(postDto);
+                Post post = this.mapper.Map<Post>(createPostDto);
 
                 Post updatedPost = this.postService.Update(id, post, loggedUser);
 

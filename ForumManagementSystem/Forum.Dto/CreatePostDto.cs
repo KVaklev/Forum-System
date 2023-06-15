@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ForumManagementSystem.Models
 {
-    public class PostDto
+    public class CreatePostDto
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "The {0} field is required and must not be an empty string.")]
         [MinLength(16, ErrorMessage = "The {0} field must be at least {1} character.")]

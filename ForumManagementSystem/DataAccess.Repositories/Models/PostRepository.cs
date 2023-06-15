@@ -105,34 +105,28 @@ namespace ForumManagementSystem.Repository
 
             if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
             {
-                result = result.FindAll(p => p.CreatedBy.Username.Contains(filterParameters.Username));
+                result = result.FindAll(post => post.CreatedBy.Username.Contains(filterParameters.Username));
             }          
 
             if (!string.IsNullOrEmpty(filterParameters.Title))
             {
-                result = result.FindAll(p => p.Title.Contains(filterParameters.Title));
+                result = result.FindAll(post => post.Title.Contains(filterParameters.Title));
             }
 
             if (filterParameters.Category != null && !string.IsNullOrEmpty(filterParameters.Category))
             {
-                result = result.FindAll(p => p.Category.Name.Contains(filterParameters.Category));
+                result = result.FindAll(post => post.Category.Name.Contains(filterParameters.Category));
             }
 
-            if (filterParameters.FromDateTime!=null && filterParameters.ToDateTime!=null)
+            if (filterParameters.FromDateTime.HasValue)
             {
-                //result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime && p.DateTime <= filterParameters.ToDateTime).ToList();
+                result = result.FindAll(post => post.DateTime >= filterParameters.FromDateTime);
             }
-            //else
-            //{
-            //    if ((filterParameters.FromDateTime.HasValue))
-            //    {
-            //        result = result.FindAll(p => p.DateTime >= filterParameters.FromDateTime).ToList();
-            //    }
-            //    if (filterParameters.ToDateTime.HasValue)
-            //    {
-            //        result = result.FindAll(p => p.DateTime <= filterParameters.ToDateTime).ToList();
-            //    }
-            //}
+            
+            if (filterParameters.ToDateTime.HasValue)
+            {
+                result = result.FindAll(post => post.DateTime <= filterParameters.ToDateTime);
+            }
 
             if (!string.IsNullOrEmpty(filterParameters.SortBy))
             {
