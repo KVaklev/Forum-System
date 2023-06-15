@@ -65,9 +65,7 @@ namespace ForumManagementSystem.Repository
             Post postToUpdate = this.GetById(id);
 
             postToUpdate.Title = post.Title;
-          
             postToUpdate.Content = post.Content;
-          //postToUpdate.Comments = post.Comments; to fix
             postToUpdate.CategoryId = post.CategoryId;
             Category category = this.GetByCategoryId(post.CategoryId);
             postToUpdate.Category = category;
@@ -204,5 +202,6 @@ namespace ForumManagementSystem.Repository
             }
             context.SaveChanges();
         }
+
     }
 }

@@ -32,7 +32,7 @@ namespace ForumManagementSystem.Services
             return this.repository.GetByUser(user);
         }
 
-        public Post Create(Post post, User user, List<string> tagNames)
+        public Post Create(Post post, User user, List<string> tagsToAdd) 
         {
 
             if (user.IsBlocked)
@@ -59,7 +59,7 @@ namespace ForumManagementSystem.Services
 
             Post createdPost = this.repository.Create(post, user);
 
-            foreach (var name in tagNames)
+            foreach (var name in tagsToAdd)
             {
                 Tag tag = this.tagService.Create(name, user);
 
@@ -69,7 +69,7 @@ namespace ForumManagementSystem.Services
             return createdPost;
         }
 
-        public Post Update(int id, Post post, User loggedUser)
+        public Post Update(int id, Post post, User loggedUser, List<string> tagsToAdd, List<string> tagsToRemove)
         {
             Post postToUpdate = this.repository.GetById(id);
 
@@ -95,6 +95,20 @@ namespace ForumManagementSystem.Services
             }
 
             Post updatedPost = this.repository.Update(id, post);
+
+            foreach (var name in tagsToAdd)
+            {
+                Tag tag = this.tagService.Create(name, loggedUser);
+
+                this.repository.AddTagToPost(tag.Id, updatedPost.Id);
+            }
+
+            foreach (var name in tagsToRemove)
+            {
+                Tag tag=this.repository.GetByTag(name);
+
+                this.repository.RemoveTagFromPost(tag.Id, updatedPost.Id, loggedUser);
+            }
 
             return updatedPost;
         }
