@@ -8,6 +8,7 @@ namespace ForumManagementSystem.Services
     public class CategoryService : ICategoryService
     {
         private const string ModifyCategoryErrorMessage = "Only an admin can modify a category.";
+        private const string CategoryExistingErrorMessage = "Category with this name already exists.";
         private readonly ICategoryRepository repository;
 
         public CategoryService(ICategoryRepository repository)
@@ -30,7 +31,7 @@ namespace ForumManagementSystem.Services
                 var createCategory = this.repository.Create(category);
                 return createCategory;  
             }
-            throw new DuplicateEntityException($"Category {category.Name} already exists.");
+            throw new DuplicateEntityException(CategoryExistingErrorMessage);
         }
 
         public Category Delete(int id,User user)
@@ -64,29 +65,14 @@ namespace ForumManagementSystem.Services
                 throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
             }
 
-            bool duplicateExists = true;
-            try
-            {
-                Category existingCategory = this.repository.GetByName(category.Name);
+            Category categoryToUpdate = this.repository.GetByName(category.Name);
 
-                if (existingCategory.Id == id)
-                {
-                    duplicateExists = false;
-                }
-            }
-            catch (EntityNotFoundException)
+            if (categoryToUpdate.Id!=id)
             {
-                duplicateExists = false;
+                throw new DuplicateEntityException(CategoryExistingErrorMessage);
             }
 
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"Category {category.Name} already exists.");
-            }
-
-            Category updatedCategory = this.repository.Update(id, category);
-
-            return updatedCategory;
+            return this.repository.Update(id, category); 
         }
     }
 }

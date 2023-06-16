@@ -28,8 +28,7 @@ namespace ForumManagementSystem.Services
 
         public Comment Delete(int id, User user)
         {
-            Comment CommentToUpdate = this.repository.GetByID(id);
-            if ((CommentToUpdate.UserId != user.Id && !user.IsAdmin) || user.IsBlocked)
+            if (!IsUserUnauthorized(id,user))
             {
                 throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
             }
@@ -58,12 +57,28 @@ namespace ForumManagementSystem.Services
 
         public Comment Update(int id, Comment comment, User user)
         {
-            Comment CommentToUpdate = this.repository.GetByID(id);
-            if ((CommentToUpdate.UserId!=user.Id && !user.IsAdmin) || user.IsBlocked)
+            if (!IsUserUnauthorized(id,user))
             {
                 throw new UnauthorizedOperationException(ModifyCommentErrorMessage);
             }
             return this.repository.Update(id, comment);
+            
+        }
+
+        public bool IsUserUnauthorized(int id, User user)
+        {
+            bool isUserUnauthorized = true;
+            if (user.IsBlocked)
+            {
+                isUserUnauthorized = false;
+            }
+            Comment CommentToUpdate = this.repository.GetByID(id);
+
+            if (CommentToUpdate.UserId != user.Id && !user.IsAdmin)
+            {
+                isUserUnauthorized = false;
+            }
+            return isUserUnauthorized;
         }
     }
 }

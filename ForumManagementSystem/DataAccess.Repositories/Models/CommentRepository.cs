@@ -16,6 +16,7 @@ namespace ForumManagementSystem.Repository
         public Comment Create(Comment comment, User user)
         {
             comment.UserId = user.Id;
+            comment.DateTime = DateTime.Now;
             context.Comments.Add(comment);
             context.SaveChanges();
 
@@ -62,6 +63,10 @@ namespace ForumManagementSystem.Repository
                 {
                     result.Reverse();
                 }
+            }
+            if (result.Count==0)
+            {
+                throw new EntityNotFoundException("Тhere are no comments for the specified criteria.");
             }
             return result;
         }

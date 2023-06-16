@@ -57,7 +57,10 @@ namespace ForumManagementSystem.Repository
                     result.Reverse();
                 }
             }
-
+            if (result.Count==0)
+            {
+                throw new EntityNotFoundException("These are no category with this name or description.");
+            }
             return result;
         }
 

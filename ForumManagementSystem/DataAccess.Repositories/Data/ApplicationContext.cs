@@ -174,7 +174,7 @@ namespace DataAccess.Repositories.Data
                 }
             };
 
-            //modelBuilder.Entity<Comment>().HasData(comments);
+            modelBuilder.Entity<Comment>().HasData(comments);
 
             modelBuilder.Entity<Comment>()
                         .HasOne(c => c.CreatedBy)

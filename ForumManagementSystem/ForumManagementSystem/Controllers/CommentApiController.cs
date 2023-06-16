@@ -34,9 +34,17 @@ namespace ForumManagementSystem.Controllers
         [HttpGet("")]
         public IActionResult GetComment([FromQuery] CommentQueryParameters filterParameters)
         {
-            List<Comment> result = this.commentService.FilterBy(filterParameters);
+            try
+            {
+                List<Comment> result = this.commentService.FilterBy(filterParameters);
 
-            return this.StatusCode(StatusCodes.Status200OK, result);
+                return this.StatusCode(StatusCodes.Status200OK, result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            
         }
 
         [HttpGet("{id}")]
@@ -65,9 +73,9 @@ namespace ForumManagementSystem.Controllers
 
                 return this.StatusCode(StatusCodes.Status201Created, createdComment);
             }
-            catch (DuplicateEntityException ex)
+            catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 
@@ -86,7 +94,7 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
-            catch (UnauthenticatedOperationException ex)
+            catch (UnauthorizedOperationException ex)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
@@ -105,7 +113,7 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
-            catch (UnauthenticatedOperationException ex)
+            catch (UnauthorizedOperationException ex)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }

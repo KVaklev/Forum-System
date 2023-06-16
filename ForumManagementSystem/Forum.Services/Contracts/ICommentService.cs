@@ -17,5 +17,7 @@ namespace ForumManagementSystem.Services
         Comment Update(int id, Comment comment, User user);
 
         Comment Delete(int id, User user);
+
+        bool IsUserUnauthorized(int id, User user);
     }
 }

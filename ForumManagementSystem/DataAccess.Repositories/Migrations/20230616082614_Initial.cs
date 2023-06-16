@@ -198,10 +198,10 @@ namespace DataAccess.Repositories.Migrations
                 columns: new[] { "Id", "CountComment", "CountPosts", "DateTime", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, 0, 0, new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(369), "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.", "Asian" },
-                    { 2, 0, 0, new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(404), "European countries related discussions in this forum and that includes the UK as well you dumbo!", "Europe" },
-                    { 3, 0, 0, new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(406), "Yes USA and Canada and whatever else is up there. Please feel free to ask why they drive on the wrong side of the road if you like.", "North America" },
-                    { 7, 0, 0, new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(408), "Discussions about Antarctica or anything else.", "Others" }
+                    { 1, 0, 0, new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5590), "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.", "Asian" },
+                    { 2, 0, 0, new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5646), "European countries related discussions in this forum and that includes the UK as well you dumbo!", "Europe" },
+                    { 3, 0, 0, new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5651), "Yes USA and Canada and whatever else is up there. Please feel free to ask why they drive on the wrong side of the road if you like.", "North America" },
+                    { 7, 0, 0, new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5656), "Discussions about Antarctica or anything else.", "Others" }
                 });
 
             migrationBuilder.InsertData(
@@ -227,17 +227,26 @@ namespace DataAccess.Repositories.Migrations
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "CategoryId", "Content", "DateTime", "PostLikesCount", "Title", "UserId" },
-                values: new object[] { 1, 1, "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.", new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(430), 0, "Cooking Your Food", 2 });
+                values: new object[] { 1, 1, "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.", new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5702), 0, "Cooking Your Food", 2 });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "CategoryId", "Content", "DateTime", "PostLikesCount", "Title", "UserId" },
-                values: new object[] { 2, 2, "So the help which I require is that I would like to know what things to do in Windsor?", new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(434), 0, "Things To Do In Windsor", 3 });
+                values: new object[] { 2, 2, "So the help which I require is that I would like to know what things to do in Windsor?", new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5712), 0, "Things To Do In Windsor", 3 });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "CategoryId", "Content", "DateTime", "PostLikesCount", "Title", "UserId" },
-                values: new object[] { 3, 3, "Any recommendations of areas to look into in either Washington or Northern California?", new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(436), 0, "Camping In The Northwest", 3 });
+                values: new object[] { 3, 3, "Any recommendations of areas to look into in either Washington or Northern California?", new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5716), 0, "Camping In The Northwest", 3 });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "Content", "DateTime", "LikesCount", "PostId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "The best town!", new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5747), 0, 1, 1 },
+                    { 2, "The worst town!", new DateTime(2023, 6, 16, 11, 26, 13, 781, DateTimeKind.Local).AddTicks(5755), 0, 2, 2 }
+                });
 
             migrationBuilder.InsertData(
                 table: "PostTags",
