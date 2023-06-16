@@ -1,6 +1,7 @@
 ﻿using DataAccess.Models;
 using ForumManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace DataAccess.Repositories.Data
 {
@@ -173,7 +174,13 @@ namespace DataAccess.Repositories.Data
                 }
             };
 
-            modelBuilder.Entity<Comment>().HasData(comments);
+            //modelBuilder.Entity<Comment>().HasData(comments);
+
+            modelBuilder.Entity<Comment>()
+                        .HasOne(c => c.CreatedBy)
+                        .WithMany(u => u.Comments)
+                        .HasForeignKey(c => c.UserId)
+                        .OnDelete(DeleteBehavior.NoAction);
 
             //Seed tags
 
