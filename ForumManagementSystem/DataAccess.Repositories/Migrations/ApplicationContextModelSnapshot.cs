@@ -194,7 +194,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 1,
                             CountComment = 0,
                             CountPosts = 0,
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3099),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(369),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
                             Name = "Asian"
                         },
@@ -203,7 +207,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 2,
                             CountComment = 0,
                             CountPosts = 0,
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3138),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(404),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             Description = "European countries related discussions in this forum and that includes the UK as well you dumbo!",
                             Name = "Europe"
                         },
@@ -212,7 +220,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 3,
                             CountComment = 0,
                             CountPosts = 0,
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3141),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(406),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             Description = "Yes USA and Canada and whatever else is up there. Please feel free to ask why they drive on the wrong side of the road if you like.",
                             Name = "North America"
                         },
@@ -221,7 +233,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 7,
                             CountComment = 0,
                             CountPosts = 0,
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3143),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(408),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             Description = "Discussions about Antarctica or anything else.",
                             Name = "Others"
                         });
@@ -259,6 +275,7 @@ namespace DataAccess.Repositories.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
+<<<<<<< HEAD
 
                     b.HasData(
                         new
@@ -279,6 +296,8 @@ namespace DataAccess.Repositories.Migrations
                             PostId = 2,
                             UserId = 2
                         });
+=======
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                 });
 
             modelBuilder.Entity("ForumManagementSystem.Models.Post", b =>
@@ -325,7 +344,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3167),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(430),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             PostLikesCount = 0,
                             Title = "Cooking Your Food",
                             UserId = 2
@@ -335,7 +358,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 2,
                             CategoryId = 2,
                             Content = "So the help which I require is that I would like to know what things to do in Windsor?",
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3172),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(434),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             PostLikesCount = 0,
                             Title = "Things To Do In Windsor",
                             UserId = 3
@@ -345,7 +372,11 @@ namespace DataAccess.Repositories.Migrations
                             Id = 3,
                             CategoryId = 3,
                             Content = "Any recommendations of areas to look into in either Washington or Northern California?",
+<<<<<<< HEAD
                             DateTime = new DateTime(2023, 6, 15, 22, 29, 52, 329, DateTimeKind.Local).AddTicks(3175),
+=======
+                            DateTime = new DateTime(2023, 6, 16, 9, 26, 33, 700, DateTimeKind.Local).AddTicks(436),
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                             PostLikesCount = 0,
                             Title = "Camping In The Northwest",
                             UserId = 3
@@ -488,7 +519,11 @@ namespace DataAccess.Repositories.Migrations
                     b.HasOne("ForumManagementSystem.Models.User", "CreatedBy")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
+<<<<<<< HEAD
                         .OnDelete(DeleteBehavior.Cascade)
+=======
+                        .OnDelete(DeleteBehavior.NoAction)
+>>>>>>> 7bc50506cc5b0c3ba5c9a7c12936fdd299563b7d
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
