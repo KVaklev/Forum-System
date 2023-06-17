@@ -46,14 +46,43 @@ namespace DataAccess.Repositories.Models
             return likeComment;
         }
         //TODO - foreach likes with comentId. 
-        public LikeComment Delete(Comment comment, User user)
+        
+        public int DeleteByComment(Comment comment)
         {
-            var likeToDeleted = Get(comment,user);
-            context.LikeComments.Remove(likeToDeleted);
+            List<LikeComment> likesToDeleted = context.LikeComments
+                .Where(u => u.CommentId == comment.Id)
+                .ToList();
+            int countToDeleted = 0;
+
+            foreach (var likes in likesToDeleted)
+            {
+                context.LikeComments.Remove(likes);
+            }
             context.SaveChanges();
-            return likeToDeleted;
+            return countToDeleted;
         }
- 
+        // TODO - to change the bool isDeleted;
+        public bool DeletedByUser(User deletedUser)
+        {
+            bool isDeleted = false;
+            List<LikeComment> deletedUsersLike = this.context.LikeComments
+                .Where(u => u.UserId == deletedUser.Id)
+                .ToList();
+            foreach (var likeComment in deletedUsersLike)
+            {
+                if (likeComment.IsLiked)
+                {
+                    isDeleted = true;
+                    Comment comment = this.context.Comments
+                           .Where(c => c.Id == likeComment.CommentId)
+                           .FirstOrDefault();
+                    comment.LikesCount--;
+                }
+            }
+            context.SaveChanges();
+            return isDeleted;
+        }
+
         public LikeComment Update(Comment comment, User user)
         {
             var likeCommentToUpdate = Get(comment,user);

@@ -8,7 +8,6 @@ using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Presentation.Helpers;
 
 
@@ -19,11 +18,6 @@ namespace ForumManagementSystem
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
 
             builder.Services.AddControllers();
             builder.Services.AddAutoMapper(typeof(CustomAutoMapper).Assembly);

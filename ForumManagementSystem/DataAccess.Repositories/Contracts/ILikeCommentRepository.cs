@@ -13,6 +13,7 @@ namespace DataAccess.Repositories.Contracts
         LikeComment Get(Comment comment, User user);
         LikeComment Create(Comment comment, User user);
         LikeComment Update(Comment comment, User user);
-        LikeComment Delete(Comment comment, User user);
+        int DeleteByComment(Comment comment);
+        public bool DeletedByUser(User deletedUser);
     }
 }

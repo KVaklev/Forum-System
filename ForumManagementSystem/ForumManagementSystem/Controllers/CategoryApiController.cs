@@ -26,9 +26,15 @@ namespace ForumManagementSystem.Controllers
         [HttpGet("")]
         public IActionResult GetCategories([FromQuery] CategoryQueryParameter parameters)
         {
-            List<Category> result = this.categoryService.FilterBy(parameters);
-
-            return this.StatusCode(StatusCodes.Status200OK, result);
+            try
+            {
+               List<Category> result = this.categoryService.FilterBy(parameters);
+               return this.StatusCode(StatusCodes.Status200OK, result);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
         }
 
         [HttpGet("categories/{id}")]
@@ -37,7 +43,6 @@ namespace ForumManagementSystem.Controllers
             try
             {
                 var category = this.categoryService.GetById(id);
-
                 return this.StatusCode(StatusCodes.Status200OK, category);
             }
             catch (EntityNotFoundException ex)
@@ -60,7 +65,7 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
-            catch (UnauthenticatedOperationException ex)
+            catch (UnauthorizedOperationException ex)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
@@ -83,7 +88,7 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
-            catch (UnauthenticatedOperationException ex)
+            catch (UnauthorizedOperationException ex)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
@@ -103,7 +108,7 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
-            catch (UnauthenticatedOperationException ex)
+            catch (UnauthorizedOperationException ex)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
