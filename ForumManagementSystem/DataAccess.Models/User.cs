@@ -29,9 +29,9 @@ namespace ForumManagementSystem.Models
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
 
-        public bool IsBlocked = false;
+        public bool IsBlocked { get; set; }
 
-        public bool IsAdmin = false;
+        public bool IsAdmin { get; set; }
 
         public List<LikeComment> LikeComments { get; set; } = new List<LikeComment>();
         public List<LikePost> LikePosts { get; set;} = new List<LikePost>();

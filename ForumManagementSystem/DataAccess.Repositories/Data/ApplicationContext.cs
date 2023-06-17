@@ -144,7 +144,7 @@ namespace DataAccess.Repositories.Data
                   Title = "Camping In The Northwest",
                   Content = "Any recommendations of areas to look into in either Washington or Northern California?",
                   UserId = 3,
-                          CategoryId = 3,
+                  CategoryId = 3,
                   DateTime = DateTime.Now
                   }
             };
@@ -174,7 +174,7 @@ namespace DataAccess.Repositories.Data
                 }
             };
 
-            //modelBuilder.Entity<Comment>().HasData(comments);
+            modelBuilder.Entity<Comment>().HasData(comments);
 
             modelBuilder.Entity<Comment>()
                         .HasOne(c => c.CreatedBy)

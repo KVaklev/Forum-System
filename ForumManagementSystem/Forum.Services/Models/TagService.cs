@@ -31,34 +31,26 @@ namespace Business.Services.Models
         }
         public Tag Create(string tagName, User loggedUser)
         {
-            bool duplicateExists = false;
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                throw new UnauthenticatedOperationException(ModifyCreateTagErrorMessage);
+            }
 
             try
             {
-                if (loggedUser == null || !loggedUser.IsAdmin)
-                {
-                    throw new UnauthenticatedOperationException(ModifyCreateTagErrorMessage);
-                }
-
                 Tag existingTag = this.repository.GetByName(tagName);
-            }
 
+                return existingTag;
+            }
             catch (EntityNotFoundException)
             {
-                duplicateExists= true;
+                Tag createdTag = new Tag { Name = tagName };
+
+                this.repository.Create(createdTag);
+
+                return createdTag;
             }
-
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"Tag with name '{tagName}' already exists.");
-            }
-
-            Tag createdTag = new Tag { Name = tagName };
-            
-            this.repository.Create(createdTag);
-
-            return createdTag;
-
         }
         public void Delete(int id, User loggedUser)
         {

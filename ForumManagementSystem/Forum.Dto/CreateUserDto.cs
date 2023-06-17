@@ -2,7 +2,7 @@
 
 namespace ForumManagementSystem.Models
 {
-    public class CreateUserDto
+    public class CreateUserDto //we need to make another UpdateUserDto - and use them as not required
     {
         [Required]
         [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
@@ -28,7 +28,7 @@ namespace ForumManagementSystem.Models
 
         public string? PhoneNumber { get; set; }
 
-        public bool? IsAdmin { get; set; }=false;
+        public bool IsAdmin { get; set; }
 
     }
 }

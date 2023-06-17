@@ -4,6 +4,7 @@ using ForumManagementSystem.Repository;
 using Business.Exceptions;
 using Business.Services.Contracts;
 using DataAccess.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ForumManagementSystem.Services
 {
@@ -59,13 +60,21 @@ namespace ForumManagementSystem.Services
 
             Post createdPost = this.repository.Create(post, user);
 
-            foreach (var name in tagsToAdd)
+            if (tagsToAdd == null)
             {
-                Tag tag = this.tagService.Create(name, user);
-
-                this.repository.AddTagToPost(tag.Id, createdPost.Id);
+                return createdPost;
             }
+            else
+            {
+                foreach (var name in tagsToAdd)
+                {
 
+                    Tag tag = this.tagService.Create(name, user);
+
+                    this.repository.AddTagToPost(tag.Id, createdPost.Id);
+                }
+            }
+            
             return createdPost;
         }
 
@@ -73,7 +82,7 @@ namespace ForumManagementSystem.Services
         {
             Post postToUpdate = this.repository.GetById(id);
 
-            if (!postToUpdate.CreatedBy.Equals(loggedUser) && !loggedUser.IsAdmin)
+            if (postToUpdate.UserId != id && !loggedUser.IsAdmin)
             {
                 throw new UnauthenticatedOperationException(ModifyPostErrorMessage);
             }
@@ -104,7 +113,7 @@ namespace ForumManagementSystem.Services
 
                 this.repository.AddTagToPost(tag.Id, updatedPost.Id);
             }
-
+            
             return updatedPost;
         }
 

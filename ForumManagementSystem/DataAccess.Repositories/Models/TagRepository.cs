@@ -25,8 +25,8 @@ namespace DataAccess.Repositories.Models
 
         public Tag GetByName(string name)
         {
-            Tag tag = context.Tags.FirstOrDefault(tag => tag.Name == name);
-            return tag ?? throw new EntityNotFoundException($"Tag with name {tag.Name} doesn't exist.");
+            Tag tag = context.Tags.FirstOrDefault(tag => tag.Name == name ) ?? throw new EntityNotFoundException($"Tag with name {name} doesn't exist.");
+            return tag;
         }
 
         public Tag Create(Tag tag)

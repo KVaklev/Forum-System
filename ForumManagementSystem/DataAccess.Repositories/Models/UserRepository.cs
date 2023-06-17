@@ -60,8 +60,8 @@ namespace ForumManagementSystem.Repository
         {
             User userToUpdate = this.GetById(id);
 
-            userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
-            userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
+            userToUpdate.FirstName = user.FirstName;
+            userToUpdate.LastName = user.LastName;
             userToUpdate.Password = user.Password ?? userToUpdate.Password;
             userToUpdate.IsAdmin = user.IsAdmin;
             UpdatePhoneNumber(user, userToUpdate);
@@ -75,10 +75,7 @@ namespace ForumManagementSystem.Repository
 
             if (user.IsAdmin)
             {
-                if (userToUpdate.PhoneNumber == null)
-                {
-                    userToUpdate.PhoneNumber = user.PhoneNumber;
-                }
+              userToUpdate.PhoneNumber = user.PhoneNumber ?? userToUpdate.PhoneNumber;
             }
             else
             {

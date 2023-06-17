@@ -3,6 +3,7 @@ using DataAccess.Repositories.Contracts;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForumManagementSystem.Repository
 {
@@ -32,11 +33,13 @@ namespace ForumManagementSystem.Repository
         public Post GetById(int id)
 
         {
-            Post post = context.Posts.Where(posts => posts.Id == id).FirstOrDefault();
+            Post post = context.Posts
+                .Include(post=>post.PostTags)
+                .ThenInclude(pt=>pt.Tag)
+                .FirstOrDefault(p=>p.Id == id);
             return post ?? throw new EntityNotFoundException($"Post with ID = {id} doesn't exist.");
 
         }
-
         public Post GetByTitle(string title)
         {
             Post post = context.Posts.Where(posts => posts.Title == title).FirstOrDefault();
@@ -64,9 +67,8 @@ namespace ForumManagementSystem.Repository
 
             postToUpdate.Title = post.Title;
             postToUpdate.Content = post.Content;
+            postToUpdate.PostTags = post.PostTags;
             postToUpdate.CategoryId = post.CategoryId;
-            Category category = this.GetByCategoryId(post.CategoryId);
-            postToUpdate.Category = category;
             postToUpdate.UserId = post.UserId;
             context.SaveChanges();
 
@@ -76,10 +78,7 @@ namespace ForumManagementSystem.Repository
 
         public Post Create(Post post, User user)
         {
-            post.UserId = user.Id;
             post.CreatedBy = user;
-            Category category = this.GetByCategoryId(post.CategoryId);
-            post.Category= category;
             context.Posts.Add(post);
             context.SaveChanges();
 
@@ -179,6 +178,8 @@ namespace ForumManagementSystem.Repository
                TagId = tagId,
                PostId = postId
            };
+            Post post= this.GetById(postId);
+            post.PostTags.Add(postTag);
             this.context.PostTags.Add(postTag);
             context.SaveChanges();
         }
