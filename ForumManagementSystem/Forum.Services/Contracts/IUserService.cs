@@ -14,5 +14,6 @@ namespace ForumManagementSystem.Services
         User Create(User user);
         User Update(int id, User user, User loggedUser);
         void Delete(int id, User loggedUser);
+        bool IsAuthorized(User user, User loggedUser);
     }
 }

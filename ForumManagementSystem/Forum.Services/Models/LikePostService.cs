@@ -13,8 +13,6 @@ namespace Business.Services.Models
 {
     public class LikePostService : ILikePostService
     {
-        private const string ModifyLikePostErrorMessage = "Only the authorized user is capable of amending isLikedPost.";
-
         private readonly ILikePostRepository repository;
 
         public LikePostService(ILikePostRepository repository)

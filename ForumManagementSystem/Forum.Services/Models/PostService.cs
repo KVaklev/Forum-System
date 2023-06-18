@@ -4,15 +4,12 @@ using ForumManagementSystem.Repository;
 using Business.Exceptions;
 using Business.Services.Contracts;
 using DataAccess.Models;
-using System.Reflection.Metadata.Ecma335;
+using Business.Services.Helpers;
 
 namespace ForumManagementSystem.Services
 {
     public class PostService : IPostService
     {
-        private const string ModifyPostErrorMessage = "Only an admin or post creator can modify a post.";
-        private const string ModifyPostErrorMessageIfUserIsBlocked = "Blocked user cannot create a post.";
-
         private readonly IPostRepository repository;
         private readonly ITagService tagService;
         public PostService(IPostRepository repository, ITagService tagService)
@@ -32,30 +29,18 @@ namespace ForumManagementSystem.Services
         {
             return this.repository.GetByUser(user);
         }
-
-        public Post Create(Post post, User user, List<string> tagsToAdd) 
+        public List<Post> FilterBy(PostQueryParameters filterParameters)
         {
+            return this.repository.FilterBy(filterParameters);
+        }
 
-            if (user.IsBlocked)
+        public Post Create(Post post, User user, List<string> tagsToAdd)
+        {
+            CheckIfBlocked(user);
+
+            if (this.repository.TitleExists(post.Title))
             {
-                throw new UnauthorizedAccessException(ModifyPostErrorMessageIfUserIsBlocked);
-            }
-
-            bool duplicateExists = false;
-
-            try
-            {
-                this.repository.GetByTitle(post.Title);
-            }
-            catch (EntityNotFoundException)
-
-            {
-                duplicateExists = true;
-            }
-
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"Post {post.Title} already exists.");
+                throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
             }
 
             Post createdPost = this.repository.Create(post, user);
@@ -74,7 +59,7 @@ namespace ForumManagementSystem.Services
                     this.repository.AddTagToPost(tag.Id, createdPost.Id);
                 }
             }
-            
+
             return createdPost;
         }
 
@@ -82,25 +67,14 @@ namespace ForumManagementSystem.Services
         {
             Post postToUpdate = this.repository.GetById(id);
 
-            if (postToUpdate.UserId != id && !loggedUser.IsAdmin)
+            if (!IsAuthorized(postToUpdate.CreatedBy, loggedUser))
             {
-                throw new UnauthenticatedOperationException(ModifyPostErrorMessage);
+                throw new UnauthenticatedOperationException(Constants.ModifyPostErrorMessage);
             }
-
-            bool duplicateExists = false;
-
-            try
+         
+            if (this.repository.TitleExists(post.Title))
             {
-                this.repository.GetByTitle(post.Title);
-            }
-            catch (EntityNotFoundException)
-
-            {
-                duplicateExists = true;
-            }
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"Post {post.Title} already exists.");
+                throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
             }
 
             Post updatedPost = this.repository.Update(id, post);
@@ -119,20 +93,33 @@ namespace ForumManagementSystem.Services
 
         public void Delete(int id, User loggedUser)
         {
-            Post post = repository.GetById(id);
+            Post postToDelete = repository.GetById(id);
 
-            if (!loggedUser.Equals(post.CreatedBy) || !loggedUser.IsAdmin || loggedUser.IsBlocked)
+            if (!IsAuthorized(postToDelete.CreatedBy, loggedUser))
             {
-                throw new UnauthorizedOperationException(ModifyPostErrorMessage);
+                throw new UnauthenticatedOperationException(Constants.ModifyPostErrorMessage);
             }
 
             this.repository.Delete(id);
         }
 
-
-        public List<Post> FilterBy(PostQueryParameters filterParameters)
+        public void CheckIfBlocked(User user)
         {
-            return this.repository.FilterBy(filterParameters);
+            if (user.IsBlocked)
+            {
+                throw new UnauthorizedAccessException(Constants.ModifyPostErrorMessageIfUserIsBlocked);
+            }
+        }
+
+        public bool IsAuthorized(User user, User loggedUser)
+        {
+            bool isAuthorized = false;
+
+            if (user.Equals(loggedUser) || loggedUser.IsAdmin)
+            {
+                isAuthorized = true;
+            }
+            return isAuthorized;
         }
     }
 }

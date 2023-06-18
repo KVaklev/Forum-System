@@ -30,5 +30,7 @@ namespace ForumManagementSystem.Repository
 
         void AddTagToPost(int tagId, int postId);
 
+        bool TitleExists(string title);
+
     }
 }

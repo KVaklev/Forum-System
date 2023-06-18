@@ -14,7 +14,6 @@ namespace Business.Services.Models
 {
     public class LikeCommentService : ILikeCommentService
     {
-        private const string ModifyLikeErrorMessage = "Only the correct user can chages IsLiked.";
         private readonly ILikeCommentRepository repository;
 
         public LikeCommentService(ILikeCommentRepository repository)
@@ -27,7 +26,6 @@ namespace Business.Services.Models
            var likeCommentToDelete = this.repository.Get(comment,user);
            return likeCommentToDelete;
         }
-
 
         public LikeComment Update(Comment comment, User user)
         {

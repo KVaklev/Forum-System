@@ -11,6 +11,7 @@ namespace ForumManagementSystem.Services
         Post Create(Post post, User user, List<string> tagNames);
         Post Update(int id, Post post, User loggedUser, List<string> tagNames);
         void Delete(int id, User loggedUser);
-        
+        bool IsAuthorized(User user, User loggedUser);
+
     }
 }

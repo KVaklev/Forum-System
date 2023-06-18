@@ -25,7 +25,6 @@ namespace ForumManagementSystem.Controllers
             this.authManager=authManager;
         }
 
-
         [HttpGet("")]
         public IActionResult GetUsers([FromHeader] string credentials, [FromQuery] UserQueryParameters userQueryParameters)
         {

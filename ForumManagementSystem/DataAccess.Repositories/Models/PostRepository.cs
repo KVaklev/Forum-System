@@ -34,6 +34,7 @@ namespace ForumManagementSystem.Repository
 
         {
             Post post = context.Posts
+                .Include(post =>post.CreatedBy)
                 .Include(post=>post.PostTags)
                 .ThenInclude(pt=>pt.Tag)
                 .FirstOrDefault(p=>p.Id == id);
@@ -182,6 +183,11 @@ namespace ForumManagementSystem.Repository
             post.PostTags.Add(postTag);
             this.context.PostTags.Add(postTag);
             context.SaveChanges();
+        }
+
+        public bool TitleExists(string title)
+        {
+            return context.Posts.Any(p => p.Title == title);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Business.Exceptions;
+using Business.Services.Helpers;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
@@ -7,8 +8,6 @@ namespace ForumManagementSystem.Services
 {
     public class UserService : IUserService
     {
-        private const string ModifyUserErrorMessage = "Only owner or admin can modify a user.";
-        private const string ModifyUsernameErrorMessage = "Username change is not allowed.";
         private readonly IUserRepository repository;
         public UserService(IUserRepository repository)
         {
@@ -37,7 +36,7 @@ namespace ForumManagementSystem.Services
                 throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
             }
 
-            if (this.repository.EmailExist(user.Email))
+            if (this.repository.EmailExists(user.Email))
             {
                 throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
             }
@@ -46,22 +45,23 @@ namespace ForumManagementSystem.Services
 
             return createdUser;
             
-        }
+        }   
+
         public User Update(int id, User user, User loggedUser)
         {
             User userToUpdate = this.repository.GetById(id);
 
             if (!IsAuthorized(userToUpdate, loggedUser))
             {
-                throw new UnauthorizedOperationException(ModifyUserErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyUserErrorMessage);
             }
 
             if (user.Username!=null)
             {
-                throw new InvalidOperationException(ModifyUsernameErrorMessage);
+                throw new InvalidOperationException(Constants.ModifyUsernameErrorMessage);
             }
 
-            if (this.repository.EmailExist(user.Email))
+            if (this.repository.EmailExists(user.Email))
             {
                 throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
             }
@@ -70,7 +70,19 @@ namespace ForumManagementSystem.Services
 
             return updatedUser;
         }
-        private bool IsAuthorized(User user, User loggedUser)
+
+        public void Delete(int id, User loggedUser)
+        {
+            User user = repository.GetById(id);
+
+            if (!IsAuthorized(user, loggedUser))
+            {
+                throw new UnauthorizedOperationException(Constants.ModifyUserErrorMessage);
+            }
+            this.repository.Delete(id);
+        }
+
+        public bool IsAuthorized(User user, User loggedUser)
         {
             bool isAuthorized = false;
 
@@ -80,24 +92,17 @@ namespace ForumManagementSystem.Services
             }
             return isAuthorized;
         }
-        public void Delete(int id, User loggedUser)
-        {
-            User user = repository.GetById(id);
 
-            if (!IsAuthorized(user, loggedUser))
-            {
-                throw new UnauthorizedOperationException(ModifyUserErrorMessage);
-            }
-            this.repository.Delete(id);
-        }
         public User Promote(User user)
         {
             return this.repository.Promote(user);
         }
+
         public User BlockUser(User user)
         {
             return this.repository.BlockUser(user);
         }
+
         public User UnblockUser(User user)
         {
             return this.repository.UnblockUser(user);

@@ -17,7 +17,7 @@ namespace ForumManagementSystem.Repository
         User Update(int id, User loggedUser);
         User Delete(int id);
         bool UsernameExists(string username);
-        bool EmailExist(string email);
+        bool EmailExists(string email);
 
     }
 }

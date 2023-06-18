@@ -172,7 +172,7 @@ namespace ForumManagementSystem.Repository
             return context.Users.Any(u => u.Username == username);
         }
 
-        public bool EmailExist(string email)
+        public bool EmailExists(string email)
         {
             return context.Users.Any (u => u.Email == email);
         }

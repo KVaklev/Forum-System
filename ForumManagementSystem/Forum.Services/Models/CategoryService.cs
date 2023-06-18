@@ -1,4 +1,5 @@
 ﻿using Business.Exceptions;
+using Business.Services.Helpers;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
@@ -7,8 +8,6 @@ namespace ForumManagementSystem.Services
 {
     public class CategoryService : ICategoryService
     {
-        private const string ModifyCategoryErrorMessage = "Only an admin can modify a category.";
-        private const string CategoryExistingErrorMessage = "Category with this name already exists.";
         private readonly ICategoryRepository repository;
 
         public CategoryService(ICategoryRepository repository)
@@ -19,7 +18,7 @@ namespace ForumManagementSystem.Services
         {
             if (!user.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyCategoryErrorMessage);
             }
 
             try
@@ -31,14 +30,14 @@ namespace ForumManagementSystem.Services
                 var createCategory = this.repository.Create(category);
                 return createCategory;  
             }
-            throw new DuplicateEntityException(CategoryExistingErrorMessage);
+            throw new DuplicateEntityException(Constants.CategoryExistingErrorMessage);
         }
 
         public Category Delete(int id,User user)
         {
             if (!user.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyCategoryErrorMessage);
             }
             return repository.Delete(id);
         }
@@ -62,14 +61,14 @@ namespace ForumManagementSystem.Services
         {
             if (!user.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyCategoryErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyCategoryErrorMessage);
             }
 
             Category categoryToUpdate = this.repository.GetByName(category.Name);
 
             if (categoryToUpdate.Id!=id)
             {
-                throw new DuplicateEntityException(CategoryExistingErrorMessage);
+                throw new DuplicateEntityException(Constants.CategoryExistingErrorMessage);
             }
 
             return this.repository.Update(id, category); 
