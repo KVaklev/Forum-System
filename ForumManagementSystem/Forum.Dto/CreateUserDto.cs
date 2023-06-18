@@ -2,7 +2,7 @@
 
 namespace ForumManagementSystem.Models
 {
-    public class CreateUserDto //we need to make another UpdateUserDto - and use them as not required
+    public class CreateUserDto 
     {
         [Required]
         [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]

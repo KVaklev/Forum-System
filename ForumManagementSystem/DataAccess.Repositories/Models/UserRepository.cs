@@ -18,29 +18,34 @@ namespace ForumManagementSystem.Repository
         {
             return context.Users.ToList();
         }
+
         public User GetById(int id)
         {
             User user = context.Users.Where(users => users.Id == id).FirstOrDefault();
             return user ?? throw new EntityNotFoundException($"User with ID = {id} doesn't exist.");
         }
+
         public User GetByUsername(string username)
         {
             User user = context.Users.Where(users => users.Username == username).FirstOrDefault();
 
             return user ?? throw new EntityNotFoundException($"User with username '{username}' doesn't exist.");
         }
+
         public User GetByEmail(string email)
         {
             User user = context.Users.Where(users => users.Email == email).FirstOrDefault();
 
             return user ?? throw new EntityNotFoundException($"User with email '{email}' doesn't exist.");
         }
+
         public User GetByFirstName(string firstName)
         {
             User user = context.Users.Where(users => users.FirstName == firstName).FirstOrDefault();
 
             return user ?? throw new EntityNotFoundException($"User with first name '{firstName}' doesn't exist.");
         }
+
         public User Create(User user)
         {
             context.Users.Add(user);
@@ -48,6 +53,7 @@ namespace ForumManagementSystem.Repository
 
             return user;
         }
+
         public User Delete(int id)
         {
             User userToDelete = this.GetById(id);
@@ -56,14 +62,16 @@ namespace ForumManagementSystem.Repository
 
             return userToDelete;
         }
+
         public User Update(int id, User user)
         {
             User userToUpdate = this.GetById(id);
 
-            userToUpdate.FirstName = user.FirstName;
-            userToUpdate.LastName = user.LastName;
+            userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
+            userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
             userToUpdate.Password = user.Password ?? userToUpdate.Password;
-            userToUpdate.IsAdmin = user.IsAdmin;
+            userToUpdate.Email = user.Email ?? userToUpdate.Email;
+            userToUpdate.Username = user.Username ?? userToUpdate.Username;
             UpdatePhoneNumber(user, userToUpdate);
             context.SaveChanges();
 
@@ -72,7 +80,6 @@ namespace ForumManagementSystem.Repository
 
         public void UpdatePhoneNumber(User user, User userToUpdate)
         {
-
             if (user.IsAdmin)
             {
               userToUpdate.PhoneNumber = user.PhoneNumber ?? userToUpdate.PhoneNumber;
@@ -158,6 +165,16 @@ namespace ForumManagementSystem.Repository
             context.SaveChanges();
 
             return user;
+        }
+
+        public bool UsernameExists(string username)
+        {
+            return context.Users.Any(u => u.Username == username);
+        }
+
+        public bool EmailExist(string email)
+        {
+            return context.Users.Any (u => u.Email == email);
         }
     }
 }

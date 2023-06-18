@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Dto;
 using Business.Exceptions;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -87,13 +88,13 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPut("{id}")] 
-        public IActionResult UpdateUser(int id, [FromHeader] string credentials, [FromBody] CreateUserDto createUserDto)
+        public IActionResult UpdateUser(int id, [FromHeader] string credentials, [FromBody] UpdateUserDto updateUserDto)
         {
             try
             {
                 User loggedUser = this.authManager.TryGetUser(credentials);
-                
-                User user = this.mapper.Map<User>(createUserDto);
+
+                User user = this.mapper.Map<User>(updateUserDto);
 
                 User updatedUser = this.userService.Update(id, user, loggedUser);
 
@@ -102,6 +103,10 @@ namespace ForumManagementSystem.Controllers
             catch (UnauthorizedOperationException e)
             {
                 return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+            }
+            catch (InvalidOperationException e)
+            {
+                return this.StatusCode(StatusCodes.Status400BadRequest, e.Message);
             }
             catch (EntityNotFoundException e)
             {

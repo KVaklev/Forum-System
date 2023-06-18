@@ -7,7 +7,7 @@ namespace ForumManagementSystem.Services
         List<User> GetAll();
         List<User> FilterBy(UserQueryParameters filterParameters);
         User GetById(int id);
-        User GetByUserName(string username);
+        User GetByUsername(string username);
         User Promote(User user);
         User BlockUser(User user);
         User UnblockUser(User user);

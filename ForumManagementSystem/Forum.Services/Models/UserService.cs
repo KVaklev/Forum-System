@@ -8,6 +8,7 @@ namespace ForumManagementSystem.Services
     public class UserService : IUserService
     {
         private const string ModifyUserErrorMessage = "Only owner or admin can modify a user.";
+        private const string ModifyUsernameErrorMessage = "Username change is not allowed.";
         private readonly IUserRepository repository;
         public UserService(IUserRepository repository)
         {
@@ -21,123 +22,82 @@ namespace ForumManagementSystem.Services
         {
            return this.repository.GetById(id);
         }
+        public User GetByUsername(string username)
+        {
+            return this.repository.GetByUsername(username);
+        }
+        public List<User> FilterBy(UserQueryParameters filterParameters)
+        {
+            return this.repository.FilterBy(filterParameters);
+        }
         public User Create(User user)
         {
-            bool duplicateExists = true;
-
-            try
+            if (this.repository.UsernameExists(user.Username))
             {
-                this.repository.GetByUsername(user.Username);
-            }
-            catch (EntityNotFoundException)
-            {
-                duplicateExists = false;
-            }
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"User with username {user.Username} already exists.");
-            }
-            try
-            {
-                this.repository.GetByEmail(user.Email);
-            }
-            catch (EntityNotFoundException)
-            {
-                duplicateExists = false;
-            }
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"User with email {user.Email} already exists.");
+                throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
             }
 
-            User createdUser=this.repository.Create(user);
+            if (this.repository.EmailExist(user.Email))
+            {
+                throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
+            }
+
+            User createdUser = this.repository.Create(user);
 
             return createdUser;
+            
         }
         public User Update(int id, User user, User loggedUser)
         {
             User userToUpdate = this.repository.GetById(id);
 
-            if (!userToUpdate.Equals(loggedUser) && !loggedUser.IsAdmin)
+            if (!IsAuthorized(userToUpdate, loggedUser))
             {
                 throw new UnauthorizedOperationException(ModifyUserErrorMessage);
             }
-            bool duplicateExists = true;
 
-            try
+            if (user.Username!=null)
             {
-                User existingUser = this.repository.GetByUsername(userToUpdate.Username);
-
-                if (existingUser.Id == id)
-                {
-                    duplicateExists = false;
-                }
-            }
-            catch (EntityNotFoundException)
-            {
-                duplicateExists = false;
+                throw new InvalidOperationException(ModifyUsernameErrorMessage);
             }
 
-            if (duplicateExists)
-            {
-                throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
-            }
-            try
-            {
-                User existingUser = this.repository.GetByEmail(userToUpdate.Email);
-
-                if (existingUser.Id == id)
-                {
-                    duplicateExists = false;
-                }
-            }
-            catch (EntityNotFoundException)
-            {
-                duplicateExists = false;
-            }
-
-            if (duplicateExists)
+            if (this.repository.EmailExist(user.Email))
             {
                 throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
             }
-
 
             User updatedUser = this.repository.Update(id, user);
 
             return updatedUser;
         }
-     
-        public List<User> FilterBy(UserQueryParameters filterParameters)
+        private bool IsAuthorized(User user, User loggedUser)
         {
-            return this.repository.FilterBy(filterParameters);
-        }
+            bool isAuthorized = false;
 
-        public User GetByUserName(string username)
+            if (user.Equals(loggedUser) || loggedUser.IsAdmin)
+            {
+                isAuthorized = true;
+            }
+            return isAuthorized;
+        }
+        public void Delete(int id, User loggedUser)
         {
-            return this.repository.GetByUsername(username);
-        }
+            User user = repository.GetById(id);
 
+            if (!IsAuthorized(user, loggedUser))
+            {
+                throw new UnauthorizedOperationException(ModifyUserErrorMessage);
+            }
+            this.repository.Delete(id);
+        }
         public User Promote(User user)
         {
             return this.repository.Promote(user);
         }
-
-        public void Delete(int id, User loggedUser)
-        {
-            User user = repository.GetById(id);
-            if (!user.Equals(user) && !user.IsAdmin)
-            {
-                throw new UnauthorizedOperationException(ModifyUserErrorMessage);
-            }
-
-            this.repository.Delete(id);
-        }
-
         public User BlockUser(User user)
         {
             return this.repository.BlockUser(user);
         }
-
         public User UnblockUser(User user)
         {
             return this.repository.UnblockUser(user);

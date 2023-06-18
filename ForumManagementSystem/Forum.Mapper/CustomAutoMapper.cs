@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Dto;
 using ForumManagementSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace ForumManagementSystem.Models
             CreateMap<CreateUserDto, User>(); 
             CreateMap<User, GetUserDto>();
             CreateMap<User, CreateUserDto>();
+            CreateMap<User, UpdateUserDto>();
+            CreateMap<UpdateUserDto, User>();
         }
     }
 }
