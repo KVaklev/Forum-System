@@ -19,12 +19,6 @@ namespace Business.Services.Models
         {
             this.repository = repository;
         }
-        public LikePost Delete(Post post, User user)
-        {
-            var likePostToBeDeleted = this.repository.Get(post, user);
-            return likePostToBeDeleted;
-        }
-
         public LikePost Update(Post post, User user)
         {
             try

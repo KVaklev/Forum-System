@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Business.Dto
 {
@@ -16,5 +17,12 @@ namespace Business.Dto
 
         public DateTime DateCreated { get; set; }
 
+        //        CreatedBy: Username
+        //Datetime:
+        //title
+        //Category: Name
+        //Content
+        //Likes:Count
+        
     }
 }

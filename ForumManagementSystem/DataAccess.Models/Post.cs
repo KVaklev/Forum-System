@@ -11,7 +11,7 @@ namespace ForumManagementSystem.Models
         // Navigation property
         public User CreatedBy { get; set; }
 
-       
+
         [Required(ErrorMessage = "The {0} field is required")]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")]  //TODO  - MaxValue - user.Count
         //Foreign key
@@ -31,7 +31,6 @@ namespace ForumManagementSystem.Models
         // Foreign key
         public int CategoryId { get; set; }
 
-        public int PostLikesCount { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "The {0} field is required and must not be an empty string.")]
         [MinLength(32, ErrorMessage = "The {0} field must be at least {1} character.")]
@@ -43,8 +42,10 @@ namespace ForumManagementSystem.Models
 
         public DateTime DateTime { get; set; }
 
+        public int PostLikesCount { get; set; }
 
         // Collection navigation containing dependents
+        public List<LikePost> LikePosts { get; set; } = new List<LikePost> { };
         public List<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }

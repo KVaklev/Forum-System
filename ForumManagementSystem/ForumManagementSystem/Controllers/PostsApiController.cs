@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Dto;
 using Business.Exceptions;
 using Business.Services.Contracts;
 using DataAccess.Repositories.Contracts;
@@ -18,7 +19,7 @@ namespace ForumManagementSystem.Controllers
         private readonly IPostService postService;
         private readonly IMapper mapper;
         private readonly AuthManager authManager;
-        private readonly ILikePostService likePostService; 
+        private readonly ILikePostService likePostService;
 
         public PostsApiController(IPostService postService, IMapper mapper, AuthManager authManager, ILikePostService likePostService)
 
@@ -29,13 +30,31 @@ namespace ForumManagementSystem.Controllers
             this.likePostService = likePostService;
         }
 
-        [HttpGet("")] // TO CREATE GETPOSTDTO AND ADD IT HERE
-        public IActionResult GetPosts([FromQuery] PostQueryParameters filterParameters)
+        [HttpGet("")]
+        public IActionResult GetPosts([FromQuery] PostQueryParameters filterParameters, [FromHeader] string credentials)
         {
-            List<Post> result = this.postService.FilterBy(filterParameters);
 
-            return this.StatusCode(StatusCodes.Status200OK, result);
+            try
+            {
+                User user = this.authManager.TryGetUser(credentials);
 
+                List<Post> result = this.postService.FilterBy(filterParameters);
+
+                return (this.StatusCode(StatusCodes.Status200OK, result));
+            }
+
+            catch (EntityNotFoundException ex)
+            {
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
@@ -54,7 +73,7 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpPost("")]
-        public IActionResult CreatePost([FromBody] CreatePostDto createPostDto, [FromHeader] string credentials) 
+        public IActionResult CreatePost([FromBody] CreatePostDto createPostDto, [FromHeader] string credentials)
         {
             try
             {
@@ -77,9 +96,9 @@ namespace ForumManagementSystem.Controllers
             }
         }
 
-       
+
         [HttpPut("{id}")]
-        public IActionResult UpdatePost(int id, [FromBody] CreatePostDto createPostDto, [FromHeader] string credentials) 
+        public IActionResult UpdatePost(int id, [FromBody] CreatePostDto createPostDto, [FromHeader] string credentials)
         {
             try
             {
@@ -139,9 +158,17 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status200OK);
             }
 
-            catch (EntityNotFoundException e)
+            catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message) ;
+                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
     }

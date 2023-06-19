@@ -12,6 +12,6 @@ namespace Business.Services.Contracts
     {
         LikePost Update(Post post, User user);
 
-        LikePost Delete(Post post, User user);
+        
     }
 }
