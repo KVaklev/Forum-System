@@ -40,7 +40,9 @@ namespace ForumManagementSystem.Controllers
 
                 List<Post> result = this.postService.FilterBy(filterParameters);
 
-                return (this.StatusCode(StatusCodes.Status200OK, result));
+                List<GetPostDto> getPostDto = result.Select(post => mapper.Map<GetPostDto>(post)).ToList();
+
+                return (this.StatusCode(StatusCodes.Status200OK, getPostDto));
             }
 
             catch (EntityNotFoundException ex)

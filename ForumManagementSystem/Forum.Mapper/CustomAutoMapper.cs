@@ -16,13 +16,14 @@ namespace ForumManagementSystem.Models
             CreateMap<CategoryDto, Category>();
             CreateMap<CommentDto, Comment>();
             CreateMap<Comment, RequireCommentDto>()
-                .ForMember(c=>c.Username,u=>u.MapFrom(c=>c.CreatedBy.Username))
-                .ForMember(c=>c.categoryName, u=>u.MapFrom(c => c.Post.Category.Name));
-
+                .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
+                .ForMember(c => c.categoryName, u => u.MapFrom(c => c.Post.Category.Name));
             CreateMap<CreatePostDto, Post>();
             CreateMap<Post, CreatePostDto>();
+            CreateMap<GetPostDto, Post>();
+            CreateMap<Post, GetPostDto>();
             CreateMap<GetUserDto, User>();
-            CreateMap<CreateUserDto, User>(); 
+            CreateMap<CreateUserDto, User>();
             CreateMap<User, GetUserDto>();
             CreateMap<User, CreateUserDto>();
             CreateMap<User, UpdateUserDto>();
