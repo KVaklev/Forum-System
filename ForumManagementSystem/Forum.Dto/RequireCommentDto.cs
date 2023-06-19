@@ -9,8 +9,8 @@ namespace Business.Dto
 {
     public class RequireCommentDto
     {
-        public int categoryId { get; set; }
-        public int postId { get; set; }
+        public string categoryName { get; set; }
+        public string postTitle { get; set; }
         public string Username { get; set; }
         public DateTime DateTime { get; set; }
         public string Content { get; set; }

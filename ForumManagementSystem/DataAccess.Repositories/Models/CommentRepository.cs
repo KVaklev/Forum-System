@@ -36,7 +36,11 @@ namespace ForumManagementSystem.Repository
         
         public List<Comment> FilterBy(CommentQueryParameters parameters)
         {
-            List<Comment> result = context.Comments.ToList();
+            List<Comment> result = context.Comments
+                .Include(u => u.CreatedBy)
+                .Include(p => p.Post)
+                .ThenInclude(c => c.Category)
+                .ToList();
 
             if (parameters.UserId.HasValue)
             {
@@ -62,6 +66,8 @@ namespace ForumManagementSystem.Repository
             {
                 throw new EntityNotFoundException("Тhere are no comments for the specified criteria.");
             }
+
+
             return result; 
         }
 
@@ -73,6 +79,9 @@ namespace ForumManagementSystem.Repository
         public Comment GetByID(int id)
         {
             var comment = context.Comments
+                .Include(u=>u.CreatedBy)
+                .Include(p=>p.Post)
+                .ThenInclude(c=>c.Category)
                 .FirstOrDefault(comment => comment.Id == id);
                                 
             return comment ?? throw new EntityNotFoundException($"Comment with ID = {id} doesn't exist.");
