@@ -69,6 +69,10 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
         [HttpPut("categories/{id}")]
         public IActionResult UpdateCategory(int id, [FromBody] CategoryDto categoryDto, [FromHeader] string credentials)
@@ -92,6 +96,10 @@ namespace ForumManagementSystem.Controllers
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
+            catch (UnauthenticatedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
         }
 
         [HttpDelete("categories/{id}")]
@@ -109,6 +117,10 @@ namespace ForumManagementSystem.Controllers
                 return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (UnauthenticatedOperationException ex)
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }

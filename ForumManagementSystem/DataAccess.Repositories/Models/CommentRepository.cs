@@ -1,6 +1,7 @@
 ﻿using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace ForumManagementSystem.Repository
@@ -17,6 +18,7 @@ namespace ForumManagementSystem.Repository
         {
             comment.UserId = user.Id;
             comment.DateTime = DateTime.Now;
+            comment.LikesCount = 0;
             context.Comments.Add(comment);
             context.SaveChanges();
 
@@ -40,14 +42,6 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.FindAll(comment => comment.UserId==parameters.UserId);
             }
-            if (parameters.FromDateTime.HasValue)
-            {
-                result = result.FindAll(c => c.DateTime >= parameters.FromDateTime);
-            }
-            if (parameters.ToDateTime.HasValue)
-            {
-                result = result.FindAll(c => c.DateTime <= parameters.ToDateTime);
-            }
             if (!string.IsNullOrEmpty(parameters.SortBy))
             {
                 if (parameters.SortBy.Equals("userId", StringComparison.InvariantCultureIgnoreCase))
@@ -68,7 +62,7 @@ namespace ForumManagementSystem.Repository
             {
                 throw new EntityNotFoundException("Тhere are no comments for the specified criteria.");
             }
-            return result;
+            return result; 
         }
 
         public List<Comment> GetAll()
@@ -78,7 +72,9 @@ namespace ForumManagementSystem.Repository
 
         public Comment GetByID(int id)
         {
-            var comment = context.Comments.FirstOrDefault(comment => comment.Id == id);
+            var comment = context.Comments
+                .FirstOrDefault(comment => comment.Id == id);
+                                
             return comment ?? throw new EntityNotFoundException($"Comment with ID = {id} doesn't exist.");
         }
         

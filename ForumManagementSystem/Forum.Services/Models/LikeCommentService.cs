@@ -21,12 +21,7 @@ namespace Business.Services.Models
             this.repository = repository;
         }
         
-        public LikeComment Delete(Comment comment, User user)
-        { 
-           var likeCommentToDelete = this.repository.Get(comment,user);
-           return likeCommentToDelete;
-        }
-
+       
         public LikeComment Update(Comment comment, User user)
         {
             try

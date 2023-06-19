@@ -1,5 +1,6 @@
 ﻿using Business.Exceptions;
 using Business.Services.Helpers;
+using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
@@ -9,9 +10,11 @@ namespace ForumManagementSystem.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository repository;
-        public UserService(IUserRepository repository)
+        private readonly ILikeCommentRepository likeRepository;
+        public UserService(IUserRepository repository, ILikeCommentRepository likeRepository)
         {
             this.repository = repository;
+            this.likeRepository = likeRepository;
         }
         public List<User> GetAll()
         {
@@ -79,6 +82,7 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyUserErrorMessage);
             }
+            likeRepository.DeletedByUser(user);
             this.repository.Delete(id);
         }
 

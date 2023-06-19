@@ -15,6 +15,7 @@ namespace ForumManagementSystem.Models
         {
             CreateMap<CategoryDto, Category>();
             CreateMap<CommentDto, Comment>();
+            CreateMap<Comment, RequireCommentDto>();
             CreateMap<CreatePostDto, Post>();
             CreateMap<Post, CreatePostDto>();
             CreateMap<GetUserDto, User>();

@@ -14,7 +14,7 @@ namespace ForumManagementSystem.Repository
 
         Category Create(Category category);
 
-        Category Update(int id,Category category);
+        Category Update(int id, Category newCategory);
 
         Category Delete(int id);
 

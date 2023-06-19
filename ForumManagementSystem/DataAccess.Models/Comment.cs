@@ -14,16 +14,16 @@ namespace ForumManagementSystem.Models
         // Foreign key
         [JsonIgnore]
         public int UserId { get; set; }
-        
+        [JsonIgnore]
         // Navigation property
         public User CreatedBy { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")] //TODO  - MaxValue - post.Count
-
+        [JsonIgnore]
         // Foreign key
         public int PostId { get; set; }
-
+        [JsonIgnore]
         // Navigation property
         public Post Post { get; set; }
 

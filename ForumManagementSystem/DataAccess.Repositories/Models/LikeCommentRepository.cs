@@ -3,6 +3,7 @@ using DataAccess.Repositories.Contracts;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace DataAccess.Repositories.Models
             likeComment.CommentId = comment.Id;
             likeComment.IsLiked = true;
             comment.LikesCount++;
+            context.LikeComments.Add(likeComment);
             context.SaveChanges();
             return likeComment;
         }
@@ -78,6 +80,7 @@ namespace DataAccess.Repositories.Models
                            .FirstOrDefault();
                     comment.LikesCount--;
                 }
+                context.LikeComments.Remove(likeComment);
             }
             context.SaveChanges();
             return isDeleted;

@@ -14,6 +14,7 @@ namespace ForumManagementSystem.Repository
         }
         public Category Create(Category category)
         {
+            category.DateTime = DateTime.Now;
             context.Categories.Add(category);
             context.SaveChanges();
 
@@ -77,15 +78,16 @@ namespace ForumManagementSystem.Repository
         public Category GetByName(string name)
         {
             var category = context.Categories.Where(c => c.Name == name).FirstOrDefault();
-            return category ?? throw new EntityNotFoundException($"Category with name={name} doesn't exist.");
+            return category ?? throw new EntityNotFoundException($"Category with name {name} doesn't exist.");
         }
 
         public Category Update(int id, Category category)
         {
-            var categoryToUpdate = GetById(id);
+            Category categoryToUpdate = GetById(id);
             categoryToUpdate.Name = category.Name;
             categoryToUpdate.Description = category.Description;
             categoryToUpdate.DateTime = DateTime.Now;
+            
             context.SaveChanges();
 
             return categoryToUpdate;

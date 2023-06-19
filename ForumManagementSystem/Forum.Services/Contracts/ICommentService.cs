@@ -4,11 +4,7 @@ namespace ForumManagementSystem.Services
 {
     public interface ICommentService
     {
-        List<Comment> GetAll();
-
         Comment GetByID(int id);
-
-        Comment GetByUser(User user);
 
         List<Comment> FilterBy(CommentQueryParameters parameters);
 

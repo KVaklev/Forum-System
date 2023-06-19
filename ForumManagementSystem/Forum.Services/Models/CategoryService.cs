@@ -63,15 +63,21 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyCategoryErrorMessage);
             }
-
-            Category categoryToUpdate = this.repository.GetByName(category.Name);
-
-            if (categoryToUpdate.Id!=id)
+            try
             {
-                throw new DuplicateEntityException(Constants.CategoryExistingErrorMessage);
+                Category categoryToUpdate = this.repository.GetByName(category.Name);
+
+                if (categoryToUpdate.Id != id)
+                {
+                    throw new DuplicateEntityException(Constants.CategoryExistingErrorMessage);
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+               return this.repository.Update(id, category);
             }
 
-            return this.repository.Update(id, category); 
+            return this.repository.Update(id, category);
         }
     }
 }
