@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ForumManagementSystem.Models
 {
@@ -9,6 +10,7 @@ namespace ForumManagementSystem.Models
         public int Id { get; set; }
 
         // Navigation property
+        [JsonIgnore]
         public User CreatedBy { get; set; }
 
 
@@ -24,6 +26,7 @@ namespace ForumManagementSystem.Models
 
 
         // Navigation property
+        [JsonIgnore]
         public Category Category { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]

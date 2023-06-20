@@ -1,4 +1,5 @@
 ﻿using ForumManagementSystem.Models;
+using System.Text.Json.Serialization;
 
 namespace DataAccess.Models
 {
@@ -10,7 +11,9 @@ namespace DataAccess.Models
         public int TagId { get; set; }
 
         // Navigation property
+        [JsonIgnore]
         public Post Post { get; set; }
+        [JsonIgnore]
         public Tag Tag { get; set; }
     }
 }
