@@ -9,12 +9,9 @@ namespace Business.Dto
 {
     public class GetPostDto
     {
-        //public string Username { get; set; }
-        public int UserId { get; set; }
+        public string Username { get; set; }
         public string Title { get; set; }
-
-        //public string CategoryName { get; set; }
-        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public string Content { get; set; }
         public DateTime DateCreated { get; set; }
         public int LikesCount { get; set; }

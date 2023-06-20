@@ -21,7 +21,9 @@ namespace ForumManagementSystem.Models
             CreateMap<CreatePostDto, Post>();
             CreateMap<Post, CreatePostDto>();
             CreateMap<GetPostDto, Post>();
-            CreateMap<Post, GetPostDto>();
+            CreateMap<Post, GetPostDto>()
+            .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
+                .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Category.Name));
             CreateMap<GetUserDto, User>();
             CreateMap<CreateUserDto, User>();
             CreateMap<User, GetUserDto>();

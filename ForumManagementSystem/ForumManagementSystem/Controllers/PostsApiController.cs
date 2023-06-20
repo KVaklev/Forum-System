@@ -60,13 +60,17 @@ namespace ForumManagementSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetPostById(int id)
+        public IActionResult GetPostById(int id, [FromHeader] string credentials)
         {
             try
             {
                 Post post = this.postService.GetById(id);
 
-                return this.StatusCode(StatusCodes.Status200OK, post);
+                User user = this.authManager.TryGetUser(credentials);
+
+                GetPostDto getPostDto = mapper.Map<GetPostDto>(post);
+
+                return this.StatusCode(StatusCodes.Status200OK, getPostDto);
             }
             catch (EntityNotFoundException e)
             {

@@ -194,7 +194,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 1,
                             CountComment = 0,
                             CountPosts = 0,
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8368),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(178),
                             Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
                             Name = "Asian"
                         },
@@ -203,7 +203,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 2,
                             CountComment = 0,
                             CountPosts = 0,
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8415),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(217),
                             Description = "European countries related discussions in this forum and that includes the UK as well you dumbo!",
                             Name = "Europe"
                         },
@@ -212,7 +212,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 3,
                             CountComment = 0,
                             CountPosts = 0,
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8417),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(219),
                             Description = "Yes USA and Canada and whatever else is up there. Please feel free to ask why they drive on the wrong side of the road if you like.",
                             Name = "North America"
                         },
@@ -221,7 +221,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 7,
                             CountComment = 0,
                             CountPosts = 0,
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8419),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(221),
                             Description = "Discussions about Antarctica or anything else.",
                             Name = "Others"
                         });
@@ -265,7 +265,7 @@ namespace DataAccess.Repositories.Migrations
                         {
                             Id = 1,
                             Content = "The best town!",
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8454),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(290),
                             LikesCount = 0,
                             PostId = 1,
                             UserId = 1
@@ -274,7 +274,7 @@ namespace DataAccess.Repositories.Migrations
                         {
                             Id = 2,
                             Content = "The worst town!",
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8458),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(293),
                             LikesCount = 0,
                             PostId = 2,
                             UserId = 2
@@ -325,7 +325,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8435),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(270),
                             PostLikesCount = 0,
                             Title = "Cooking Your Food",
                             UserId = 2
@@ -335,7 +335,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 2,
                             CategoryId = 2,
                             Content = "So the help which I require is that I would like to know what things to do in Windsor?",
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8439),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(274),
                             PostLikesCount = 0,
                             Title = "Things To Do In Windsor",
                             UserId = 3
@@ -345,7 +345,7 @@ namespace DataAccess.Repositories.Migrations
                             Id = 3,
                             CategoryId = 3,
                             Content = "Any recommendations of areas to look into in either Washington or Northern California?",
-                            DateTime = new DateTime(2023, 6, 19, 22, 53, 18, 897, DateTimeKind.Local).AddTicks(8441),
+                            DateTime = new DateTime(2023, 6, 20, 14, 46, 47, 434, DateTimeKind.Local).AddTicks(276),
                             PostLikesCount = 0,
                             Title = "Camping In The Northwest",
                             UserId = 3
@@ -456,7 +456,7 @@ namespace DataAccess.Repositories.Migrations
             modelBuilder.Entity("DataAccess.Models.LikePost", b =>
                 {
                     b.HasOne("ForumManagementSystem.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("LikePosts")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -545,6 +545,8 @@ namespace DataAccess.Repositories.Migrations
             modelBuilder.Entity("ForumManagementSystem.Models.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("LikePosts");
 
                     b.Navigation("PostTags");
                 });

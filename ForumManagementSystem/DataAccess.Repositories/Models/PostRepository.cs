@@ -35,6 +35,7 @@ namespace ForumManagementSystem.Repository
         {
             Post post = context.Posts
                 .Include(post =>post.CreatedBy)
+                .Include(post => post.Category)
                 .Include(post=>post.PostTags)
                 .ThenInclude(pt=>pt.Tag)
                 .FirstOrDefault(p=>p.Id == id);
@@ -80,6 +81,7 @@ namespace ForumManagementSystem.Repository
         public Post Create(Post post, User user)
         {
             post.CreatedBy = user;
+            post.PostLikesCount = 0;
             context.Posts.Add(post);
             context.SaveChanges();
 
@@ -97,7 +99,10 @@ namespace ForumManagementSystem.Repository
 
         public List<Post> FilterBy(PostQueryParameters filterParameters)
         {
-            List<Post> result = context.Posts.ToList();
+            List<Post> result = context.Posts
+                .Include(u => u.CreatedBy)
+                .Include(c => c.Category)
+                .ToList();
 
             if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
             {

@@ -41,6 +41,7 @@ namespace DataAccess.Repositories.Models
             likePost.PostId = post.Id;
             likePost.IsLikedPost = true;
             post.PostLikesCount++;
+            context.LikePosts.Add(likePost);
             context.SaveChanges();
             return likePost;
         }
