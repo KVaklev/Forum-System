@@ -17,5 +17,7 @@ namespace DataAccess.Repositories.Contracts
 
         Tag Delete(int id);
 
+        bool NameExists(string name);
+
     }
 }

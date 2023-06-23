@@ -12,7 +12,7 @@ namespace Business.Services.Contracts
 
         Tag GetByName(string name);
 
-        Tag Create(string tagName, User loggedUser);
+        Tag Create(string tagName);
 
         Tag Edit(int id, Tag tag, User loggedUsed);
 

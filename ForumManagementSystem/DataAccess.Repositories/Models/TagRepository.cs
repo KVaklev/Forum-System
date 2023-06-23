@@ -55,5 +55,9 @@ namespace DataAccess.Repositories.Models
             return tagToEdit;
         }
 
+        public bool NameExists(string name)
+        {
+            return context.Tags.Any(u => u.Name == name);
+        }
     }
 }

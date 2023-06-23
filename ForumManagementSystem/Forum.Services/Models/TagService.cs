@@ -28,14 +28,8 @@ namespace Business.Services.Models
         {
             return this.repository.GetByName(name);
         }
-        public Tag Create(string tagName, User loggedUser)
+        public Tag Create(string tagName)
         {
-
-            if (loggedUser == null || !loggedUser.IsAdmin)
-            {
-                throw new UnauthenticatedOperationException(Constants.ModifyCreateTagErrorMessage);
-            }
-
             try
             {
                 Tag existingTag = this.repository.GetByName(tagName);
@@ -71,18 +65,8 @@ namespace Business.Services.Models
             {
                 throw new UnauthorizedOperationException(Constants.ModifyTagErrorMessage);
             }
-            bool duplicateExists = false;
-
-            try
-            {
-                this.repository.GetByName(tag.Name);
-            }
-            catch (EntityNotFoundException)
-
-            {
-                duplicateExists = true;
-            }
-            if (duplicateExists)
+ 
+            if (this.repository.NameExists(tag.Name))
             {
                 throw new DuplicateEntityException($"Tag with name '{tag.Name}' already exists.");
             }

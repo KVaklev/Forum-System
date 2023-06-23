@@ -157,7 +157,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act
 
-            Tag actualTag = sut.Create(testTag.Name, loggedUser);
+            Tag actualTag = sut.Create(testTag.Name);
 
             //Assert
 
@@ -203,7 +203,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act
 
-            Tag actualTag = sut.Create(testTag.Name, loggedUser);
+            Tag actualTag = sut.Create(testTag.Name);
 
             //Assert
 

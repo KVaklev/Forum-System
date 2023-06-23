@@ -57,7 +57,7 @@ namespace ForumManagementSystem.Services
                 foreach (var name in tagsToAdd)
                 {
 
-                    Tag tag = this.tagService.Create(name, user);
+                    Tag tag = this.tagService.Create(name);
 
                     this.repository.AddTagToPost(tag.Id, createdPost.Id);
                 }
@@ -86,7 +86,7 @@ namespace ForumManagementSystem.Services
 
             foreach (var name in tagsToAdd)
             {
-                Tag tag = this.tagService.Create(name, loggedUser);
+                Tag tag = this.tagService.Create(name);
 
                 this.repository.AddTagToPost(tag.Id, updatedPost.Id);
             }
