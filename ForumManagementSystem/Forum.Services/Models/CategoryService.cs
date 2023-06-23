@@ -14,6 +14,7 @@ namespace ForumManagementSystem.Services
         {
             this.repository = repository;
         }
+
         public Category Create(Category category, User user)
         {
             if (!user.IsAdmin)
