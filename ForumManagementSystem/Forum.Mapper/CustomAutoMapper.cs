@@ -23,7 +23,8 @@ namespace ForumManagementSystem.Models
             CreateMap<GetPostDto, Post>();
             CreateMap<Post, GetPostDto>()
             .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
-                .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Category.Name));
+                .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Category.Name))
+                .ForMember(c => c.DateCreated, u => u.MapFrom(c => c.DateTime));
             CreateMap<GetUserDto, User>();
             CreateMap<CreateUserDto, User>();
             CreateMap<User, GetUserDto>();

@@ -16,5 +16,9 @@
 
         //Constants for comment
         public const string ModifyCommentErrorMessage = "Only an admin or unblocked user can create or modify a comment.";
+
+        //Constants for tag
+        public const string ModifyTagErrorMessage = "Only an admin can modify the tag.";
+        public const string ModifyCreateTagErrorMessage = "Only an admin or registered user can create tag.";
     }
 }

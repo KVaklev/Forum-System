@@ -1,5 +1,6 @@
 ﻿using Business.Exceptions;
 using Business.Services.Contracts;
+using Business.Services.Helpers;
 using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
@@ -11,8 +12,6 @@ namespace Business.Services.Models
     {
         private readonly ITagRepository repository;
 
-        private const string ModifyTagErrorMessage = "Only an admin can modify the tag.";
-        private const string ModifyCreateTagErrorMessage = "Only an admin or registered user can create tag.";
         public TagService(ITagRepository repository)
         {
            this.repository=repository;
@@ -29,14 +28,8 @@ namespace Business.Services.Models
         {
             return this.repository.GetByName(name);
         }
-        public Tag Create(string tagName, User loggedUser)
+        public Tag Create(string tagName)
         {
-
-            if (loggedUser == null || !loggedUser.IsAdmin)
-            {
-                throw new UnauthenticatedOperationException(ModifyCreateTagErrorMessage);
-            }
-
             try
             {
                 Tag existingTag = this.repository.GetByName(tagName);
@@ -58,7 +51,7 @@ namespace Business.Services.Models
 
             if (!loggedUser.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyTagErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyTagErrorMessage);
             }
 
             this.repository.Delete(id);
@@ -70,20 +63,10 @@ namespace Business.Services.Models
 
             if (!loggedUser.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyTagErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyTagErrorMessage);
             }
-            bool duplicateExists = false;
-
-            try
-            {
-                this.repository.GetByName(tag.Name);
-            }
-            catch (EntityNotFoundException)
-
-            {
-                duplicateExists = true;
-            }
-            if (duplicateExists)
+ 
+            if (this.repository.NameExists(tag.Name))
             {
                 throw new DuplicateEntityException($"Tag with name '{tag.Name}' already exists.");
             }
