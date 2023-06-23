@@ -82,6 +82,7 @@ namespace ForumManagementSystem.Repository
         {
             post.CreatedBy = user;
             post.PostLikesCount = 0;
+            post.DateTime = DateTime.Now;
             context.Posts.Add(post);
             context.SaveChanges();
 
