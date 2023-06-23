@@ -90,7 +90,7 @@ namespace ForumManagementSystem.Services
         {
             bool isAuthorized = false;
 
-            if (user.Equals(loggedUser) || loggedUser.IsAdmin)
+            if (user.Id == loggedUser.Id || loggedUser.IsAdmin)
             {
                 isAuthorized = true;
             }
