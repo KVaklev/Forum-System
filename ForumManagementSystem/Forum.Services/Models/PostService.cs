@@ -5,6 +5,7 @@ using Business.Exceptions;
 using Business.Services.Contracts;
 using DataAccess.Models;
 using Business.Services.Helpers;
+using DataAccess.Repositories.Contracts;
 
 namespace ForumManagementSystem.Services
 {
@@ -12,10 +13,12 @@ namespace ForumManagementSystem.Services
     {
         private readonly IPostRepository repository;
         private readonly ITagService tagService;
-        public PostService(IPostRepository repository, ITagService tagService)
+        private readonly ILikePostRepository likePostRepository;
+        public PostService(IPostRepository repository, ITagService tagService, ILikePostRepository likePostRepository)
         {
             this.repository = repository;
             this.tagService = tagService;
+            this.likePostRepository = likePostRepository;
         }
         public List<Post> GetAll()
         {
