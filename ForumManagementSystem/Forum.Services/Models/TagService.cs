@@ -1,5 +1,6 @@
 ﻿using Business.Exceptions;
 using Business.Services.Contracts;
+using Business.Services.Helpers;
 using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
@@ -11,8 +12,6 @@ namespace Business.Services.Models
     {
         private readonly ITagRepository repository;
 
-        private const string ModifyTagErrorMessage = "Only an admin can modify the tag.";
-        private const string ModifyCreateTagErrorMessage = "Only an admin or registered user can create tag.";
         public TagService(ITagRepository repository)
         {
            this.repository=repository;
@@ -34,7 +33,7 @@ namespace Business.Services.Models
 
             if (loggedUser == null || !loggedUser.IsAdmin)
             {
-                throw new UnauthenticatedOperationException(ModifyCreateTagErrorMessage);
+                throw new UnauthenticatedOperationException(Constants.ModifyCreateTagErrorMessage);
             }
 
             try
@@ -58,7 +57,7 @@ namespace Business.Services.Models
 
             if (!loggedUser.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyTagErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyTagErrorMessage);
             }
 
             this.repository.Delete(id);
@@ -70,7 +69,7 @@ namespace Business.Services.Models
 
             if (!loggedUser.IsAdmin)
             {
-                throw new UnauthorizedOperationException(ModifyTagErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyTagErrorMessage);
             }
             bool duplicateExists = false;
 
