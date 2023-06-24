@@ -141,7 +141,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Assert
 
-            Assert.AreEqual(expectedCategory, categoryRepositoryMock);
+            Assert.AreEqual(expectedCategory,categories);
 
         }
 
@@ -184,7 +184,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             categoryRepositoryMock
                 .Setup(repo => repo.GetById(1))
-                .Throws(new UnauthorizedOperationException("Only an admin can modify a category."));
+                .Returns(testCategory);
 
             var sut = new CategoryService(categoryRepositoryMock.Object);
 
