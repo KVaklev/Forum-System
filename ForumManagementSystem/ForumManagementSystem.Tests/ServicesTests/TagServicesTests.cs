@@ -4,9 +4,7 @@ using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
-using ForumManagementSystem.Repository;
-using ForumManagementSystem.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ForumManagementSystem.Tests.Helpers;
 using Moq;
 
 namespace ForumManagementSystem.Tests.ServicesTests
@@ -19,16 +17,12 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            Tag expectedTag = new Tag()
-            {
-                Id = 1,
-                Name = "Bmw"
-            };
+            Tag expectedTag = TestHelpers.GetTestTag();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
          
             tagRepositoryMock
-                .Setup(repo => repo.GetById(1))
+                .Setup(repo => repo.GetById(expectedTag.Id))
                 .Returns(expectedTag);
 
             var sut = new TagService(tagRepositoryMock.Object);
@@ -48,16 +42,12 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            Tag expectedTag = new Tag()
-            {
-                Id = 1,
-                Name = "Bmw"
-            };
+            Tag expectedTag = TestHelpers.GetTestTag();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
 
             tagRepositoryMock
-                .Setup(repo => repo.GetByName("Bmw"))
+                .Setup(repo => repo.GetByName(expectedTag.Name))
                 .Returns(expectedTag);
 
             var sut = new TagService(tagRepositoryMock.Object);
@@ -77,26 +67,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            List<Tag> tags = new List<Tag>()
-            {
-                new Tag()
-                {
-                    Id= 1,
-                    Name = "Bmw"
-                },
-
-                new Tag()
-                {
-                    Id= 2,
-                    Name = "Fiat",
-                },
-
-                new Tag()
-                {
-                    Id= 3,
-                    Name = "Toyota",
-                }
-            };
+            List<Tag> tags = TestHelpers.GetTestListTags();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
 
@@ -113,35 +84,16 @@ namespace ForumManagementSystem.Tests.ServicesTests
             //Assert
 
             Assert.AreEqual(expectedTags, tags);
-
         }
-
-        // => The first test verifies that an existing tag is correctly returned when all parameters are valid.
-        // => The second test verifies the creation of a new tag when the tag name doesn't exist.
 
         [TestMethod]
         public void CreateTag_Should_ReturnCorrectTag_When_ParametersAreValid()
         {
             //Arrange
 
-            Tag testTag = new Tag()
-            {
-                Id = 1,
-                Name = "TestTag"
-            };
+            Tag testTag = TestHelpers.GetTestTag();
 
-            User loggedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
+            User loggedUser = TestHelpers.GetTestUser();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
 
@@ -169,27 +121,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            Tag testTag = new Tag()
-            {
-                Id = 1,
-                Name = "TestTag"
-            };
+            Tag testTag = TestHelpers.GetTestTag();
 
-            User loggedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
+            User loggedUser = TestHelpers.GetTestUser();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
-
 
             tagRepositoryMock
                 .Setup(repo => repo.GetByName(testTag.Name))
@@ -210,34 +146,65 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.AreEqual(testTag.Name, actualTag.Name);
         }
 
-        //[TestMethod]
-        //public void CreateTag_Should_ThrowException_When_LoggedUserIsNull()
-        //{
+        [TestMethod]
+        public void EditTag_Should_ThrowException_When_LoggedUserIsNotAuthorized()
+        {
+            //Arrange
 
-        //}
+            Tag existingTag = TestHelpers.GetTestTag();
+
+            User loggedUser = TestHelpers.GetTestUser();
+
+            Tag newTag = TestHelpers.GetTestEditTag();
+
+            var tagRepositoryMock = new Mock<ITagRepository>();
+
+            tagRepositoryMock
+                .Setup(repo => repo.GetById(existingTag.Id))
+                .Returns(existingTag);
+
+            var sut = new TagService(tagRepositoryMock.Object);
+
+            //Act & Assert
+
+            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Edit(existingTag.Id, newTag, loggedUser));
+        }
+
+        [TestMethod]
+        public void EditTag_Should_ThrowException_When_TagWithNameExists()
+        {
+            //Arrange
+
+            Tag existingTag = TestHelpers.GetTestTag();
+
+            Tag newTag = TestHelpers.GetTestTag();
+
+            User loggedUser = TestHelpers.GetTestUserAdmin();
+
+            var tagRepositoryMock = new Mock<ITagRepository>();
+
+            tagRepositoryMock
+                .Setup(repo => repo.GetById(existingTag.Id))
+                .Returns(existingTag);
+            tagRepositoryMock
+                .Setup(repo=>repo.NameExists(newTag.Name))
+                .Returns(true);
+
+            var sut = new TagService(tagRepositoryMock.Object);
+
+            //Act & Assert
+
+            Assert.ThrowsException<DuplicateEntityException>(() => sut.Edit(existingTag.Id, newTag, loggedUser));
+        }
+
         [TestMethod]
         public void DeleteTag_Should__When_UserIsAdmin()
         {
             //Arrange 
 
-            User loggedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
+            User loggedUser = TestHelpers.GetTestUserAdmin();
 
-            Tag tagToDelete = new Tag()
-            {
-                Id = 1,
-                Name = "Bmw"
-            };
+            Tag tagToDelete = TestHelpers.GetTestTag();
                
             var tagRepositoryMock = new Mock<ITagRepository>();
            
@@ -253,7 +220,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act 
 
-            sut.Delete(1, loggedUser);
+            sut.Delete(tagToDelete.Id, loggedUser);
 
             //Assert
 
@@ -266,24 +233,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange 
 
-            User loggedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User loggedUser = TestHelpers.GetTestUser();
 
-            Tag tagToDelete = new Tag()
-            {
-                Id = 1,
-                Name = "Bmw"
-            };
+            Tag tagToDelete = TestHelpers.GetTestTag();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
 
@@ -299,7 +251,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act & Assert
 
-            Assert.ThrowsException <UnauthorizedOperationException>(() => sut.Delete(1, loggedUser));
+            Assert.ThrowsException <UnauthorizedOperationException>(() => sut.Delete(tagToDelete.Id, loggedUser));
         }
 
         [TestMethod]
@@ -307,30 +259,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            Tag existingTag = new Tag()
-            {
-                Id = 1,
-                Name = "Bmw"
-            };
+            Tag existingTag = TestHelpers.GetTestTag();
 
-            Tag editedTag = new Tag()
-            {
-                Id = 1,
-                Name = "NewName"
-            };
+            User loggedUser = TestHelpers.GetTestUserAdmin();
 
-            User loggedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
+            Tag editedTag = TestHelpers.GetTestEditTag();
 
             var tagRepositoryMock = new Mock<ITagRepository>();
 
