@@ -4,7 +4,7 @@ using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ForumManagementSystem.Tests.Helpers;
 using Moq;
 
 namespace ForumManagementSystem.Tests.ServicesTests
@@ -17,19 +17,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User expectedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
-
+            User expectedUser = TestHelpers.GetTestUser();
+          
             var userRepositoryMock= new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
@@ -72,32 +61,25 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void CreateUser_Should_ReturnCorrectUser_When_ParametersAreValid()
         {
             //Arrange
-            User testUser = new User()
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
 
+            User createdUser = TestHelpers.GetTestCreateUser();
+           
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
             userRepositoryMock
-                .Setup(repo => repo.Create(testUser))
-                .Returns(testUser);
+                .Setup(repo => repo.Create(createdUser))
+                .Returns(createdUser);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
             //Act
 
-            User actualUser = sut.Create(testUser);
+            User actualUser = sut.Create(createdUser);
 
             //Assert
 
-            Assert.AreEqual(testUser, actualUser);
+            Assert.AreEqual(createdUser, actualUser);
         }
 
         [TestMethod]
@@ -105,16 +87,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User testUser = new User()
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
-
+            User createdUser = TestHelpers.GetTestCreateUser();
+            
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
@@ -126,7 +100,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act & Assert
 
-            Assert.ThrowsException<DuplicateEntityException>(()=>sut.Create(testUser));
+            Assert.ThrowsException<DuplicateEntityException>(()=>sut.Create(createdUser));
         }
 
         [TestMethod]
@@ -134,15 +108,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User testUser = new User()
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
+            User createdUser = TestHelpers.GetTestCreateUser();
 
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
@@ -155,7 +121,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act & Assert
 
-            Assert.ThrowsException<DuplicateEntityException>(() => sut.Create(testUser));
+            Assert.ThrowsException<DuplicateEntityException>(() => sut.Create(createdUser));
         }
 
         [TestMethod]
@@ -163,31 +129,10 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange 
 
-            User loggedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
-            User userToDelete = new User()
-            {
-                Id = 3,
-                FirstName = "Mara",
-                LastName = "Dobreva",
-                Email = "m.dobreva@gmail.com",
-                Username = "marcheto",
-                Password = "fjsdda",
-                PhoneNumber = "0797556285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
-
+            User loggedUser = TestHelpers.GetTestUser();
+            
+            User userToDelete = TestHelpers.GetTestDeleteUser();
+     
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
@@ -205,7 +150,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act & Assert
 
-            Assert.ThrowsException <UnauthorizedOperationException>(() => sut.Delete(3, loggedUser));
+            Assert.ThrowsException <UnauthorizedOperationException>(() => sut.Delete(userToDelete.Id, loggedUser));
 
         }
 
@@ -214,31 +159,10 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange 
 
-            User loggedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
-            User userToDelete = new User()
-            {
-                Id = 3,
-                FirstName = "Mara",
-                LastName = "Dobreva",
-                Email = "m.dobreva@gmail.com",
-                Username = "marcheto",
-                Password = "fjsdda",
-                PhoneNumber = "0797556285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
-
+            User loggedUser = TestHelpers.GetTestUserAdmin();
+            
+            User userToDelete = TestHelpers.GetTestDeleteUser();
+           
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
@@ -256,7 +180,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             //Act 
 
-            sut.Delete(3, loggedUser);
+            sut.Delete(userToDelete.Id, loggedUser);
 
             //Assert
 
@@ -271,48 +195,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            List<User> users = new List<User>()
-            {
-                new User
-                {
-                     Id = 1,
-                     FirstName = "Ivan",
-                     LastName = "Draganov",
-                     Email = "i.draganov@gmail.com",
-                     Username = "ivanchoDraganchov",
-                     Password = "MTIz",
-                     PhoneNumber = "0897556285",
-                     IsAdmin = true,
-                     IsBlocked = false
-                },
-
-                new User
-                {
-                     Id = 2,
-                     FirstName = "Mariq",
-                     LastName = "Petrova",
-                     Email = "m.petrova@gmail.com",
-                     Username = "mariicheto",
-                     Password = "wdljsl",
-                     PhoneNumber = "0897554285",
-                     IsAdmin = false,
-                     IsBlocked = false
-                },
-
-                new User
-                {
-                     Id=3,
-                     FirstName = "Mara",
-                     LastName = "Dobreva",
-                     Email = "m.dobreva@gmail.com",
-                     Username = "marcheto",
-                     Password = "fjsdda",
-                     PhoneNumber = "0797556285",
-                     IsAdmin = false,
-                     IsBlocked = false
-                }
-            };
-
+            List<User> users = TestHelpers.GetTestListUsers();
+           
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
@@ -329,7 +213,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
             //Assert
 
             Assert.AreEqual(expectedUsers, users);
-
         }
 
         [TestMethod]
@@ -337,24 +220,13 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User expectedUser = new User()
-            {
-                Id = 1,
-                FirstName = "Ivan",
-                LastName = "Draganov",
-                Email = "i.draganov@gmail.com",
-                Username = "ivanchoDraganchov",
-                Password = "MTIz",
-                PhoneNumber = "0897556285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
+            User expectedUser = TestHelpers.GetTestUser();
 
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
             userRepositoryMock
-                .Setup(repo => repo.GetByUsername("ivanchoDraganchov"))
+                .Setup(repo => repo.GetByUsername(expectedUser.Username))
                 .Returns(expectedUser);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
@@ -373,40 +245,12 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToUpdate = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
-
-            User loggedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
-
-            User user = new User()
-            {
-                Id = 2,
-                FirstName = "Mareto",
-                LastName = "Petrovka",
-                Username = null
-            };
-
+            User userToUpdate = TestHelpers.GetTestUpdateUser();
+            
+            User loggedUser = TestHelpers.GetTestUpdateUser();
+       
+            User user = TestHelpers.GetTestUpdateUserInfo();
+           
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
@@ -414,14 +258,14 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo=>repo.GetById(2))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.Update(2, user))
+                .Setup(repo => repo.Update(userToUpdate.Id, user))
                 .Returns(user);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
             //Act
 
-            User updatedUser = sut.Update(2, user, loggedUser);
+            User updatedUser = sut.Update(userToUpdate.Id, user, loggedUser);
 
             //Assert
 
@@ -433,31 +277,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToUpdate = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User userToUpdate = TestHelpers.GetTestUpdateUser();
 
-            User loggedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User loggedUser = TestHelpers.GetTestUpdateUser();
 
             User user = new User()
             {
@@ -471,17 +293,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
             userRepositoryMock
-                .Setup(repo => repo.GetById(2))
+                .Setup(repo => repo.GetById(userToUpdate.Id))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.Update(2, user))
+                .Setup(repo => repo.Update(userToUpdate.Id, user))
                 .Returns(user);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
             //Act & Assert
 
-            Assert.ThrowsException<InvalidOperationException>(() => sut.Update(2, user, loggedUser));
+            Assert.ThrowsException<InvalidOperationException>(() => sut.Update(userToUpdate.Id, user, loggedUser));
         }
 
         [TestMethod]
@@ -489,32 +311,10 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToUpdate = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User userToUpdate = TestHelpers.GetTestUpdateUser();
 
-            User loggedUser = new User()
-            {
-                Id = 3,
-                FirstName = "Mara",
-                LastName = "Dobreva",
-                Email = "m.dobreva@gmail.com",
-                Username = "marcheto",
-                Password = "fjsdda",
-                PhoneNumber = "0797556285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
-
+            User loggedUser = TestHelpers.GetTestUser();
+         
             User user = new User()
             {
                 Id = 2,
@@ -527,17 +327,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
             userRepositoryMock
-                .Setup(repo => repo.GetById(2))
+                .Setup(repo => repo.GetById(userToUpdate.Id))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.Update(2, user))
+                .Setup(repo => repo.Update(userToUpdate.Id, user))
                 .Returns(user);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
             //Act & Assert
 
-            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Update(2, user, loggedUser));
+            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Update(userToUpdate.Id, user, loggedUser));
         }
 
         [TestMethod]
@@ -545,31 +345,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToUpdate = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User userToUpdate = TestHelpers.GetTestUpdateUser();
 
-            User loggedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User loggedUser = TestHelpers.GetTestUpdateUser();
 
             User user = new User()
             {
@@ -583,17 +361,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
             userRepositoryMock
-                .Setup(repo => repo.GetById(2))
+                .Setup(repo => repo.GetById(userToUpdate.Id))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.EmailExists("m.dobreva@gmail.com"))
+                .Setup(repo => repo.EmailExists(user.Email))
                 .Returns(true);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
             //Act & Assert
 
-            Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(2, user, loggedUser));
+            Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(userToUpdate.Id, user, loggedUser));
         }
 
         [TestMethod]
@@ -601,31 +379,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToPromote = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User userToPromote = TestHelpers.GetTestUpdateUser();
 
-            User expectedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = true,
-                IsBlocked = false
-            };
+            User expectedUser = TestHelpers.GetTestExpectedUserAsAdmin();
 
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
@@ -651,31 +407,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToBlock = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User userToBlock = TestHelpers.GetTestUpdateUser();
 
-            User expectedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = true
-            };
+            User expectedUser = TestHelpers.GetTestExpectedUserAsBlocked();
 
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
@@ -701,44 +435,22 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            User userToBlock = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = true
-            };
+            User userToUnblock = TestHelpers.GetTestExpectedUserAsBlocked();
 
-            User expectedUser = new User()
-            {
-                Id = 2,
-                FirstName = "Mariq",
-                LastName = "Petrova",
-                Email = "m.petrova@gmail.com",
-                Username = "mariicheto",
-                Password = "wdljsl",
-                PhoneNumber = "0897554285",
-                IsAdmin = false,
-                IsBlocked = false
-            };
+            User expectedUser = TestHelpers.GetTestExpectedUserAsUnblocked();
 
             var userRepositoryMock = new Mock<IUserRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
             userRepositoryMock
-                .Setup(repo => repo.UnblockUser(userToBlock))
+                .Setup(repo => repo.UnblockUser(userToUnblock))
                 .Returns(expectedUser);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
             //Act
 
-            User actualUser = sut.UnblockUser(userToBlock);
+            User actualUser = sut.UnblockUser(userToUnblock);
 
             //Assert
 
@@ -750,63 +462,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
 
-            List<User> users = new List<User>()
-            {
-                new User
-                {
-                     Id = 1,
-                     FirstName = "Ivan",
-                     LastName = "Draganov",
-                     Email = "i.draganov@gmail.com",
-                     Username = "ivanchoDraganchov",
-                     Password = "MTIz",
-                     PhoneNumber = "0897556285",
-                     IsAdmin = true,
-                     IsBlocked = false
-                },
+            List<User> users = TestHelpers.GetTestListUsers();
 
-                new User
-                {
-                     Id = 2,
-                     FirstName = "Mariq",
-                     LastName = "Petrova",
-                     Email = "m.petrova@gmail.com",
-                     Username = "mariicheto",
-                     Password = "wdljsl",
-                     PhoneNumber = "0897554285",
-                     IsAdmin = false,
-                     IsBlocked = false
-                },
-
-                new User
-                {
-                     Id=3,
-                     FirstName = "Mara",
-                     LastName = "Dobreva",
-                     Email = "m.dobreva@gmail.com",
-                     Username = "marcheto",
-                     Password = "fjsdda",
-                     PhoneNumber = "0797556285",
-                     IsAdmin = false,
-                     IsBlocked = false
-                }
-            };
-
-            List<User> expectedUsers = new List<User>()
-            {
-                new User
-                {
-                     Id = 1,
-                     FirstName = "Ivan",
-                     LastName = "Draganov",
-                     Email = "i.draganov@gmail.com",
-                     Username = "ivanchoDraganchov",
-                     Password = "MTIz",
-                     PhoneNumber = "0897556285",
-                     IsAdmin = true,
-                     IsBlocked = false
-                }
-            };
+            List<User> expectedUsers = TestHelpers.GetTestExpectedListUsers();
 
             UserQueryParameters filterParameters = new UserQueryParameters()
             {
