@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Presentation.Helpers
 {
-    public class AuthManager
+    public class AuthManager : IAuthManager
     {
         private readonly IUserService userService;
 

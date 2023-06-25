@@ -21,6 +21,7 @@
     <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj" />
     <ProjectReference Include="..\DataAccess.Repositories\DataAccess.Repositories.csproj" />
     <ProjectReference Include="..\Forum.Services\Business.Services.csproj" />
+    <ProjectReference Include="..\ForumManagementSystem\ForumManagementSystem.csproj" />
     <ProjectReference Include="..\Presentation.Helpers\Presentation.Helpers.csproj" />
   </ItemGroup>
 
