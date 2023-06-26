@@ -84,7 +84,6 @@ namespace ForumManagementSystem.Repository
         public Category Update(int id, Category category)
         {
             Category categoryToUpdate = GetById(id);
-            categoryToUpdate.Name = category.Name;
             categoryToUpdate.Description = category.Description;
             categoryToUpdate.DateTime = DateTime.Now;
             

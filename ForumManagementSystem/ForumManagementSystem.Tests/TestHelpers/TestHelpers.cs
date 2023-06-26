@@ -17,6 +17,26 @@ namespace ForumManagementSystem.Tests.Helpers
                 DateTime = DateTime.Now
             };
         }
+        public static Category GetTestCategoryToUpdate()
+        {
+            return new Category
+            {
+                Id = 1,
+                Name = "Asia",
+                Description = "Discussions about all the countries.",
+                DateTime = DateTime.Now
+            };
+        }
+        public static Category GetTestCategoryWithDuplicateName()
+        {
+            return new Category
+            {
+                Id = 8,
+                Name = "Asia",
+                Description = "Discussions about all the countries.",
+                DateTime = DateTime.Now
+            };
+        }
         public static Category GetTestNewCategory()
         {
             return new Category
@@ -383,6 +403,29 @@ namespace ForumManagementSystem.Tests.Helpers
                     DateTime = DateTime.Now
                 }
             };
+        }
+
+        public static LikeComment GetLikeCommentIsLiked()
+        {
+            return new LikeComment() 
+            {
+            Id=1,
+            UserId=1,
+            CommentId=1,
+            IsLiked=true
+            };
+
+        }
+        public static LikeComment GetLikeCommentIsNoLiked()
+        {
+            return new LikeComment()
+            {
+                Id = 1,
+                UserId = 1,
+                CommentId = 1,
+                IsLiked = false
+            };
+
         }
     }
 }
