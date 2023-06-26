@@ -1,15 +1,25 @@
 ﻿using Business.Exceptions;
 using Business.Services.Contracts;
+using Business.Services.Helpers;
 using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Buffers.Text;
 using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
+using System.Reflection;
+using System.Security.AccessControl;
+using System.Web.Http.Services;
+using ForumManagementSystem.Tests.Helpers;
 
 namespace ForumManagementSystem.Tests.ServicesTests
 {
@@ -20,37 +30,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void GetAll_ShouldReturnAllPosts_WhenParamsAreValid()
         {
             // Arrange
-            List<Post> expectedPosts = new List<Post>()
-            {
-                new Post()
-                {
-                    Id = 1,
-                    Title = "Post 1",
-                    Content = "Content of post 1",
-                    UserId = 1,
-                    CategoryId = 1,
-                    DateTime = DateTime.Now
-                },
-                new Post()
-                {
-                    Id = 2,
-                    Title = "Post 2",
-                    Content = "Content of post 2",
-                    UserId = 2,
-                    CategoryId = 2,
-                    DateTime = DateTime.Now
-                },
 
-                new Post()
-                {
-                    Id = 3,
-                    Title = "Post 3",
-                    Content = "Content of post 3",
-                    UserId = 3,
-                    CategoryId = 1,
-                    DateTime = DateTime.Now
-                }
-            };
+            List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -78,16 +59,9 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void GetByPostId_ShouldReturnPost_WhenParamsAreValid()
         {
             //Arrange
-            Post expectedPost = new Post()
-            {
 
-                Id = 1,
-                Title = "Cooking Your Food",
-                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-                UserId = 2,
-                CategoryId = 1,
-                DateTime = DateTime.Now
-            };
+            Post expectedPost = TestHelpers.GetTestPost();
+
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -126,16 +100,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void CheckIfReturnedPostHasExpectedUser_ShouldBeTrue_WhenParamsAreValid()
         {
             // Arrange
-            int userId = 2;
-            Post expectedPost = new Post()
-            {
-                Id = 1,
-                Title = "Cooking Your Food",
-                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-                UserId = userId,
-                CategoryId = 1,
-                DateTime = DateTime.Now
-            };
+
+            Post expectedPost = TestHelpers.GetTestPost();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -150,33 +116,16 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             // Assert
             Assert.AreEqual(expectedPost, actualPost);
-            Assert.AreEqual(userId, actualPost.UserId);
+            Assert.AreEqual(2, actualPost.UserId);
         }
 
         [TestMethod]
         public void GetByUser_ShouldReturnPost_WhenParamsAreValid()
         {
             //Arrange
-            User testUser = new User()
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
+            User testUser = TestHelpers.GetTestUser();
 
-            Post expectedPost = new Post()
-            {
-                Id = 1,
-                Title = "Cooking Your Food",
-                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-                UserId = 2,
-                CategoryId = 1,
-                DateTime = DateTime.Now
-            };
-
+            Post expectedPost = TestHelpers.GetTestPost();
 
 
             var postRepositoryMock = new Mock<IPostRepository>();
@@ -204,18 +153,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 UserId = 1
             };
 
-            List<Post> expectedPosts = new List<Post>
-            {
-                  new Post
-                  {
-                      Id = 2,
-                      Title = "Cooking Your Food",
-                      Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks          breakfast   at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a  vacation    should  be     savored to  the  fullest.",
-                      UserId = 1,
-
-                  },
-
-            };
+            List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -242,17 +180,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 Username = "ivanchoDraganchov"
             };
 
-            List<Post> expectedPosts = new List<Post>
-            {
-                  new Post
-                  {
-                      Id = 2,
-                      Title = "Cooking Your Food",
-                      Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks          breakfast   at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a  vacation    should  be     savored to  the  fullest.",
-                      UserId = 1,
-
-                  },
-            };
+            List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -267,33 +195,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             // Assert
             Assert.AreEqual(expectedPosts, actualPosts);
-
         }
-
 
         [TestMethod]
         public void Create_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
         {
             // Arrange
-            Post testPost = new Post
-            {
-                Id = 1,
-                Title = "Cooking Your Food",
-                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-                UserId = 1
-            };
+            Post testPost = TestHelpers.GetTestPost();
 
-            User testUser = new User
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
+            User testUser = TestHelpers.GetTestUser();
 
-            List<string> tagsToAdd = new List<string> { "tag1", "tag2" };
+            List<string> tagsToAdd = TestHelpers.GetTestListTag();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -311,26 +223,10 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void Update_ShouldThrowUnauthenticatedOperationException_WhenNotAuthorized()
         {
             // Arrange
-            User existingUser = new User
-            {
-                Id = 1,
-                FirstName = "ExistingFirst",
-                LastName = "ExistingLast",
-                Email = "existing@gmail.com",
-                Username = "existingUser",
-                IsBlocked = false,
-            };
+            User existingUser = TestHelpers.GetTestExpectedUserAsUnblocked();
 
-            User unauthorizedUser = new User
-            {
-                Id = 2,
-                FirstName = "UnauthorizedFirst",
-                LastName = "UnauthorizedLast",
-                Email = "unauthorized@gmail.com",
-                Username = "unauthorizedUser",
-                IsBlocked = true
+            User unauthorizedUser = TestHelpers.GetTestExpectedUserAsBlocked();
 
-            };
 
             Post existingPost = new Post
             {
@@ -364,20 +260,12 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void Update_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
         {
             // Arrange
-            int postId = 1;
-            User testUser = new User
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
+
+            User testUser = TestHelpers.GetTestUser();
 
             Post existingPost = new Post
             {
-                Id = postId,
+                Id = 1,
                 Title = "Existing Title",
                 Content = "Existing Content",
                 CreatedBy = testUser
@@ -385,58 +273,78 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             Post updatedPost = new Post
             {
-                Id = postId,
+                Id = 1,
                 Title = "Updated Title",
                 Content = "Updated Content",
                 CreatedBy = testUser
             };
 
-            List<string> tagsToAdd = new List<string> { "tag1", "tag2" };
+            List<string> tagsToAdd = TestHelpers.GetTestListTag();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
 
-            postRepositoryMock.Setup(repo => repo.GetById(postId)).Returns(existingPost);
+            postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
             postRepositoryMock.Setup(repo => repo.TitleExists(updatedPost.Title)).Returns(true);
 
             var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
 
             // Act and Assert
-            Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(postId, updatedPost, testUser, tagsToAdd));
+            Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(1, updatedPost, testUser, tagsToAdd));
         }
 
+        [TestMethod]
+        public void Update_PostWithTags_ReturnsUpdatedPostWithTags()
+        {
+            // Arrange
+
+            var post = new Post
+            {
+                Id = 1,
+                Title = "Test Post",
+                Content = "This is a test post."
+            };
+
+            var loggedUser = new User
+            {
+                Id = 1,
+                Username = "testuser"
+            };
+
+            var updatedPost = new Post
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content
+            };
+
+            var tagsToAdd = new List<string> { "tag1", "tag2", "tag3" };
+
+            var repositoryMock = new Mock<IPostRepository>();
+            var tagServiceMock = new Mock<ITagService>();
+            var likePostMock = new Mock<ILikePostRepository>();
+
+
+            repositoryMock.Setup(repo => repo.GetById(post.Id)).Returns(post);
+            repositoryMock.Setup(repo => repo.Update(post.Id, updatedPost)).Returns(updatedPost);
+
+            var sut = new PostService(repositoryMock.Object, tagServiceMock.Object, likePostMock.Object);
+
+            Post result = sut.Update(post.Id, updatedPost, loggedUser, tagsToAdd);
+
+            Assert.AreEqual(updatedPost, result);
+        }
 
         [TestMethod]
         public void CreatePost_ShouldReturnNewPost_WhenParamsAreValid()
         {
             // Arrange
-            Post newPost = new Post()
-            {
-                Id = 1,
-                Title = "Cooking Your Food",
-                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-                UserId = 2,
-                CategoryId = 1,
-                DateTime = DateTime.Now
-            };
+            Post newPost = TestHelpers.GetTestPost();
 
-            User testUser = new User()
-            {
-                Id = 1,
-                FirstName = "TestFirst",
-                LastName = "TestLast",
-                Email = "test@gmail.com",
-                Username = "testUsername",
-                Password = "MTIz"
-            };
+            User testUser = TestHelpers.GetTestUser();
 
-            List<string> tagsToAdd = new List<string>()
-            {
-                "tag1",
-                "tag2",
-                "tag3"
-            };
+            List<string> tagsToAdd = TestHelpers.GetTestListTag();
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagServiceMock = new Mock<ITagService>();
@@ -465,67 +373,95 @@ namespace ForumManagementSystem.Tests.ServicesTests
             }
         }
 
+        [TestMethod]
+        public void Create_PostWithNoTags_ReturnsCreatedPost()
+        {
+            // Arrange
+            Post newPost = TestHelpers.GetTestPost();
 
-        //    [TestMethod]
-        //    public void UpdatePost_Should_ReturnCorrectPost_When_ParametersAreValid()
-        //    {
-        //        // Arrange
-        //        int postId = 1;
+            User testUser = TestHelpers.GetTestUser();
 
-        //        Post postToUpdate = new Post()
-        //        {
-        //            Id = postId,
-        //            Title = "Cooking Your Food",
-        //            Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
-        //            UserId = 2,
-        //            CategoryId = 1,
-        //            DateTime = DateTime.Now
-        //        };
+            List<string> tagsToAdd = null;
 
-        //        Post updatedPost = new Post()
-        //        {
-        //            Id = postId,
-        //            Title = "Prepare your food"
-        //        };
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var tagServiceMock = new Mock<ITagService>();
+            var likePostRepositoryMock = new Mock<ILikePostRepository>();
 
-        //        User testUser = new User()
-        //        {
-        //            Id = 1,
-        //            FirstName = "TestFirst",
-        //            LastName = "TestLast",
-        //            Email = "test@gmail.com",
-        //            Username = "testUsername",
-        //            Password = "MTIz"
-        //        };
+            postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
 
-        //        List<string> tagsToAdd = new List<string>()
-        //        {
-        //            "tag1",
-        //            "tag2",
-        //            "tag3"
-        //        };
+            var sut = new PostService(postRepositoryMock.Object, tagServiceMock.Object, likePostRepositoryMock.Object);
 
-        //        var postRepositoryMock = new Mock<IPostRepository>();
-        //        var tagServiceMock = new Mock<ITagService>();
-        //        var likePostRepositoryMock = new Mock<ILikePostRepository>();
-        //        var authorizationServiceMock = new Mock<IAuthorizationService>();
+            // Act
+            Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
 
-        //        postRepositoryMock.Setup(repo => repo.GetById(postId)).Returns(postToUpdate);
-        //        postRepositoryMock.Setup(repo => repo.Update(postId, It.IsAny<Post>())).Returns(updatedPost);
-        //        authorizationServiceMock.Setup(service => service.IsAuthorized(postToUpdate.CreatedBy, testUser)).Returns(true);
+            // Assert
+            Assert.AreEqual(newPost, createdPost);
+            postRepositoryMock.Verify(repo => repo.Create(newPost, testUser), Times.Once);
 
-        //        var sut = new PostService(postRepositoryMock.Object, tagServiceMock.Object, likePostRepositoryMock.Object, authorizationServiceMock.Object);
+        }
 
-        //        // Act
-        //        sut.Update(postId, updatedPost, testUser, tagsToAdd);
+        [TestMethod]
+        public void Delete_PostShouldBeDeleted_WhenUserIsAuthorized()
+        {
+            // Arrange
 
-        //        // Assert
-        //        Assert.AreEqual(postToUpdate, updatedPost);
-        //        postRepositoryMock.Verify(repo => repo.GetById(postId), Times.Once);
-        //        postRepositoryMock.Verify(repo => repo.Update(postId, It.IsAny<Post>()), Times.Once);
-        //        authorizationServiceMock.Verify(service => service.IsAuthorized(postToUpdate.CreatedBy, testUser), Times.Once);
-        //    }
+            var loggedUser = TestHelpers.GetTestUser();
 
-        //}
+            var postRepository = new Mock<IPostRepository>();
+            var tagsRepository = new Mock<ITagService>();
+            var likePostRepository = new Mock<ILikePostRepository>();
+
+            var postToDelete = new Post { Id = 1, CreatedBy = loggedUser };
+
+            postRepository.Setup(r => r.GetById(1)).Returns(postToDelete);
+
+            var postService = new PostService(postRepository.Object, tagsRepository.Object, likePostRepository.Object);
+
+            // Act
+            postService.Delete(1, loggedUser);
+
+            // Assert
+            postRepository.Verify(r => r.Delete(1), Times.Once);
+        }
+
+        [TestMethod]
+        public void Delete_ShouldThrowException_WhenUserIsNotAuthorized()
+        {
+            // Arrange
+            var loggedUser = TestHelpers.GetTestUser();
+            
+            var postRepository = new Mock<IPostRepository>();
+            var tagsRepository = new Mock<ITagService>();
+            var likePostRepository = new Mock<ILikePostRepository>();
+
+            var postToDelete = new Post { Id = 1, CreatedBy = new User { Id = 3 } };
+
+            postRepository.Setup(r => r.GetById(1)).Returns(postToDelete);
+
+            var sut = new PostService(postRepository.Object, tagsRepository.Object, likePostRepository.Object);
+
+            // Act and Assert
+            Assert.ThrowsException<UnauthenticatedOperationException>(() => sut.Delete(1, loggedUser));
+        }
+
+        [TestMethod]
+        public void ShouldThrowException_WhenUserIsBlocked()
+        {
+            var blockedUser = TestHelpers.GetTestExpectedUserAsBlocked();
+            
+            var postRepository = new Mock<IPostRepository>();
+            var tagsRepository = new Mock<ITagService>();
+            var likePostRepository = new Mock<ILikePostRepository>();
+
+            var sut = new PostService(postRepository.Object, tagsRepository.Object, likePostRepository.Object);
+
+            Assert.ThrowsException<UnauthorizedAccessException>(() => sut.CheckIfBlocked(blockedUser));
+        }
     }
+
+
 }
+
+
+
+

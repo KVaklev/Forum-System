@@ -320,7 +320,7 @@ namespace ForumManagementSystem.Tests.Helpers
 
         public static Comment GetTestComment()
         {
-            return new Comment
+            return new Comment()
             {
                 Id = 1,
                 UserId = 1,
@@ -383,6 +383,98 @@ namespace ForumManagementSystem.Tests.Helpers
                     DateTime = DateTime.Now
                 }
             };
+        }
+
+        //Helpers for PostService Tests
+
+        public static Post GetTestPost()
+        {
+            return new Post
+            {
+                Id = 1,
+                Title = "Cooking Your Food",
+                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
+                UserId = 2,
+                CategoryId = 1,
+                DateTime = DateTime.Now
+            };
+        }
+           
+        public static Post GetTestPostAuthorizedUser()
+        {
+            return new Post
+            {
+                Id = 1,
+                Title = "Cooking Your Food",
+                Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
+                UserId = 2,
+                CategoryId = 1,
+                DateTime = DateTime.Now,
+
+            };
+        }
+
+        public static LikePost GetLikePostIsLiked()
+        {
+            return new LikePost()
+            {
+                Id = 1,
+                UserId = 1,
+                PostId = 1,
+                IsLikedPost = true
+
+            };
+        }
+
+        public static LikePost GetLikePostIsNotLiked()
+        {
+            return new LikePost()
+            {
+                Id = 1,
+                UserId = 1,
+                PostId = 1,
+                IsLikedPost = false
+
+            };
+        }
+
+        public static List<Post> GetTestListPost()
+        {
+            return new List<Post>()
+            {
+                new Post()
+                {
+                    Id = 1,
+                    Title = "Post 1",
+                    Content = "Content of post 1",
+                    UserId = 1,
+                    CategoryId = 1,
+                    DateTime = DateTime.Now
+                },
+                new Post()
+                {
+                    Id = 2,
+                    Title = "Post 2",
+                    Content = "Content of post 2",
+                    UserId = 2,
+                    CategoryId = 2,
+                    DateTime = DateTime.Now
+                },
+
+                new Post()
+                {
+                    Id = 3,
+                    Title = "Post 3",
+                    Content = "Content of post 3",
+                    UserId = 3,
+                    CategoryId = 1,
+                    DateTime = DateTime.Now
+                }
+            };
+        }
+        public static List<string> GetTestListTag()
+        {
+            return new List<string>() { "tag1", "tag2", "tag3" };
         }
     }
 }
