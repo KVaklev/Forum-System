@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Business.Dto;
+using DataAccess.Models;
 using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Tests.Helpers
@@ -14,6 +15,26 @@ namespace ForumManagementSystem.Tests.Helpers
                 Id = 1,
                 Name = "Asia",
                 Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
+                DateTime = DateTime.Now
+            };
+        }
+        public static Category GetTestCategoryToUpdate()
+        {
+            return new Category
+            {
+                Id = 1,
+                Name = "Asia",
+                Description = "Discussions about all the countries.",
+                DateTime = DateTime.Now
+            };
+        }
+        public static Category GetTestCategoryWithDuplicateName()
+        {
+            return new Category
+            {
+                Id = 8,
+                Name = "Asia",
+                Description = "Discussions about all the countries.",
                 DateTime = DateTime.Now
             };
         }
@@ -123,6 +144,24 @@ namespace ForumManagementSystem.Tests.Helpers
                 PhoneNumber = "0897554285",
                 IsAdmin = false,
                 IsBlocked = false
+            };
+        }
+        public static CreateUserDto GetTestCreateUserDto()
+        {
+            return new CreateUserDto
+            {
+                FirstName = "Mariq",
+                LastName = "Petrova",
+                Email = "m.petrova@gmail.com",
+                Username = "mariicheto",
+                Password = "jdjdnjednjd"
+            };
+        }
+        public static UpdateUserDto GetTestUpdateUserDto()
+        {
+            return new UpdateUserDto
+            {
+                Email = "test@gmail.com"
             };
         }
         public static User GetTestDeleteUser()
@@ -273,8 +312,21 @@ namespace ForumManagementSystem.Tests.Helpers
                 }
             };
         }
+        public static List<GetUserDto> GetTestExpectedListDtoUsers()
+        {
+            return new List<GetUserDto>()
+            {
+                new GetUserDto
+                {
+                    FirstName = "Ivan",
+                    LastName = "Draganov",
+                    Email = "i.draganov@gmail.com",
+                    Username = "ivanchoDraganchov",
+                }
+            };
+        }
 
-        //Helpers for TagService Tests
+            //Helpers for TagService Tests
 
         public static Tag GetTestTag()
         {
@@ -475,6 +527,29 @@ namespace ForumManagementSystem.Tests.Helpers
         public static List<string> GetTestListTag()
         {
             return new List<string>() { "tag1", "tag2", "tag3" };
+=======
+        public static LikeComment GetLikeCommentIsLiked()
+        {
+            return new LikeComment() 
+            {
+            Id=1,
+            UserId=1,
+            CommentId=1,
+            IsLiked=true
+            };
+
+        }
+        public static LikeComment GetLikeCommentIsNoLiked()
+        {
+            return new LikeComment()
+            {
+                Id = 1,
+                UserId = 1,
+                CommentId = 1,
+                IsLiked = false
+            };
+
+>>>>>>> 964947103fd1fc22a3cdc3e6decbf235e446f730
         }
     }
 }
