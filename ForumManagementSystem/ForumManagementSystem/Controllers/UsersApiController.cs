@@ -6,7 +6,6 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
-using System.Net;
 
 namespace ForumManagementSystem.Controllers
 {

@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Business.Dto;
+using DataAccess.Models;
 using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Tests.Helpers
@@ -123,6 +124,24 @@ namespace ForumManagementSystem.Tests.Helpers
                 PhoneNumber = "0897554285",
                 IsAdmin = false,
                 IsBlocked = false
+            };
+        }
+        public static CreateUserDto GetTestCreateUserDto()
+        {
+            return new CreateUserDto
+            {
+                FirstName = "Mariq",
+                LastName = "Petrova",
+                Email = "m.petrova@gmail.com",
+                Username = "mariicheto",
+                Password = "jdjdnjednjd"
+            };
+        }
+        public static UpdateUserDto GetTestUpdateUserDto()
+        {
+            return new UpdateUserDto
+            {
+                Email = "test@gmail.com"
             };
         }
         public static User GetTestDeleteUser()
@@ -273,8 +292,21 @@ namespace ForumManagementSystem.Tests.Helpers
                 }
             };
         }
+        public static List<GetUserDto> GetTestExpectedListDtoUsers()
+        {
+            return new List<GetUserDto>()
+            {
+                new GetUserDto
+                {
+                    FirstName = "Ivan",
+                    LastName = "Draganov",
+                    Email = "i.draganov@gmail.com",
+                    Username = "ivanchoDraganchov",
+                }
+            };
+        }
 
-        //Helpers for TagService Tests
+            //Helpers for TagService Tests
 
         public static Tag GetTestTag()
         {
