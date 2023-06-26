@@ -67,18 +67,16 @@ namespace ForumManagementSystem.Services
             try
             {
                 Category categoryToUpdate = this.repository.GetByName(category.Name);
-
-                if (categoryToUpdate.Id != id)
+                if (id!=categoryToUpdate.Id)
                 {
                     throw new DuplicateEntityException(Constants.CategoryExistingErrorMessage);
                 }
+                return this.repository.Update(categoryToUpdate.Id, category);
             }
             catch (EntityNotFoundException)
             {
-               return this.repository.Update(id, category);
+               return this.repository.Create(category);
             }
-
-            return this.repository.Update(id, category);
         }
     }
 }
