@@ -527,7 +527,7 @@ namespace ForumManagementSystem.Tests.Helpers
         public static List<string> GetTestListTag()
         {
             return new List<string>() { "tag1", "tag2", "tag3" };
-=======
+        }
         public static LikeComment GetLikeCommentIsLiked()
         {
             return new LikeComment() 
@@ -549,7 +549,6 @@ namespace ForumManagementSystem.Tests.Helpers
                 IsLiked = false
             };
 
->>>>>>> 964947103fd1fc22a3cdc3e6decbf235e446f730
         }
     }
 }
