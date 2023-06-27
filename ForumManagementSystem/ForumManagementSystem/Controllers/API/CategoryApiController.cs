@@ -6,7 +6,7 @@ using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 
-namespace ForumManagementSystem.Controllers
+namespace ForumManagementSystem.Controllers.API
 {
     [ApiController]
     [Route("api/home")]
@@ -28,12 +28,12 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-               List<Category> result = this.categoryService.FilterBy(parameters);
-               return this.StatusCode(StatusCodes.Status200OK, result);
+                List<Category> result = categoryService.FilterBy(parameters);
+                return StatusCode(StatusCodes.Status200OK, result);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
         }
 
@@ -42,12 +42,12 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                var category = this.categoryService.GetById(id);
-                return this.StatusCode(StatusCodes.Status200OK, category);
+                var category = categoryService.GetById(id);
+                return StatusCode(StatusCodes.Status200OK, category);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
         }
 
@@ -56,22 +56,22 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                Category category = this.mapper.Map<Category>(categoryDto);
-                User user = this.authManager.TryGetUser(credentials);
-                var createdCategory = this.categoryService.Create(category, user);
-                return this.StatusCode(StatusCodes.Status201Created, createdCategory);
+                Category category = mapper.Map<Category>(categoryDto);
+                User user = authManager.TryGetUser(credentials);
+                var createdCategory = categoryService.Create(category, user);
+                return StatusCode(StatusCodes.Status201Created, createdCategory);
             }
             catch (DuplicateEntityException ex)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
+                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
         [HttpPut("categories/{id}")]
@@ -79,26 +79,26 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                Category category = this.mapper.Map<Category>(categoryDto);
-                User user = this.authManager.TryGetUser(credentials);
-                Category updatedCategory = this.categoryService.Update(id, category,user);
-                return this.StatusCode(StatusCodes.Status200OK, updatedCategory);
+                Category category = mapper.Map<Category>(categoryDto);
+                User user = authManager.TryGetUser(credentials);
+                Category updatedCategory = categoryService.Update(id, category, user);
+                return StatusCode(StatusCodes.Status200OK, updatedCategory);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (DuplicateEntityException ex)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, ex.Message);
+                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 
@@ -107,22 +107,22 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
-                var deletedCategory = this.categoryService.Delete(id, user);
+                User user = authManager.TryGetUser(credentials);
+                var deletedCategory = categoryService.Delete(id, user);
 
-                return this.StatusCode(StatusCodes.Status200OK, deletedCategory);
+                return StatusCode(StatusCodes.Status200OK, deletedCategory);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 

@@ -6,7 +6,6 @@ using DataAccess.Repositories.Models;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using ForumManagementSystem.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Presentation.Helpers;
 
@@ -19,7 +18,7 @@ namespace ForumManagementSystem
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllersWithViews();
             builder.Services.AddAutoMapper(typeof(CustomAutoMapper).Assembly);
 
             builder.Services.AddDbContext<ApplicationContext>(options =>
@@ -49,7 +48,7 @@ namespace ForumManagementSystem
 
             //Helpers
             builder.Services.AddScoped<CustomAutoMapper>();
-            builder.Services.AddScoped<AuthManager>();
+            builder.Services.AddScoped<IAuthManager,AuthManager>();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -65,8 +64,9 @@ namespace ForumManagementSystem
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
             app.UseAuthorization();
-            app.MapControllers();
+            app.MapDefaultControllerRoute();
             app.Run();
         }
     }
