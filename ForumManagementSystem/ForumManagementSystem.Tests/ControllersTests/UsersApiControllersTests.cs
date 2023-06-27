@@ -2,6 +2,7 @@
 using Business.Dto;
 using Business.Exceptions;
 using ForumManagementSystem.Controllers;
+using ForumManagementSystem.Controllers.API;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;

@@ -2,7 +2,6 @@
 using Business.Dto;
 using Business.Exceptions;
 using Business.Services.Contracts;
-using DataAccess.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -10,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 using System.Net;
 
-namespace ForumManagementSystem.Controllers
+namespace ForumManagementSystem.Controllers.API
 {
     [Route("api/comments")]
     [ApiController]
@@ -22,8 +21,8 @@ namespace ForumManagementSystem.Controllers
         private readonly ILikeCommentService likeCommentService;
 
         public CommentApiController(
-            ICommentService commentService, 
-            IMapper mapper, 
+            ICommentService commentService,
+            IMapper mapper,
             AuthManager authManager,
             ILikeCommentService likeCommentService)
         {
@@ -38,72 +37,72 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
-                List<Comment> result = this.commentService.FilterBy(filterParameters);
+                User user = authManager.TryGetUser(credentials);
+                List<Comment> result = commentService.FilterBy(filterParameters);
                 List<RequireCommentDto> commentDto = result
                     .Select(comment => mapper.Map<RequireCommentDto>(comment)).ToList();
 
-                return this.StatusCode(StatusCodes.Status200OK, commentDto);
+                return StatusCode(StatusCodes.Status200OK, commentDto);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
 
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCommentById(int id,[FromHeader] string credentials)
+        public IActionResult GetCommentById(int id, [FromHeader] string credentials)
         {
             try
             {
-                Comment comment = this.commentService.GetByID(id);
-                User user = this.authManager.TryGetUser(credentials);
+                Comment comment = commentService.GetByID(id);
+                User user = authManager.TryGetUser(credentials);
                 RequireCommentDto commentDto = mapper.Map<RequireCommentDto>(comment);
-                return this.StatusCode(StatusCodes.Status200OK, commentDto);
+                return StatusCode(StatusCodes.Status200OK, commentDto);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 
-    
 
-    [HttpPost("")]
+
+        [HttpPost("")]
         public IActionResult CreateComment([FromBody] CommentDto commentDto, [FromHeader] string credentials)
         {
             try
             {
-                Comment comment = this.mapper.Map<Comment>(commentDto);
-                User user = this.authManager.TryGetUser(credentials);
-                Comment createdComment = this.commentService.Create(comment, user);
+                Comment comment = mapper.Map<Comment>(commentDto);
+                User user = authManager.TryGetUser(credentials);
+                Comment createdComment = commentService.Create(comment, user);
 
-                return this.StatusCode(StatusCodes.Status201Created, createdComment);
+                return StatusCode(StatusCodes.Status201Created, createdComment);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 
@@ -112,23 +111,23 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                Comment comment = this.mapper.Map<Comment>(commentDto);
-                User user = this.authManager.TryGetUser(credentials);
-                Comment updatedComment = this.commentService.Update(id, comment, user);
+                Comment comment = mapper.Map<Comment>(commentDto);
+                User user = authManager.TryGetUser(credentials);
+                Comment updatedComment = commentService.Update(id, comment, user);
 
-                return this.StatusCode(StatusCodes.Status200OK, updatedComment);
+                return StatusCode(StatusCodes.Status200OK, updatedComment);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
         [HttpDelete("{id}")]
@@ -136,22 +135,22 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
-                var deletedComment = this.commentService.Delete(id,user);
+                User user = authManager.TryGetUser(credentials);
+                var deletedComment = commentService.Delete(id, user);
 
-                return this.StatusCode(StatusCodes.Status200OK, deletedComment);
+                return StatusCode(StatusCodes.Status200OK, deletedComment);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
         [HttpPut("{id}/like")]
@@ -159,23 +158,23 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User userLoger = this.authManager.TryGetUser(credentials);
-                Comment comment = this.commentService.GetByID(id);
-                this.likeCommentService.Update(comment, userLoger);
+                User userLoger = authManager.TryGetUser(credentials);
+                Comment comment = commentService.GetByID(id);
+                likeCommentService.Update(comment, userLoger);
 
-                return this.StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
     }

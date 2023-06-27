@@ -2,14 +2,13 @@
 using Business.Dto;
 using Business.Exceptions;
 using Business.Services.Contracts;
-using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 
-namespace ForumManagementSystem.Controllers
+namespace ForumManagementSystem.Controllers.API
 {
     [ApiController]
     [Route("api/posts")]
@@ -36,26 +35,26 @@ namespace ForumManagementSystem.Controllers
 
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
+                User user = authManager.TryGetUser(credentials);
 
-                List<Post> result = this.postService.FilterBy(filterParameters);
+                List<Post> result = postService.FilterBy(filterParameters);
 
                 List<GetPostDto> getPostDto = result.Select(post => mapper.Map<GetPostDto>(post)).ToList();
 
-                return (this.StatusCode(StatusCodes.Status200OK, getPostDto));
+                return StatusCode(StatusCodes.Status200OK, getPostDto);
             }
 
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
 
@@ -64,17 +63,17 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                Post post = this.postService.GetById(id);
+                Post post = postService.GetById(id);
 
-                User user = this.authManager.TryGetUser(credentials);
+                User user = authManager.TryGetUser(credentials);
 
                 GetPostDto getPostDto = mapper.Map<GetPostDto>(post);
 
-                return this.StatusCode(StatusCodes.Status200OK, getPostDto);
+                return StatusCode(StatusCodes.Status200OK, getPostDto);
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
@@ -83,22 +82,22 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
+                User user = authManager.TryGetUser(credentials);
 
-                Post post = this.mapper.Map<Post>(createPostDto);
+                Post post = mapper.Map<Post>(createPostDto);
 
-                Post createdPost = this.postService.Create(post, user, createPostDto.Tags);
+                Post createdPost = postService.Create(post, user, createPostDto.Tags);
 
-                return this.StatusCode(StatusCodes.Status201Created, createdPost);
+                return StatusCode(StatusCodes.Status201Created, createdPost);
             }
             catch (DuplicateEntityException e)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
 
             catch (UnauthenticatedOperationException e)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
             }
         }
 
@@ -108,25 +107,25 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User loggedUser = this.authManager.TryGetUser(credentials);
+                User loggedUser = authManager.TryGetUser(credentials);
 
-                Post post = this.mapper.Map<Post>(createPostDto);
+                Post post = mapper.Map<Post>(createPostDto);
 
-                Post updatedPost = this.postService.Update(id, post, loggedUser, createPostDto.Tags);
+                Post updatedPost = postService.Update(id, post, loggedUser, createPostDto.Tags);
 
-                return this.StatusCode(StatusCodes.Status200OK, updatedPost);
+                return StatusCode(StatusCodes.Status200OK, updatedPost);
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
             catch (DuplicateEntityException e)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
             catch (UnauthenticatedOperationException e)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
             }
         }
 
@@ -135,15 +134,15 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
+                User user = authManager.TryGetUser(credentials);
 
-                this.postService.Delete(id, user);
+                postService.Delete(id, user);
 
-                return this.StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
             catch (UnauthenticatedOperationException e)
             {
@@ -157,24 +156,24 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User loggedUser = this.authManager.TryGetUser(credentials);
-                Post post = this.postService.GetById(id);
-                this.likePostService.Update(post, loggedUser);
+                User loggedUser = authManager.TryGetUser(credentials);
+                Post post = postService.GetById(id);
+                likePostService.Update(post, loggedUser);
 
-                return this.StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status200OK);
             }
 
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
             catch (UnauthenticatedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                return this.StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
         }
     }

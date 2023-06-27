@@ -7,7 +7,7 @@ using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 
-namespace ForumManagementSystem.Controllers
+namespace ForumManagementSystem.Controllers.API
 {
     [ApiController]
     [Route("api/users")]
@@ -20,25 +20,25 @@ namespace ForumManagementSystem.Controllers
         public UsersApiController(IUserService userService, IMapper mapper, IAuthManager authManager)
         {
             this.userService = userService;
-            this.mapper=mapper;
-            this.authManager=authManager;
+            this.mapper = mapper;
+            this.authManager = authManager;
         }
 
         [HttpGet("")]
         public IActionResult GetUsers([FromHeader] string credentials, [FromQuery] UserQueryParameters userQueryParameters)
         {
-            User loggedUser = this.authManager.TryGetUser(credentials);
+            User loggedUser = authManager.TryGetUser(credentials);
 
             if (loggedUser == null || !loggedUser.IsAdmin)
             {
-                return this.StatusCode(StatusCodes.Status401Unauthorized);
+                return StatusCode(StatusCodes.Status401Unauthorized);
             }
 
-            List<User> result = this.userService.FilterBy(userQueryParameters);
+            List<User> result = userService.FilterBy(userQueryParameters);
 
             List<GetUserDto> userDtos = result.Select(user => mapper.Map<GetUserDto>(user)).ToList();
 
-            return this.StatusCode(StatusCodes.Status200OK, userDtos);
+            return StatusCode(StatusCodes.Status200OK, userDtos);
         }
 
         [HttpGet("id")]
@@ -46,73 +46,73 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User loggedUser = this.authManager.TryGetUser(credentials);
+                User loggedUser = authManager.TryGetUser(credentials);
 
                 if (loggedUser == null || !loggedUser.IsAdmin)
                 {
-                    return this.StatusCode(StatusCodes.Status401Unauthorized);
+                    return StatusCode(StatusCodes.Status401Unauthorized);
                 }
-                User user = this.userService.GetById(id);
+                User user = userService.GetById(id);
 
                 GetUserDto userDto = mapper.Map<GetUserDto>(user);
 
-                return this.StatusCode(StatusCodes.Status200OK, userDto);
+                return StatusCode(StatusCodes.Status200OK, userDto);
             }
             catch (UnauthorizedOperationException e)
             {
-                return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (EntityNotFoundException ex)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, ex.Message);
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
             }
         }
 
         [HttpPost("")]
-        public IActionResult CreateUser([FromBody] CreateUserDto createUserDto) 
+        public IActionResult CreateUser([FromBody] CreateUserDto createUserDto)
         {
             try
             {
-                User user = this.mapper.Map<User>(createUserDto);
+                User user = mapper.Map<User>(createUserDto);
 
-                User createdUser = this.userService.Create(user);
+                User createdUser = userService.Create(user);
 
-                return this.StatusCode(StatusCodes.Status201Created, createdUser);
+                return StatusCode(StatusCodes.Status201Created, createdUser);
             }
             catch (DuplicateEntityException e)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
         }
 
-        [HttpPut("{id}")] 
+        [HttpPut("{id}")]
         public IActionResult UpdateUser(int id, [FromHeader] string credentials, [FromBody] UpdateUserDto updateUserDto)
         {
             try
             {
-                User loggedUser = this.authManager.TryGetUser(credentials);
+                User loggedUser = authManager.TryGetUser(credentials);
 
-                User user = this.mapper.Map<User>(updateUserDto);
+                User user = mapper.Map<User>(updateUserDto);
 
-                User updatedUser = this.userService.Update(id, user, loggedUser);
+                User updatedUser = userService.Update(id, user, loggedUser);
 
-                return this.StatusCode(StatusCodes.Status200OK, updatedUser);
+                return StatusCode(StatusCodes.Status200OK, updatedUser);
             }
             catch (UnauthorizedOperationException e)
             {
-                return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (InvalidOperationException e)
             {
-                return this.StatusCode(StatusCodes.Status400BadRequest, e.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, e.Message);
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
             catch (DuplicateEntityException e)
             {
-                return this.StatusCode(StatusCodes.Status409Conflict, e.Message);
+                return StatusCode(StatusCodes.Status409Conflict, e.Message);
             }
         }
 
@@ -121,19 +121,19 @@ namespace ForumManagementSystem.Controllers
         {
             try
             {
-                User user = this.authManager.TryGetUser(credentials);
+                User user = authManager.TryGetUser(credentials);
 
-                this.userService.Delete(id, user);
+                userService.Delete(id, user);
 
-                return this.StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (UnauthorizedOperationException e)
             {
-                return this.StatusCode(StatusCodes.Status401Unauthorized, e.Message);
+                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
@@ -146,9 +146,9 @@ namespace ForumManagementSystem.Controllers
 
                 if (loggedUser.IsAdmin)
                 {
-                    User user = this.userService.GetById(id);
+                    User user = userService.GetById(id);
 
-                    User promotedUser = this.userService.Promote(user);
+                    User promotedUser = userService.Promote(user);
 
                     return StatusCode(StatusCodes.Status200OK, promotedUser);
                 }
@@ -173,9 +173,9 @@ namespace ForumManagementSystem.Controllers
 
                 if (loggedUser.IsAdmin)
                 {
-                    var user = this.userService.GetById(id);
+                    var user = userService.GetById(id);
 
-                    var promotedUser = this.userService.BlockUser(user);
+                    var promotedUser = userService.BlockUser(user);
 
                     return StatusCode(StatusCodes.Status200OK, promotedUser);
                 }
@@ -200,9 +200,9 @@ namespace ForumManagementSystem.Controllers
 
                 if (loggedUser.IsAdmin)
                 {
-                    User user = this.userService.GetById(id);
+                    User user = userService.GetById(id);
 
-                    User promotedUser = this.userService.UnblockUser(user);
+                    User promotedUser = userService.UnblockUser(user);
 
                     return StatusCode(StatusCodes.Status200OK, promotedUser);
                 }

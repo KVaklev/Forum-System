@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using ForumManagementSystem.Exceptions;
-using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 
-namespace ForumManagementSystem.Controllers
+namespace ForumManagementSystem.Controllers.API
 {
     [ApiController]
     [Route("api/auth")]
@@ -33,7 +32,7 @@ namespace ForumManagementSystem.Controllers
             }
             catch (EntityNotFoundException e)
             {
-                return this.StatusCode(StatusCodes.Status404NotFound, e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
