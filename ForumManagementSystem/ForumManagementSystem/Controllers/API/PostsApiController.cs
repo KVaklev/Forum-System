@@ -17,10 +17,10 @@ namespace ForumManagementSystem.Controllers.API
 
         private readonly IPostService postService;
         private readonly IMapper mapper;
-        private readonly AuthManager authManager;
+        private readonly IAuthManager authManager;
         private readonly ILikePostService likePostService;
 
-        public PostsApiController(IPostService postService, IMapper mapper, AuthManager authManager, ILikePostService likePostService)
+        public PostsApiController(IPostService postService, IMapper mapper, IAuthManager authManager, ILikePostService likePostService)
 
         {
             this.postService = postService;

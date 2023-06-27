@@ -12,9 +12,9 @@ namespace ForumManagementSystem.Controllers.API
     {
         private readonly IUserService userService;
         private readonly IMapper mapper;
-        private readonly AuthManager authManager;
+        private readonly IAuthManager authManager;
 
-        public AuthApiController(IUserService userService, IMapper mapper, AuthManager authManager)
+        public AuthApiController(IUserService userService, IMapper mapper, IAuthManager authManager)
         {
             this.userService = userService;
             this.mapper = mapper;

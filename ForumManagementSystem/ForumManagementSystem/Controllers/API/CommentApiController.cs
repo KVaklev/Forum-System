@@ -17,13 +17,13 @@ namespace ForumManagementSystem.Controllers.API
     {
         private ICommentService commentService;
         private readonly IMapper mapper;
-        private readonly AuthManager authManager;
+        private readonly IAuthManager authManager;
         private readonly ILikeCommentService likeCommentService;
 
         public CommentApiController(
             ICommentService commentService,
             IMapper mapper,
-            AuthManager authManager,
+            IAuthManager authManager,
             ILikeCommentService likeCommentService)
         {
             this.commentService = commentService;

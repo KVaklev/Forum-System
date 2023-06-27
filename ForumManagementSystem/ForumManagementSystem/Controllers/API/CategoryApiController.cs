@@ -14,9 +14,9 @@ namespace ForumManagementSystem.Controllers.API
     {
         private readonly ICategoryService categoryService;
         private readonly IMapper mapper;
-        private readonly AuthManager authManager;
+        private readonly IAuthManager authManager;
 
-        public CategoryApiController(ICategoryService categoryService, IMapper mapper, AuthManager authManager)
+        public CategoryApiController(ICategoryService categoryService, IMapper mapper, IAuthManager authManager)
         {
             this.categoryService = categoryService;
             this.mapper = mapper;
