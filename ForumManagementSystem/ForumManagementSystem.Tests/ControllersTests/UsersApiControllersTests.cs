@@ -7,9 +7,10 @@ using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using ForumManagementSystem.Tests.Helpers;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Presentation.Helpers;
-
+using System.Web.Http.Results;
 
 namespace ForumManagementSystem.Tests.ControllersTests
 {
@@ -828,5 +829,74 @@ namespace ForumManagementSystem.Tests.ControllersTests
             Assert.IsNotNull(result);
         }
 
+        [TestMethod]
+        public void UpdateUser_Should_Throw_InvalidOperation_When_UsernameIsChanged()
+        {
+            //Arrange
+
+            string credentials = "ivanchoDraganchov:123";
+            User loggedUser = TestHelpers.GetTestUserAdmin();
+            User userToUpdate = TestHelpers.GetTestUser();
+            UpdateUserDto updateUserDto = TestHelpers.GetTestUpdateUserDto();
+            InvalidOperationException exception = new InvalidOperationException("Cannot change username.");
+
+            var userServiceMock = new Mock<IUserService>();
+            var authManagerMock = new Mock<IAuthManager>();
+            var mapperMock = new Mock<IMapper>();
+
+            authManagerMock
+                .Setup(am => am.TryGetUser(credentials))
+                .Returns(loggedUser);
+            mapperMock
+                .Setup(m => m.Map<User>(updateUserDto))
+                .Returns(userToUpdate);
+            userServiceMock
+                .Setup(us => us.Update(userToUpdate.Id, userToUpdate, loggedUser))
+                .Throws(exception);
+
+            var sut = new UsersApiController(userServiceMock.Object, mapperMock.Object, authManagerMock.Object);
+
+            // Act
+            var result = sut.UpdateUser(userToUpdate.Id, credentials, updateUserDto);
+
+            // Assert
+            Assert.IsNotNull(result);
+           
+        }
+
+        [TestMethod]
+        public void UpdateUser_Should_Throw_DuplicateException_When_EmailExists()
+        {
+            //Arrange
+
+            string credentials = "ivanchoDraganchov:123";
+            User loggedUser = TestHelpers.GetTestUserAdmin();
+            User userToUpdate = TestHelpers.GetTestUser();
+            UpdateUserDto updateUserDto = TestHelpers.GetTestUpdateUserDto();
+            DuplicateEntityException exception = new DuplicateEntityException("Email already exists.");
+
+            var userServiceMock = new Mock<IUserService>();
+            var authManagerMock = new Mock<IAuthManager>();
+            var mapperMock = new Mock<IMapper>();
+
+            authManagerMock
+                .Setup(am => am.TryGetUser(credentials))
+                .Returns(loggedUser);
+            mapperMock
+                .Setup(m => m.Map<User>(updateUserDto))
+                .Returns(userToUpdate);
+            userServiceMock
+                .Setup(us => us.Update(userToUpdate.Id, userToUpdate, loggedUser))
+                .Throws(exception);
+
+            var sut = new UsersApiController(userServiceMock.Object, mapperMock.Object, authManagerMock.Object);
+
+            // Act
+            var result = sut.UpdateUser(userToUpdate.Id, credentials, updateUserDto);
+
+            // Assert
+            Assert.IsNotNull(result);
+
+        }
     }
 }
