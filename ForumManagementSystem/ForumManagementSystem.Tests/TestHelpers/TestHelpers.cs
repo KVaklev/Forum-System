@@ -326,7 +326,7 @@ namespace ForumManagementSystem.Tests.Helpers
             };
         }
 
-            //Helpers for TagService Tests
+        //Helpers for TagService Tests
 
         public static Tag GetTestTag()
         {
@@ -451,7 +451,7 @@ namespace ForumManagementSystem.Tests.Helpers
                 DateTime = DateTime.Now
             };
         }
-           
+
         public static Post GetTestPostAuthorizedUser()
         {
             return new Post
@@ -524,21 +524,24 @@ namespace ForumManagementSystem.Tests.Helpers
                 }
             };
         }
+
         public static List<string> GetTestListTag()
         {
             return new List<string>() { "tag1", "tag2", "tag3" };
         }
+
         public static LikeComment GetLikeCommentIsLiked()
         {
-            return new LikeComment() 
+            return new LikeComment()
             {
-            Id=1,
-            UserId=1,
-            CommentId=1,
-            IsLiked=true
+                Id = 1,
+                UserId = 1,
+                CommentId = 1,
+                IsLiked = true
             };
 
         }
+
         public static LikeComment GetLikeCommentIsNoLiked()
         {
             return new LikeComment()
@@ -549,6 +552,22 @@ namespace ForumManagementSystem.Tests.Helpers
                 IsLiked = false
             };
 
+        }
+
+        public static PostQueryParameters GetUserIdAsQueryParam()
+        {
+            return new PostQueryParameters()
+            {
+                UserId = 1
+            };
+        }
+
+        public static PostQueryParameters GetUsernameQueryParam()
+        {
+            return new PostQueryParameters()
+            {
+                Username = "ivanchoDraganchov"
+            };
         }
     }
 }

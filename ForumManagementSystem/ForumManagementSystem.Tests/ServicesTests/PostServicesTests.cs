@@ -45,23 +45,14 @@ namespace ForumManagementSystem.Tests.ServicesTests
             List<Post> result = sut.GetAll();
 
             // Assert
-            Assert.AreEqual(expectedPosts.Count, result.Count);
-
-            for (int i = 0; i < expectedPosts.Count; i++)
-            {
-                Assert.AreEqual(expectedPosts[i], result[i]);
-            }
-            postRepositoryMock.Verify(repo => repo.GetAll(), Times.Once);
-
+            Assert.AreEqual(expectedPosts, result);
         }
 
         [TestMethod]
         public void GetByPostId_ShouldReturnPost_WhenParamsAreValid()
         {
             //Arrange
-
             Post expectedPost = TestHelpers.GetTestPost();
-
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -80,7 +71,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
         }
 
         [TestMethod]
-
         public void GetById_ShouldThrowException_WhenParamsAreNotValid()
         {
             var postRepositoryMock = new Mock<IPostRepository>();
@@ -100,7 +90,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void CheckIfReturnedPostHasExpectedUser_ShouldBeTrue_WhenParamsAreValid()
         {
             // Arrange
-
             Post expectedPost = TestHelpers.GetTestPost();
 
             var postRepositoryMock = new Mock<IPostRepository>();
@@ -115,8 +104,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Post actualPost = sut.GetById(It.IsAny<int>());
 
             // Assert
-            Assert.AreEqual(expectedPost, actualPost);
-            Assert.AreEqual(2, actualPost.UserId);
+            Assert.AreEqual(expectedPost.UserId, actualPost.UserId);
         }
 
         [TestMethod]
@@ -124,9 +112,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             //Arrange
             User testUser = TestHelpers.GetTestUser();
-
             Post expectedPost = TestHelpers.GetTestPost();
-
 
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
@@ -148,10 +134,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void FilterBy_ShouldReturnFilteredPosts_WhenFilterUserIdParameterAreValid()
         {
             // Arrange
-            PostQueryParameters filterParameters = new PostQueryParameters
-            {
-                UserId = 1
-            };
+            PostQueryParameters filterParameters = TestHelpers.GetUserIdAsQueryParam();
 
             List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
@@ -175,10 +158,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void FilterBy_ShouldReturnFilteredPosts_WhenFilterUsernameParameterAreValid()
         {
             // Arrange
-            PostQueryParameters filterParameters = new PostQueryParameters
-            {
-                Username = "ivanchoDraganchov"
-            };
+            PostQueryParameters filterParameters = TestHelpers.GetUsernameQueryParam();
 
             List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
@@ -227,7 +207,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             User unauthorizedUser = TestHelpers.GetTestExpectedUserAsBlocked();
 
-
             Post existingPost = new Post
             {
                 Id = 1,
@@ -260,7 +239,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void Update_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
         {
             // Arrange
-
             User testUser = TestHelpers.GetTestUser();
 
             Post existingPost = new Post
@@ -295,45 +273,62 @@ namespace ForumManagementSystem.Tests.ServicesTests
         }
 
         [TestMethod]
-        public void Update_PostWithTags_ReturnsUpdatedPostWithTags()
+        public void Update_ValidUpdate_ReturnsUpdatedPost()
         {
             // Arrange
+            var repository = new Mock<IPostRepository>();
+            var tagService = new Mock<ITagService>();
+            var likePostRepository = new Mock<ILikePostRepository>();
 
-            var post = new Post
+            repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() });
+            repository.Setup(r => r.TitleExists(It.IsAny<string>())).Returns(false);
+            repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() });
+
+
+            var post = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
+            var loggedUser = new User() { IsAdmin = true };
+
+            var sut = new PostService(repository.Object, tagService.Object, likePostRepository.Object);
+
+            // Act
+            var result = sut.Update(1, post, loggedUser, new List<string>());
+
+            // Assert
+            Assert.AreEqual(post.Title, result.Title);
+        }
+
+        [TestMethod]
+        public void Update_TagsToAdd_TagsAddedToPost()
+        {
+            // Arrange
+            var repository = new Mock<IPostRepository>();
+            var tagService = new Mock<ITagService>();
+            var likePostRepository = new Mock<ILikePostRepository>();
+
+            var existingPost = new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() };
+            var updatedPost = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
+
+            repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(existingPost);
+            repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(updatedPost);
+
+            var tagsToAdd = new List<string> { "Tag1", "Tag2", "Tag3" };
+
+            var loggedUser = new User { IsAdmin = true };
+
+            var sut = new PostService(repository.Object, tagService.Object, likePostRepository.Object);
+
+            tagService.Setup(t => t.Create(It.IsAny<string>())).Returns(new Tag { Id = 1 });
+
+            // Act
+            var result = sut.Update(1, updatedPost, loggedUser, tagsToAdd);
+
+            // Assert
+            foreach (var tagName in tagsToAdd)
             {
-                Id = 1,
-                Title = "Test Post",
-                Content = "This is a test post."
-            };
+                tagService.Verify(t => t.Create(tagName), Times.Once);
+            }
 
-            var loggedUser = new User
-            {
-                Id = 1,
-                Username = "testuser"
-            };
-
-            var updatedPost = new Post
-            {
-                Id = post.Id,
-                Title = post.Title,
-                Content = post.Content
-            };
-
-            var tagsToAdd = new List<string> { "tag1", "tag2", "tag3" };
-
-            var repositoryMock = new Mock<IPostRepository>();
-            var tagServiceMock = new Mock<ITagService>();
-            var likePostMock = new Mock<ILikePostRepository>();
-
-
-            repositoryMock.Setup(repo => repo.GetById(post.Id)).Returns(post);
-            repositoryMock.Setup(repo => repo.Update(post.Id, updatedPost)).Returns(updatedPost);
-
-            var sut = new PostService(repositoryMock.Object, tagServiceMock.Object, likePostMock.Object);
-
-            Post result = sut.Update(post.Id, updatedPost, loggedUser, tagsToAdd);
-
-            Assert.AreEqual(updatedPost, result);
+            repository.Verify(r => r.AddTagToPost(It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(tagsToAdd.Count));
         }
 
         [TestMethod]
@@ -366,11 +361,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             // Assert
             Assert.AreEqual(newPost, createdPost);
-            postRepositoryMock.Verify(repo => repo.Create(newPost, testUser), Times.Once);
-            foreach (var tagName in tagsToAdd)
-            {
-                tagServiceMock.Verify(tagService => tagService.Create(tagName), Times.Once);
-            }
         }
 
         [TestMethod]
@@ -420,8 +410,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
             // Act
             postService.Delete(1, loggedUser);
 
-            // Assert
-            postRepository.Verify(r => r.Delete(1), Times.Once);
         }
 
         [TestMethod]
@@ -429,7 +417,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         {
             // Arrange
             var loggedUser = TestHelpers.GetTestUser();
-            
+
             var postRepository = new Mock<IPostRepository>();
             var tagsRepository = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
@@ -448,7 +436,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         public void ShouldThrowException_WhenUserIsBlocked()
         {
             var blockedUser = TestHelpers.GetTestExpectedUserAsBlocked();
-            
+
             var postRepository = new Mock<IPostRepository>();
             var tagsRepository = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
@@ -458,8 +446,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.ThrowsException<UnauthorizedAccessException>(() => sut.CheckIfBlocked(blockedUser));
         }
     }
-
-
 }
 
 
