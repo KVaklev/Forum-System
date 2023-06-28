@@ -48,13 +48,9 @@ namespace ForumManagementSystem.Controllers.MVC
 		[HttpGet]
 		public IActionResult Create()
 		{
-			return this.View(new UserViewModel());
-		}
+			var userViewModel = new UserViewModel();
 
-		//[HttpPost]
-		//public IActionResult Create(User user)
-		//{
-		//	var user = this.userService.Create(user);
-		//}
-    }
+			return this.View(userViewModel);
+		}
+	}
 }

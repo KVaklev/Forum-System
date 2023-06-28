@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business.ViewModels.Models
 {
@@ -24,6 +25,7 @@ namespace Business.ViewModels.Models
         public string Username { get; set; }
 
         [Required]
-        public string Password { get; set; }
+		[Password]
+		public string Password { get; set; }
     }
 }
