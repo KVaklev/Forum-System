@@ -14,11 +14,18 @@ namespace ForumManagementSystem.Services
         private readonly IPostRepository repository;
         private readonly ITagService tagService;
         private readonly ILikePostRepository likePostRepository;
-        public PostService(IPostRepository repository, ITagService tagService, ILikePostRepository likePostRepository)
+        private readonly ICategoryRepository categoryRepository;
+
+        public PostService(
+            IPostRepository repository, 
+            ITagService tagService, 
+            ILikePostRepository likePostRepository,
+            ICategoryRepository categoryRepository)
         {
             this.repository = repository;
             this.tagService = tagService;
             this.likePostRepository = likePostRepository;
+            this.categoryRepository = categoryRepository;
         }
         public List<Post> GetAll()
         {
@@ -47,6 +54,7 @@ namespace ForumManagementSystem.Services
             }
 
             Post createdPost = this.repository.Create(post, user);
+            IncreasePostCount(post);
 
             if (tagsToAdd == null)
             {
@@ -103,6 +111,7 @@ namespace ForumManagementSystem.Services
                 throw new UnauthenticatedOperationException(Constants.ModifyPostErrorMessage);
             }
 
+            DecreacePostCount(postToDelete);
             this.repository.Delete(id);
         }
 
@@ -123,6 +132,18 @@ namespace ForumManagementSystem.Services
                 isAuthorized = true;
             }
             return isAuthorized;
+        }
+        public int IncreasePostCount(Post post)
+        {
+            Category category = this.categoryRepository.GetById(post.CategoryId);
+            category.CountPosts++;
+            return category.CountPosts;
+        }
+        public int DecreacePostCount(Post post)
+        {
+            Category category = this.categoryRepository.GetById(post.CategoryId);
+            category.CountPosts--;
+            return category.CountPosts;
         }
     }
 }

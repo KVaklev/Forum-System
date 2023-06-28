@@ -9,11 +9,20 @@ namespace ForumManagementSystem.Services
     public class CommentService : ICommentService
     {
         private readonly ICommentRepository repository;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly IPostRepository postRepository;
         private readonly ILikeCommentRepository likeRepository;
-        public CommentService(ICommentRepository repository, ILikeCommentRepository likeRepository)
+
+        public CommentService(
+            ICommentRepository repository, 
+            ILikeCommentRepository likeRepository,
+            ICategoryRepository categoryRepository,
+            IPostRepository postRepository)
         {
             this.repository = repository;
             this.likeRepository = likeRepository;
+            this.categoryRepository = categoryRepository;
+            this.postRepository = postRepository;
         }
 
         public Comment Create(Comment comment, User user)
@@ -22,6 +31,7 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyCommentErrorMessage);
             }
+            IncreaseComentCount(comment);
             return this.repository.Create(comment, user);
         }
 
@@ -33,6 +43,7 @@ namespace ForumManagementSystem.Services
             }
             Comment comment = repository.GetByID(id);
             likeRepository.DeleteByComment(comment);
+            DecreaseComentCount(comment);
             return this.repository.Delete(id);
         }
 
@@ -71,6 +82,19 @@ namespace ForumManagementSystem.Services
                 isUserUnauthorized = false;
             }
             return isUserUnauthorized;
+        }
+        public int IncreaseComentCount(Comment comment)
+        {
+            Post post = this.postRepository.GetById(comment.PostId);
+            Category category = this.categoryRepository.GetById(post.CategoryId);
+            return category.CountComment++;
+        }
+
+        public int DecreaseComentCount(Comment comment)
+        {
+            Post post = this.postRepository.GetById(comment.PostId);
+            Category category = this.categoryRepository.GetById(post.CategoryId);
+            return category.CountComment--;
         }
     }
 }

@@ -20,12 +20,18 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.GetByID(expectedComment.Id))
                 .Returns(expectedComment);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act
 
@@ -53,12 +59,18 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.FilterBy(filterParameters))
                 .Returns(expectedComment);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             // Act
 
@@ -80,12 +92,18 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.Create(expectedComment, loggedUser))
                 .Returns(expectedComment);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act
 
@@ -107,12 +125,18 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.Create(expectedComment, loggedUser))
                 .Throws(new UnauthorizedOperationException("Blocked user cannot create comment."));
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act & Assert
             Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Create(expectedComment, loggedUser));
@@ -129,6 +153,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.GetByID(commentToUpdate.Id))
@@ -137,7 +163,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
                 .Returns(commentToUpdate);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act
 
@@ -157,6 +187,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.GetByID(commentToUpdate.Id))
@@ -165,7 +197,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
                 .Returns(commentToUpdate);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act & Assert
 
@@ -183,6 +219,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.GetByID(commentToUpdate.Id))
@@ -191,7 +229,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
                 .Returns(commentToUpdate);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act & Assert
 
@@ -209,6 +251,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.GetByID(commentToDelete.Id))
@@ -220,7 +264,12 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.Delete(commentToDelete.Id))
                 .Returns(commentToDelete);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object
+                );
 
             //Act 
 
@@ -243,6 +292,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var commentRepositoryMock = new Mock<ICommentRepository>();
             var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
 
             commentRepositoryMock
                 .Setup(repo => repo.GetByID(commentToDelete.Id))
@@ -254,7 +305,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.Delete(commentToDelete.Id))
                 .Returns(commentToDelete);
 
-            var sut = new CommentService(commentRepositoryMock.Object, likeCommentRepositoryMock.Object);
+            var sut = new CommentService(
+                commentRepositoryMock.Object, 
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object);
 
             //Act & Assert
 

@@ -36,10 +36,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.GetAll()).Returns(expectedPosts);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object, 
+                categoryRepositoryMock.Object);
 
             // Act
             List<Post> result = sut.GetAll();
@@ -57,10 +62,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.GetById(It.IsAny<int>())).Returns(expectedPost);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object,
+                categoryRepositoryMock.Object);
 
             //Act
             Post actualPost = sut.GetById(It.IsAny<int>());
@@ -76,12 +86,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock
                 .Setup(repo => repo.GetById(It.IsAny<int>()))
                 .Throws(new EntityNotFoundException("Post does not exist"));
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object,
+                categoryRepositoryMock.Object);
 
             Assert.ThrowsException<EntityNotFoundException>(() => sut.GetById(It.IsAny<int>()));
         }
@@ -95,10 +110,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.GetById(It.IsAny<int>())).Returns(expectedPost);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object,
+                categoryRepositoryMock.Object);
 
             // Act
             Post actualPost = sut.GetById(It.IsAny<int>());
@@ -117,10 +137,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.GetByUser(testUser)).Returns(expectedPost);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object,
+                categoryRepositoryMock.Object);
 
             //Act
             Post actualPost = sut.GetByUser(testUser);
@@ -141,10 +166,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.FilterBy(filterParameters)).Returns(expectedPosts);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object, 
+                categoryRepositoryMock.Object);
 
             // Act
             List<Post> actualPosts = sut.FilterBy(filterParameters);
@@ -165,10 +195,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.FilterBy(filterParameters)).Returns(expectedPosts);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object, 
+                categoryRepositoryMock.Object);
 
             // Act
             List<Post> actualPosts = sut.FilterBy(filterParameters);
@@ -190,10 +225,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.TitleExists(testPost.Title)).Returns(true);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object, 
+                categoryRepositoryMock.Object);
 
             // Act and Assert
             Assert.ThrowsException<DuplicateEntityException>(() => sut.Create(testPost, testUser, tagsToAdd));
@@ -226,10 +266,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object,
+                categoryRepositoryMock.Object);
 
             // Act and Assert
             Assert.ThrowsException<UnauthenticatedOperationException>(() => sut.Update(1, updatedPost, unauthorizedUser, null));
@@ -262,11 +307,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagRepositoryMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
             postRepositoryMock.Setup(repo => repo.TitleExists(updatedPost.Title)).Returns(true);
 
-            var sut = new PostService(postRepositoryMock.Object, tagRepositoryMock.Object, likePostRepositoryMock.Object);
+
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagRepositoryMock.Object, 
+                likePostRepositoryMock.Object, 
+                categoryRepositoryMock.Object);
 
             // Act and Assert
             Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(1, updatedPost, testUser, tagsToAdd));
@@ -279,6 +330,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var repository = new Mock<IPostRepository>();
             var tagService = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() });
             repository.Setup(r => r.TitleExists(It.IsAny<string>())).Returns(false);
@@ -288,7 +340,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var post = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
             var loggedUser = new User() { IsAdmin = true };
 
-            var sut = new PostService(repository.Object, tagService.Object, likePostRepository.Object);
+            var sut = new PostService(
+                repository.Object, 
+                tagService.Object, 
+                likePostRepository.Object, 
+                categoryRepositoryMock.Object);
 
             // Act
             var result = sut.Update(1, post, loggedUser, new List<string>());
@@ -304,6 +360,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var repository = new Mock<IPostRepository>();
             var tagService = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             var existingPost = new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() };
             var updatedPost = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
@@ -315,7 +372,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             var loggedUser = new User { IsAdmin = true };
 
-            var sut = new PostService(repository.Object, tagService.Object, likePostRepository.Object);
+            var sut = new PostService(
+                repository.Object, 
+                tagService.Object, 
+                likePostRepository.Object,
+                categoryRepositoryMock.Object);
 
             tagService.Setup(t => t.Create(It.IsAny<string>())).Returns(new Tag { Id = 1 });
 
@@ -344,6 +405,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagServiceMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
 
@@ -354,7 +416,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 postRepositoryMock.Setup(repo => repo.AddTagToPost(newTag.Id, newPost.Id));
             }
 
-            var sut = new PostService(postRepositoryMock.Object, tagServiceMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagServiceMock.Object, 
+                likePostRepositoryMock.Object, 
+                categoryRepositoryMock.Object);
 
             // Act
             Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
@@ -376,10 +442,15 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepositoryMock = new Mock<IPostRepository>();
             var tagServiceMock = new Mock<ITagService>();
             var likePostRepositoryMock = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
 
-            var sut = new PostService(postRepositoryMock.Object, tagServiceMock.Object, likePostRepositoryMock.Object);
+            var sut = new PostService(
+                postRepositoryMock.Object, 
+                tagServiceMock.Object, 
+                likePostRepositoryMock.Object,
+                categoryRepositoryMock.Object);
 
             // Act
             Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
@@ -400,12 +471,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepository = new Mock<IPostRepository>();
             var tagsRepository = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             var postToDelete = new Post { Id = 1, CreatedBy = loggedUser };
 
             postRepository.Setup(r => r.GetById(1)).Returns(postToDelete);
 
-            var postService = new PostService(postRepository.Object, tagsRepository.Object, likePostRepository.Object);
+            var postService = new PostService(
+                postRepository.Object, 
+                tagsRepository.Object, 
+                likePostRepository.Object,
+                categoryRepositoryMock.Object);
 
             // Act
             postService.Delete(1, loggedUser);
@@ -421,12 +497,17 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepository = new Mock<IPostRepository>();
             var tagsRepository = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
             var postToDelete = new Post { Id = 1, CreatedBy = new User { Id = 3 } };
 
             postRepository.Setup(r => r.GetById(1)).Returns(postToDelete);
 
-            var sut = new PostService(postRepository.Object, tagsRepository.Object, likePostRepository.Object);
+            var sut = new PostService(
+                postRepository.Object, 
+                tagsRepository.Object, 
+                likePostRepository.Object, 
+                categoryRepositoryMock.Object);
 
             // Act and Assert
             Assert.ThrowsException<UnauthenticatedOperationException>(() => sut.Delete(1, loggedUser));
@@ -440,8 +521,13 @@ namespace ForumManagementSystem.Tests.ServicesTests
             var postRepository = new Mock<IPostRepository>();
             var tagsRepository = new Mock<ITagService>();
             var likePostRepository = new Mock<ILikePostRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            var sut = new PostService(postRepository.Object, tagsRepository.Object, likePostRepository.Object);
+            var sut = new PostService(
+                postRepository.Object, 
+                tagsRepository.Object, 
+                likePostRepository.Object, 
+                categoryRepositoryMock.Object);
 
             Assert.ThrowsException<UnauthorizedAccessException>(() => sut.CheckIfBlocked(blockedUser));
         }
