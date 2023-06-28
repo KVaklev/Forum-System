@@ -25,7 +25,8 @@ namespace ForumManagementSystem.Models
         public string Username { get; set; }
 
         [Required]
-        public string Password { get; set; }
+		[Password]
+		public string Password { get; set; }
 
         public string? PhoneNumber { get; set; }
 
