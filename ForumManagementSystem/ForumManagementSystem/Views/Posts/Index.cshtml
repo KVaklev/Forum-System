@@ -1,0 +1,55 @@
+﻿@using ForumManagementSystem.Models
+@model List<Post>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Posts</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <div>
+            <h3>
+                <a href="/Home/Index" class="nav">Home</a>
+                | <a href="/Posts/Index" class="nav">Posts</a>
+                | <a href="/Home/About" class="nav">About</a>
+                | <a href="/api/swagger" class="nav">Developer API</a>
+            </h3>
+        </div>
+    </header>
+
+    <div class="body-content">
+        <h2>Posts</h2>
+
+        <div class="table">
+            <div class="header">
+                <div class="header-cell">Title</div>
+                <div class="header-cell">Content</div>
+                <div class="header-cell">Username</div>
+                <div class="header-cell">Category</div>
+            </div>
+
+            @{
+                foreach (var post in this.Model)
+                {
+                    <div class="row">
+                        <div class="cell">@post.Title</div>
+                        <div class="cell">@post.Content</div>
+                        <div class="cell">@post.CreatedBy.Username</div>
+                        <div class="cell">@post.Category.Name</div>
+                        <div class="cell">
+                            <a href="@($"/Posts/Details/{post.Id}")" class="nav">Details</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <footer>
+        <small>© Copyright @DateTime.Now.Year, Posts</small>
+    </footer>
+</body>
+</html>
