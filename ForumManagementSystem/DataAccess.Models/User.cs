@@ -12,11 +12,11 @@ namespace ForumManagementSystem.Models
         public List<Comment> Comments { get; set; } = new List<Comment> { };
         public int Id { get; set; }
 
-        [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
         [MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string FirstName { get; set; }
 
-        [MinLength(4, ErrorMessage = "The {0} must be at least {1} characters long.")]
+        [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
         [MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string LastName { get; set; }
 
@@ -26,6 +26,8 @@ namespace ForumManagementSystem.Models
         [MinLength(5, ErrorMessage = "The {0} must be at least {1} characters long.")]
         [MaxLength(30, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string Username { get; set; }
+
+        [Password]
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
 

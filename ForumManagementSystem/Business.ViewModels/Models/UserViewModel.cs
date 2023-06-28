@@ -1,9 +1,8 @@
-﻿using DataAccess.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ForumManagementSystem.Models
+namespace Business.ViewModels.Models
 {
-    public class CreateUserDto 
+    public class UserViewModel
     {
         [Required]
         [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
@@ -26,10 +25,5 @@ namespace ForumManagementSystem.Models
 
         [Required]
         public string Password { get; set; }
-
-        public string? PhoneNumber { get; set; }
-
-        public bool IsAdmin { get; set; }
-
     }
 }
