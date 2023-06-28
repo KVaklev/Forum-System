@@ -1,0 +1,55 @@
+﻿@using ForumManagementSystem.Models
+@model List<User>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Users</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <div>
+            <h3>
+                <a href="/Home/Index" class="nav">Home</a>
+                | <a href="/Users/Index" class="nav">Users</a>
+                | <a href="/Home/About" class="nav">About</a>
+                | <a href="/api/swagger" class="nav">Developer API</a>
+            </h3>
+        </div>
+    </header>
+
+    <div class="body-content">
+        <h2>Users</h2>
+
+        <div class="table">
+            <div class="header">
+                <div class="header-cell">Firstname</div>
+                <div class="header-cell">Lastname</div>
+                <div class="header-cell">Email</div>
+                <div class="header-cell">Username</div>
+            </div>
+
+            @{
+                foreach (var user in this.Model)
+                {
+                    <div class="row">
+                        <div class="cell">@user.FirstName</div>
+                        <div class="cell">@user.LastName</div>
+                        <div class="cell">@user.Email</div>
+                        <div class="cell">@user.Username</div>
+                        <div class="cell">
+                            <a href="@($"/Users/Details/{user.Id}")" class="nav">Details</a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <footer>
+        <small>© Copyright @DateTime.Now.Year, Users</small>
+    </footer>
+</body>
+</html>

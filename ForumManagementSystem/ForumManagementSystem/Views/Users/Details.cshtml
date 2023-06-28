@@ -1,0 +1,43 @@
+﻿@using ForumManagementSystem.Models
+@model User
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title> @this.Model.Username</title>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+	<header>
+		<div>
+			<h3>
+				<a href="/Home/Index" class="nav">Home</a>
+				| <a href="/Users/Index" class="nav">Users</a>
+				| <a href="/Home/About" class="nav">About</a>
+				| <a href="/api/swagger" class="nav">Developer API</a>
+			</h3>
+		</div>
+	</header>
+
+	<div class="body-content">
+		<h2>Username: @this.Model.Username</h2>
+
+		<p class="margin12">Firstname: @this.Model.FirstName</p>
+		<p class="margin12">Lastname: @this.Model.LastName</p>
+		<p class="margin12">Email: @this.Model.Email</p>
+			@{
+				if (this.Model.IsAdmin)
+				{
+					<p class="form-label">Admin</p>
+				}
+			}
+		
+		<a href="/Users/Index" class="nav">Go Back</a>
+	</div>
+
+	<footer>
+		<small>© Copyright @DateTime.Now.Year, Users</small>
+	</footer>
+</body>
+</html>

@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business.ViewModels\Business.ViewModels.csproj" />
     <ProjectReference Include="..\Forum.Services\Business.Services.csproj" />
     <ProjectReference Include="..\Presentation.Helpers\Presentation.Helpers.csproj" />
   </ItemGroup>
