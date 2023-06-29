@@ -1,4 +1,5 @@
-﻿@using ForumManagementSystem.Models
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using ForumManagementSystem.Models
 @model List<User>
 
 <!DOCTYPE html>
@@ -12,17 +13,18 @@
     <header>
         <div>
             <h3>
-                <a href="/Home/Index" class="nav">Home</a>
-                | <a href="/Users/Index" class="nav">Users</a>
-                | <a href="/Home/About" class="nav">About</a>
-                | <a href="/api/swagger" class="nav">Developer API</a>
+                <a asp-controller="Home" asp-action="Index" class="nav">Home</a>
+                | <a asp-controller="Users" asp-action="Index" class="nav">Users</a>
+                | <a asp-controller="Home" asp-action="About" class="nav">About</a>
+                | <a href="/swagger/index.html" class="nav">Developer API</a>
             </h3>
         </div>
     </header>
 
     <div class="body-content">
         <h2>Users</h2>
-
+        <h3><a asp-controller="Users" asp-action="Create" class="nav">Make a new registration</a></h3>
+        
         <div class="table">
             <div class="header">
                 <div class="header-cell">Firstname</div>

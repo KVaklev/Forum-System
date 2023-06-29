@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title> Register</title>
+	<title>New Registration:</title>
 	<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -21,6 +21,12 @@
 	    </div>
 	</header>
 	<h2>Registration form</h2>
+	@{
+		if (ViewData["ErrorMessage"]!=null)
+		{
+			<h3><p>@ViewData["ErrorMessage"]</p></h3>
+		}
+	}
 	<form asp-controller="Users" asp-action="Create" method="post">
 		<label asp-for="FirstName" class="form-label"></label>
 		<br />

@@ -66,7 +66,8 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 			catch (DuplicateEntityException e)
 			{
-				this.ModelState.AddModelError("", e.Message);//неедс цоррецтион
+				this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+				this.ViewData["ErrorMessage"] = e.Message;
 				return this.View(userViewModel);
 			}
 
