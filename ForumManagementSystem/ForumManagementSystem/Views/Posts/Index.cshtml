@@ -37,8 +37,8 @@
                     <div class="row">
                         <div class="cell">@post.Title</div>
                         <div class="cell">@post.Content</div>
-                        <div class="cell">@post.CreatedBy?.Username</div>
-                        <div class="cell">@post.Category?.Name</div>
+                        <div class="cell">@post.CreatedBy.Username</div>
+                        <div class="cell">@post.Category.Name</div>
                         <div class="cell">
                             <a href="@($"/Posts/Details/{post.Id}")" class="nav">Details</a>
                         </div>

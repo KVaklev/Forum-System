@@ -21,7 +21,14 @@ namespace ForumManagementSystem.Repository
 
         public List<Post> GetAll()
         {
-            return context.Posts.ToList();
+            return context.Posts
+                .Include(post => post.CreatedBy)
+                
+                .Include(post => post.Category)
+                
+                .ToList();
+
+                       
         }
 
         public Post GetByUser(User user)

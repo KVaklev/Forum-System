@@ -1,0 +1,48 @@
+﻿@using ForumManagementSystem.Models
+@model Post
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title> @this.Model.Title</title>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+	<header>
+		<div>
+			<h3>
+				<a href="/Home/Index" class="nav">Home</a>
+				| <a href="/Posts/Index" class="nav">Posts</a>
+				| <a href="/Home/About" class="nav">About</a>
+				| <a href="/api/swagger" class="nav">Developer API</a>
+			</h3>
+		</div>
+	</header>
+
+	<div class="body-content">
+		<h2> @this.Model.Title</h2>
+
+		<p class="margin12">Title: @this.Model.Title</p>
+		<p class="margin12">Content: @this.Model.Content</p>
+		<p class="margin12">User: @this.Model.CreatedBy.Username</p>
+		<p class="margin12">Category: @this.Model.Category.Name</p>
+
+
+		@{
+			foreach (var comment in Model.Comments)
+			{
+				<div> 
+				        @comment.Content
+				</div>
+			}
+		}
+
+		<a href="/Posts/Index" class="nav">Go Back</a>
+	</div>
+
+	<footer>
+		<small>© Copyright @DateTime.Now.Year, Posts</small>
+	</footer>
+</body>
+</html>

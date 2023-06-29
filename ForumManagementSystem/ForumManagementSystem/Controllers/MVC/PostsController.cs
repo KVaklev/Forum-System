@@ -31,21 +31,21 @@ namespace ForumManagementSystem.Controllers.MVC
             return View(posts);
         }
 
-        //[HttpGet]
-        //public IActionResult Details(int id)
-        //{
-        //    try
-        //    {
-        //        Post post = this.postService.GetById();
-        //        return View(post);
-        //    }
-        //    catch (EntityNotFoundException e)
-        //    {
-        //        this.Response.StatusCode = StatusCodes.Status404NotFound;
-        //        this.ViewData["ErrorMessage"] = e.Message;
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            try
+            {
+                Post post = this.postService.GetById(id);
+                return View(post);
+            }
+            catch (EntityNotFoundException e)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = e.Message;
 
-        //        return this.View("Error");
-        //    }
-        //}
+                return this.View("Error");
+            }
+        }
     }
 }
