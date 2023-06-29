@@ -27,5 +27,7 @@ namespace Business.ViewModels.Models
         [Required]
 		[Password]
 		public string Password { get; set; }
-    }
+
+		public string? PhoneNumber { get; set; }
+	}
 }

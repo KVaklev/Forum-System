@@ -52,5 +52,25 @@ namespace ForumManagementSystem.Controllers.MVC
 
 			return this.View(userViewModel);
 		}
+		[HttpPost]
+		public IActionResult Create(UserViewModel userViewModel)
+		{
+			try
+			{
+				if (this.ModelState.IsValid)
+				{
+					var user = this.mapper.Map<User>(userViewModel);
+					var createdUser = this.userService.Create(user);
+					return this.RedirectToAction("Details", "Users", new { id = createdUser.Id });
+				}
+			}
+			catch (DuplicateEntityException e)
+			{
+				this.ModelState.AddModelError("", e.Message);//неедс цоррецтион
+				return this.View(userViewModel);
+			}
+
+			return this.View(userViewModel);
+		}
 	}
 }
