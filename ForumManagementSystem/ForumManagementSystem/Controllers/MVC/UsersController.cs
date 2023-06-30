@@ -8,17 +8,17 @@ using Presentation.Helpers;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
-    public class UsersController : Controller
-    {
-        private readonly IUserService userService;
-        private readonly IMapper mapper;
-        private readonly IAuthManager authManager;
-        public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager)
-        {
-            this.userService = userService;
-            this.mapper = mapper;
-            this.authManager = authManager;
-        }
+	public class UsersController : Controller
+	{
+		private readonly IUserService userService;
+		private readonly IMapper mapper;
+		private readonly IAuthManager authManager;
+		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager)
+		{
+			this.userService = userService;
+			this.mapper = mapper;
+			this.authManager = authManager;
+		}
 
 		[HttpGet]
 		public IActionResult Index()
@@ -28,8 +28,8 @@ namespace ForumManagementSystem.Controllers.MVC
 			return this.View(users);
 		}
 		[HttpGet]
-        public IActionResult Details(int id)
-        {
+		public IActionResult Details(int id)
+		{
 			try
 			{
 				User user = this.userService.GetById(id);
@@ -44,7 +44,6 @@ namespace ForumManagementSystem.Controllers.MVC
 				return this.View("Error");
 			}
 		}
-
 		[HttpGet]
 		public IActionResult Create()
 		{
@@ -64,14 +63,82 @@ namespace ForumManagementSystem.Controllers.MVC
 					return this.RedirectToAction("Details", "Users", new { id = createdUser.Id });
 				}
 			}
-			catch (DuplicateEntityException e)
+			catch (DuplicateEntityException ex)
 			{
 				this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
-				this.ViewData["ErrorMessage"] = e.Message;
+				this.ViewData["ErrorMessage"] = ex.Message;
 				return this.View(userViewModel);
 			}
 
 			return this.View(userViewModel);
+		}
+		[HttpGet]
+		public IActionResult Edit([FromRoute] int id)
+		{
+			try
+			{
+				var user = userService.GetById(id);
+
+				var userViewModel = this.mapper.Map<UserViewModel>(user);
+
+				return this.View(userViewModel);
+			}
+			catch (EntityNotFoundException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("Error");
+			}
+		}
+		[HttpPost]
+		public IActionResult Edit([FromRoute] int id, UserViewModel userViewModel)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return View(userViewModel);
+			}
+			var loggedUser = this.authManager.TryGetUser("admin");
+			var user = mapper.Map<User>(userViewModel);
+			var updatedUser = this.userService.Update(id, user, loggedUser);
+
+			return this.RedirectToAction("Details", "Users", new { id = updatedUser.Id });
+		}
+		[HttpGet]
+		public IActionResult Delete([FromRoute] int id)
+		{
+			try
+			{
+				var user = this.userService.GetById(id);
+
+				return this.View(user);
+			}
+			catch (EntityNotFoundException ex)
+			{
+				this.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("Error");
+			}
+		}
+
+		[HttpPost, ActionName("Delete")]
+		public IActionResult DeleteConfirmed([FromRoute] int id)
+		{
+			try
+			{
+				var user = this.authManager.TryGetUser("admin");
+				this.userService.Delete(id, user);
+
+				return this.RedirectToAction("Index", "Users");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				this.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("Error");
+			}
 		}
 	}
 }

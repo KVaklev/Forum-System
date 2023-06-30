@@ -42,7 +42,9 @@
                         <div class="cell">@user.Email</div>
                         <div class="cell">@user.Username</div>
                         <div class="cell">
-                            <a href="@($"/Users/Details/{user.Id}")" class="nav">Details</a>
+                        <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id">Details</a>
+                        <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                        <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
                         </div>
                     </div>
                 }
