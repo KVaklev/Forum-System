@@ -5,6 +5,11 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@this.ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
 <body>
     <header>
         <div>
@@ -19,12 +24,13 @@
 
                 @if (this.authManager.CurrentUser == null)
                 {
-                    <a asp-controller="Users" asp-action="Login" class="btn btn-outline-success">Login</a>
+                    <a asp-controller="Users" asp-action="Login" class="btn btn-outline-success">LOG IN</a>
                 }
                 else
                 {
-                    <a asp-controller="Users" asp-action="Logout" class="btn btn-outline-danger">Logout</a>
+                    <a asp-controller="Users" asp-action="Logout" class="btn btn-outline-danger">LOG OUT</a>
                 }
+                / <a asp-controller="Users" asp-action="Register" class="btn btn-outline-success">REGISTER</a>
             </h3>
         </div>
         </header>

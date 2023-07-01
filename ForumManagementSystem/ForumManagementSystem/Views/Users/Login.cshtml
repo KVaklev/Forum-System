@@ -1,10 +1,10 @@
 ﻿@model LoginViewModel
 
-<head>
-	<meta charset="utf-8" />
-	<title>Login</title>
-	<link rel="stylesheet" href="~/css/site.css" />
-</head>
+
+@{
+	this.ViewData["Title"] = "World Travel Forum - Login";
+}
+
 <body>
 	<h2>Login</h2>
 
@@ -12,19 +12,18 @@
 
 		<label asp-for="Username" class="form-label"></label>
 		<br/>
-		<input asp-for="Username" type="text" class="form-control" />
+		<input asp-for="Username" type="text" class="form-input" />
 		<br />
 		<span asp-validation-for="Username" class="text-danger"></span>
 		
 		<label asp-for="Password" class="form-label"></label>
 		<br/>
-		<input asp-for="Password" type="text" class="form-control" />
+		<input asp-for="Password" type="text" class="form-input" />
 		<br />
 		<span asp-validation-for="Password" class="text-danger"></span>
 		
 		<input type="submit" value="Login" class="btn btn-primary" />
 		<a asp-controller="Users" asp-action="Register" class="btn btn-secondary">Register</a>
-	
 	</form>
 
 </body>
