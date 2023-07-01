@@ -1,12 +1,10 @@
 ﻿@model User
 
-<head>
-	<meta charset="utf-8" />
-	<title>Delete</title>
-	<link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
+@{
+	this.ViewData["Title"] = "World Travel Forum - Delete User";
+}
 
+<body>
 	<div class="body-content">
 		<h2>Delete <b>@this.Model.Username</b>?</h2>
 
@@ -15,5 +13,4 @@
 	</form>
 		<a asp-controller="Users" asp-action="Index" class="nav">Back</a>
 		</div>
-
 </body>

@@ -1,16 +1,14 @@
 ﻿@model List<User>
 
-<head>
-    <meta charset="utf-8" />
-    <title>Users</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
+@{
+    this.ViewData["Title"] = "World Travel Forum - Users";
+}
+
 <body>
 
     <div class="body-content">
         <h2>Users</h2>
-        <h3><a asp-controller="Users" asp-action="Create" class="nav">Make a new registration</a></h3>
-        
+
         <div class="table">
             <div class="header">
                 <div class="header-cell">Firstname</div>
