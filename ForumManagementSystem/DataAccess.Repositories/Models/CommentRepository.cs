@@ -46,6 +46,10 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.FindAll(comment => comment.UserId==parameters.UserId);
             }
+            if (parameters.postID.HasValue)
+            {
+                result = result.Where(p => p.PostId == parameters.postID).ToList();
+            }
             if (!string.IsNullOrEmpty(parameters.SortBy))
             {
                 if (parameters.SortBy.Equals("userId", StringComparison.InvariantCultureIgnoreCase))

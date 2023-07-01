@@ -12,5 +12,7 @@
 
         public string? SortOrder { get; set; }
 
+        public int? postID { get; set; }
+
     }
 }

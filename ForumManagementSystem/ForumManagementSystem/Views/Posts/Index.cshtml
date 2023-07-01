@@ -42,6 +42,9 @@
                         <div class="cell">
                             <a href="@($"/Posts/Details/{post.Id}")" class="nav">Details</a>
                         </div>
+                        <div class="cell">
+                            <a asp-controller="Comments" asp-action="Index" asp-route-id="@post.Id">Comments</a>
+                        </div>
                     </div>
                 }
             }
