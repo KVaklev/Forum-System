@@ -36,6 +36,8 @@ namespace ForumManagementSystem.Models
             CreateMap<UserViewModel, User>();
             CreateMap<Category, CategoryViewModel>();
             CreateMap<CategoryViewModel, Category>();
+            CreateMap<Post, PostViewModel>();
+            CreateMap<PostViewModel, Post>();
         }
     }
 }

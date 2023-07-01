@@ -1,25 +1,11 @@
-﻿@using ForumManagementSystem.Models
-@model List<Post>
+﻿@model List<Post>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Posts</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
+@{
+    this.ViewData["Title"] = "World Travel Forum - Users";
+}
+
+
 <body>
-    <header>
-        <div>
-            <h3>
-                <a href="/Home/Index" class="nav">Home</a>
-                | <a href="/Posts/Index" class="nav">Posts</a>
-                | <a href="/Home/About" class="nav">About</a>
-                | <a href="/api/swagger" class="nav">Developer API</a>
-            </h3>
-        </div>
-    </header>
-
     <div class="body-content">
         <h2>Posts</h2>
 
@@ -40,7 +26,10 @@
                         <div class="cell">@post.CreatedBy.Username</div>
                         <div class="cell">@post.Category.Name</div>
                         <div class="cell">
-                            <a href="@($"/Posts/Details/{post.Id}")" class="nav">Details</a>
+                            <a asp-controller="Posts" asp-action="Index" asp-route-id="@post.Id" class="btn btn-primary"> Posts </a>
+                            | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning"> Edit </a>
+                            | <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger"> Delete </a>
+                           
                         </div>
                     </div>
                 }
@@ -52,4 +41,3 @@
         <small>© Copyright @DateTime.Now.Year, Posts</small>
     </footer>
 </body>
-</html>

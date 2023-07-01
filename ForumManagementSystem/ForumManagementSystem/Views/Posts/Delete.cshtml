@@ -1,0 +1,20 @@
+﻿@model Post
+
+<head>
+	<meta charset="utf-8" />
+	<title>Delete</title>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+	<div class="body-content">
+		<h2>Are you sure you want to delete <b>@this.Model.Title</b>?</h2>
+
+		<form asp-controller="Posts" asp-action="Delete" method="post">
+			<input type="submit" value="Delete" class="btn-danger" />
+		</form>
+		<a asp-controller="Home" asp-action="Index" class="nav">Back</a>
+	</div>
+
+</body>
+

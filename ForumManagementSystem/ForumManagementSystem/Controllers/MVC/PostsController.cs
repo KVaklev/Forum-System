@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Services.Contracts;
+using Business.ViewModels.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
@@ -47,5 +48,129 @@ namespace ForumManagementSystem.Controllers.MVC
                 return this.View("Error");
             }
         }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var postViewModel = new PostViewModel();
+            //var categories = categoryService.GetAll();
+            //postViewModel.Categories = new System.Web.Mvc.SelectList(categories);
+
+            return View(postViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Create(PostViewModel postViewModel)
+        {
+            var user = authManager.TryGetUser("ivanchoDraganchov:123");
+            var tagNames = new List<string>();
+            var post = mapper.Map<Post>(postViewModel);
+            var createdPost = postService.Create(post, user, tagNames);
+            // return RedirectToAction("Index", "Posts");
+            return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
+
+        }
+
+        //[HttpPost]
+        //public IActionResult Create(PostViewModel postViewModel)
+        //{
+        //    try
+        //    {
+        //        if (this.ModelState.IsValid)
+        //        {
+        //            var post = mapper.Map<Post>(postViewModel);
+        //            var user = authManager.TryGetUser("ivanchoDraganchov:123");
+        //            var tagNames = new List<string>();
+        //            var createdPost = postService.Create(post, user, tagNames);
+        //            // return RedirectToAction("Index", "Posts");
+        //            return RedirectToAction("Details", "Posts",
+        //                new { id = createdPost.Id });
+        //        }
+        //    }
+
+        //    catch (DuplicateEntityException ex)
+        //    {
+        //        this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+        //        this.ViewData["ErrorMessage"] = ex.Message;
+        //        return this.View(postViewModel);
+        //    }
+
+        //    return this.View(postViewModel);
+        //}
+
+
+        [HttpGet]
+        public IActionResult Edit([FromRoute] int id)
+        {
+            try
+            {
+                var post = postService.GetById(id);
+
+                var postViewModel = this.mapper.Map<PostViewModel>(post);
+
+                return this.View(postViewModel);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int id, PostViewModel postViewModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return View(postViewModel);
+            }
+            var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
+            var post = mapper.Map<Post>(postViewModel);
+            var tagsToEdit = new List<string>();
+            var updatedPost = this.postService.Update(id, post, loggedUser, tagsToEdit);
+
+            return this.RedirectToAction("Details", "Post", new { id = updatedPost.Id });
+        }
+
+        [HttpGet]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            try
+            {
+                var post = this.postService.GetById(id);
+
+                return this.View(post);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed([FromRoute] int id)
+        {
+            try
+            {
+                var user = this.authManager.TryGetUser("ivanchoDraganchov:123");
+                var post = this.postService.GetById(id);
+                this.postService.Delete(id, user);
+
+                return this.RedirectToAction("Index", "Post");
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
+
     }
 }

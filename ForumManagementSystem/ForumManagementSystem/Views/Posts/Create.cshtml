@@ -1,0 +1,24 @@
+﻿@model PostViewModel
+
+<head>
+	<meta charset="utf-8" />
+	<title>New Post</title>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+@{
+	this.ViewData["Action"] = "Create";
+	this.ViewData["ButtonText"] = "Create";
+	this.ViewData["NameVisibility"] = "name-visible";
+}
+<body>
+	<h2>Create a new post</h2>
+	@{
+		if (ViewData["ErrorMessage"] != null)
+		{
+			<h3><p>@ViewData["ErrorMessage"]</p></h3>
+		}
+	}
+	<partial name="_PostForm" />
+</body>
+
