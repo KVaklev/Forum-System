@@ -2,6 +2,7 @@
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Presentation.Helpers;
 
@@ -31,12 +32,13 @@ namespace ForumManagementSystem.Tests.AuthManagersTests
             };
 
             var userServiceMock = new Mock<IUserService>();
+            var contextAccessor = new Mock<IHttpContextAccessor>();
 
             userServiceMock
                 .Setup(userService=>userService.GetByUsername("ivanchoDraganchov"))
                 .Returns(expectedUser);
 
-            var sut = new AuthManager(userServiceMock.Object);
+            var sut = new AuthManager(userServiceMock.Object, contextAccessor.Object);
 
             //Act 
 
@@ -55,12 +57,13 @@ namespace ForumManagementSystem.Tests.AuthManagersTests
 
             string credentials = "TestUser:13";
             var userServiceMock = new Mock<IUserService>();
+			var contextAccessor = new Mock<IHttpContextAccessor>();
 
-            userServiceMock
+			userServiceMock
                 .Setup(userService => userService.GetByUsername("TestUser"))
                 .Throws(new EntityNotFoundException("Invalid username."));
 
-            var sut = new AuthManager(userServiceMock.Object);
+            var sut = new AuthManager(userServiceMock.Object, contextAccessor.Object);
 
             //Act & Assert
 
@@ -87,12 +90,13 @@ namespace ForumManagementSystem.Tests.AuthManagersTests
                 IsBlocked = false
             };
             var userServiceMock = new Mock<IUserService>();
+			var contextAccessor = new Mock<IHttpContextAccessor>();
 
-            userServiceMock
+			userServiceMock
                 .Setup(userService => userService.GetByUsername("ivanchoDraganchov"))
                 .Returns(expectedUser);
 
-            var sut = new AuthManager(userServiceMock.Object);
+            var sut = new AuthManager(userServiceMock.Object, contextAccessor.Object);
 
             //Act & Assert
 

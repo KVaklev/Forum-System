@@ -24,7 +24,21 @@ namespace ForumManagementSystem
             builder.Services.AddDbContext<ApplicationContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging();
             });
+
+            // Http Session
+            builder.Services.AddSession(options =>
+            {
+                // With IdleTimeout you can change the number of seconds after which the session expires.
+                // The seconds reset every time you access the session.
+                // This only applies to the session, not the cookie.
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            builder.Services.AddHttpContextAccessor();
 
             // Repositories
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -49,6 +63,8 @@ namespace ForumManagementSystem
             //Helpers
             builder.Services.AddScoped<CustomAutoMapper>();
             builder.Services.AddScoped<IAuthManager,AuthManager>();
+            builder.Services.AddScoped<AuthManager>();
+            builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -57,6 +73,9 @@ namespace ForumManagementSystem
 
             app.UseDeveloperExceptionPage();
             app.UseRouting();
+
+            // Enables session
+            app.UseSession();
 
             if (app.Environment.IsDevelopment())
             {

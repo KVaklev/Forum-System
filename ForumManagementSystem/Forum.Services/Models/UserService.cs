@@ -34,12 +34,12 @@ namespace ForumManagementSystem.Services
         }
         public User Create(User user)
         {
-            if (this.repository.UsernameExists(user.Username))
+            if (CheckIfUsernameExists(user.Username))
             {
                 throw new DuplicateEntityException($"User with username '{user.Username}' already exists.");
             }
 
-            if (this.repository.EmailExists(user.Email))
+            if (CheckIfEmailExists(user.Email))
             {
                 throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
             }
@@ -64,7 +64,7 @@ namespace ForumManagementSystem.Services
                 throw new InvalidOperationException(Constants.ModifyUsernameErrorMessage);
             }
 
-            if (this.repository.EmailExists(user.Email))
+            if (CheckIfEmailExists(user.Email))
             {
                 throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
             }
@@ -110,6 +110,16 @@ namespace ForumManagementSystem.Services
         public User UnblockUser(User user)
         {
             return this.repository.UnblockUser(user);
+        }
+
+        public bool CheckIfUsernameExists(string username)
+        {
+            return this.repository.UsernameExists(username);
+        }
+
+        public bool CheckIfEmailExists(string email)
+        {
+            return this.repository.EmailExists(email);
         }
     }
 }
