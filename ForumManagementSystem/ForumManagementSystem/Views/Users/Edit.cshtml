@@ -1,26 +1,14 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Business.ViewModels.Models;
-@model UserViewModel
+﻿@model UserViewModel
 
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
 	<meta charset="utf-8" />
 	<title>Edit user</title>
 	<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-	<header>
-		<div>
-			<h3>
-				<a asp-controller="Home" asp-action="Index" class="nav">Home</a>
-				<a asp-controller="Users" asp-action="Index" class="nav">Users</a>
-				<a asp-controller="Home" asp-action="About" class="nav">About</a>
-				<a href="/api/swagger" class="nav">Developer API</a>
-			</h3>
-		</div>
-	</header>
-	<h2>Edit personal information</h2>
+	
+	<h2>Edit information</h2>
 
 	<form asp-controller="Users" asp-action="Edit" method="post">
 		<label asp-for="FirstName" class="form-label"></label>
@@ -62,10 +50,4 @@
 		<input type="submit" value="Save changes" class="btn-primary" />
 		<a asp-controller="Users" asp-action="Index" class="nav">Back</a>
 	</form>
-	<footer>
-		<small>© Copyright @DateTime.Now.Year, Users</small>
-	</footer>
 </body>
-</html>
-
-

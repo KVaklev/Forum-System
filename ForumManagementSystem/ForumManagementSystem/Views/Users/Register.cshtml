@@ -1,25 +1,11 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Business.ViewModels.Models;
-@model RegisterViewModel
+﻿@model RegisterViewModel
 
-<!DOCTYPE html>
-<html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<title>New Registration</title>
 	<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-	<header>
-		<div>
-			<h3>
-				<a asp-controller="Home" asp-action="Index" class="nav">Home</a>
-				<a asp-controller="Users" asp-action="Index" class="nav">Users</a>
-				<a asp-controller="Home" asp-action="About" class="nav">About</a>
-				<a href="/api/swagger" class="nav">Developer API</a>
-			</h3>
-		</div>
-	</header>
 	<h2>Registration form</h2>
 	@{
 		if (ViewData["ErrorMessage"] != null)
@@ -27,7 +13,7 @@
 			<h3><p>@ViewData["ErrorMessage"]</p></h3>
 		}
 	}
-	<form asp-controller="Users" asp-action="Register" method="post">
+		<form asp-controller="Users" asp-action="Register" method="post">
 		<label asp-for="FirstName" class="form-label"></label>
 		<br />
 		<input asp-for="FirstName" type="text" class="form-input" />
@@ -73,10 +59,4 @@
 		<input type="submit" value="Register" class="btn-primary" />
 		<a asp-controller="Users" asp-action="Login" class="btn btn-secondary">Login</a>
 	</form>
-	<footer>
-		<small>© Copyright @DateTime.Now.Year, Users</small>
-	</footer>
 </body>
-</html>
-
-

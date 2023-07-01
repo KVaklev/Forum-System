@@ -1,49 +1,16 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@inject AuthManager authManager;
-﻿@using ForumManagementSystem.Models
-@using Presentation.Helpers;
-@model List<Category>
+﻿@model List<Category>
 
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>World Travel Forum - Home</title>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body>
-    <header>
-        <div>
-            <h3>
-                <!-- using tag helpers -->
-                <a asp-controller="Home" asp-action="Index" class="nav">Home</a>
-                | <a asp-controller="Users" asp-action="Index" class="nav">Users</a>
-                | <a asp-controller="Home" asp-action="Index" class="nav">Categories</a>
-                | <a asp-controller="Posts" asp-action="Index" class="nav">Posts</a>
-                | <a href="/swagger/index.html" class="nav">Developer API</a>|
-
-                
-                    @if (this.authManager.CurrentUser == null)
-                    {
-                        <a asp-controller="Users" asp-action="Login" class="btn btn-outline-success">Login</a>
-                    }
-                    else
-                    {
-                        <a asp-controller="Users" asp-action="Logout" class="btn btn-outline-danger">Logout</a>
-                    }
-                
-                
-            </h3>
-        </div>
-    </header>
 
     <div class="body-content">
         <h2><img src="~/images/WTF.jpg" style="width:50px;height:40px;">WELCOME TO WORLD FORUM TRAVEL</h2>
-
     </div>
 
-    <div class="body-content">
+   
         <h2>Categories</h2>
 
         <div class="table">
@@ -69,14 +36,4 @@
             </div>
             }
             }
-        </div>
     </div>
-
-
-
-    <footer>
-        <small>© Copyright @DateTime.Now.Year, World Travel Forum</small>
-    </footer>
-</body>
-</html>
-
