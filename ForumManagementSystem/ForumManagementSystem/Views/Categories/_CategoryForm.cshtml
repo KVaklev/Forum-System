@@ -1,0 +1,19 @@
+﻿@model CategoryViewModel
+
+<form asp-controller="Categories" asp-action="@this.ViewData["Action"]" method="post">
+	
+	
+		<label asp-for="Name" class="form-label"></label>
+		<br />
+		<input asp-for="Name" type="text" class="form-input" />
+		<br />
+		<span asp-validation-for="Name" class="form-error"></span>
+	
+
+	<label asp-for="Description" class="form-label"></label>
+	<br />
+	<input asp-for="Description" type="text" class="form-input" />
+	<br />
+	<span asp-validation-for="Description" class="form-error"></span>
+	<input type="submit" value="@this.ViewData["ButtonText"]" class="btn-primary" />
+</form>

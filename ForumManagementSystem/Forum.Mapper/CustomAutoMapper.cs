@@ -34,6 +34,8 @@ namespace ForumManagementSystem.Models
             CreateMap<UpdateUserDto, User>();
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
+            CreateMap<Category, CategoryViewModel>();
+            CreateMap<CategoryViewModel, Category>();
         }
     }
 }

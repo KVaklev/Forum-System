@@ -9,7 +9,7 @@ using Presentation.Helpers;
 namespace ForumManagementSystem.Controllers.API
 {
     [ApiController]
-    [Route("api/home")]
+    [Route("api/category")]
     public class CategoryApiController : ControllerBase
     {
         private readonly ICategoryService categoryService;

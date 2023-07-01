@@ -1,0 +1,20 @@
+﻿@model CategoryViewModel
+
+
+<head>
+	<meta charset="utf-8" />
+	<title>Edit category</title>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+	@{
+		this.ViewData["Action"] = "Edit";
+		this.ViewData["ButtonText"] = "Save changes";
+		this.ViewData["NameVisibility"] = "name-hidden";
+	}
+	<h2>Edit information</h2>
+
+	<partial name="_CategoryForm" />
+
+</body>
