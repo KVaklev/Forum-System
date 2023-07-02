@@ -1,27 +1,32 @@
 ﻿@model PostViewModel
 
-<form asp-controller="Posts" asp-action="@this.ViewData["Action"]" method="post">
+     <form asp-controller="Posts" asp-action="@this.ViewData["Action"]" method="post">
 
-  
-        <label asp-for="Title" class="form-label"></label><br>
-        <input asp-for="Title" type="text" class="form-input"><br>
-        <span asp-validation-for="Title" class="form-error"></span>
+     <label asp-for="Title" class="form-label"></label>
+     <br />
+     <input asp-for="Title" type="text" class="form-input">
+     <br />
+     <span asp-validation-for="Title" class="form-error"></span>
    
-        <label asp-for="Content" class="form-label"></label><br>
-        <input asp-for="Content" type="text" class="form-input"><br><br>
-        <span asp-validation-for="Content" class="form-error"></span>
+     <label asp-for="Content" class="form-label"></label>
+     <br />
+     <input asp-for="Content" type="text" class="form-input">
+     <br />
+     <span asp-validation-for="Content" class="form-error"></span>
    
-        <label asp-for="Tags" class="form-label"></label><br>
-        <input asp-for="Tags" type="text" class="form-input"><br><br>
-        <<span asp-validation-for="Tags" class="form-error"></span>
-    
-        <label asp-for="CategoryId" class="form-label"></label><br>
-        <input asp-for="CategoryId" class="form-input"><br>
-        <span asp-validation-for="CategoryId" class="form-error"></span>
-        @*@<select asp-items="Model.Categories" asp-for="Category"></select>*@
+     <label asp-for="Tags" class="form-label"></label>
+     <br />
+     <input asp-for="Tags" type="text" class="form-input">
+     <br />
+     <<span asp-validation-for="Tags" class="form-error"></span>
 
+    <label asp-for="CategoryId" class="form-label"></label>
+    <br />
+    <select asp-items="@Model.Categories" asp-for="CategoryId" class="form-input"></select>
+    <br />
+    <span asp-validation-for="CategoryId" class="form-error"></span>
 
-    <input type="submit" value="@this.ViewData["ButtonText"]" class="btn-primary" />
+     <input type="submit" value="@this.ViewData["ButtonText"]" class="btn-primary" />
+     <a asp-controller="Posts" asp-action="Index" class="nav">Back</a>
    
-
 </form>

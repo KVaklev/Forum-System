@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 namespace Business.ViewModels.Models
 {
     public class PostViewModel
@@ -24,6 +25,7 @@ namespace Business.ViewModels.Models
 
         public List<string>? Tags { get; set; }
 
-        //public SelectList Categories { get; set; }
+        public SelectList Categories { get; set; }
+
     }
 }
