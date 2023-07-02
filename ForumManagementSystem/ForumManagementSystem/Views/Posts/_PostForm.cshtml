@@ -18,13 +18,14 @@
      <br />
      <input asp-for="Tags" type="text" class="form-input">
      <br />
-     <<span asp-validation-for="Tags" class="form-error"></span>
+     <span asp-validation-for="Tags" class="form-error"></span>
 
-    <label asp-for="CategoryId" class="form-label"></label>
+    <label asp-for="Category" class="form-label"></label>
     <br />
-    <select asp-items="@Model.Categories" asp-for="CategoryId" class="form-input"></select>
+    <select asp-items="@Model.Categories" asp-for="Category" class="form-input"></select>
     <br />
-    <span asp-validation-for="CategoryId" class="form-error"></span>
+    <span asp-validation-for="Category" class="form-error"></span>
+
 
      <input type="submit" value="@this.ViewData["ButtonText"]" class="btn-primary" />
      <a asp-controller="Posts" asp-action="Index" class="nav">Back</a>
