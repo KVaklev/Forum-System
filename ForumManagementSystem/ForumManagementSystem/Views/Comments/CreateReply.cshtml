@@ -1,0 +1,24 @@
+﻿@model CommentViewModel
+
+<head>
+	<meta charset="utf-8" />
+	<title>New Comment</title>
+	<link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+@{
+	this.ViewData["Action"] = "CreateReply";
+	this.ViewData["ButtonText"] = "Create";
+	this.ViewData["NameVisibility"] = "name-visible";
+}
+<body>
+	<h2>Create a new comment</h2>
+	@{
+		if (ViewData["ErrorMessage"] != null)
+		{
+			<h3><p>@ViewData["ErrorMessage"]</p></h3>
+		}
+	}
+	<partial name="_CommentForm" />
+</body>
+

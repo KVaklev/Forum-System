@@ -1,0 +1,12 @@
+﻿@model CommentViewModel
+
+<form asp-controller="Comments" asp-action="@this.ViewData["Action"]" method="post">
+
+	    <label asp-for="Content" class="form-label"></label>
+		<br />
+		<input asp-for="Content" type="text" class="form-input" />
+		<br />
+		<span asp-validation-for="Content" class="form-error"></span>
+	    <br />
+	    <input type="submit" value="@this.ViewData["ButtonText"]" class="btn-primary" />
+</form>
