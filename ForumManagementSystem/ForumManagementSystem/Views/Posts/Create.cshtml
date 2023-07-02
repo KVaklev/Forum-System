@@ -9,13 +9,8 @@
 	this.ViewData["ButtonText"] = "Create";
 	this.ViewData["NameVisibility"] = "name-visible";
 }
-<body>
+
 	<h2>Create a new post</h2>
-	@{
-		if (@ViewData["ErrorMessage"] != null)
-		{
-			<h3><p>@ViewData["ErrorMessage"]</p></h3>
-		}
-	}
-	<partial name="_PostForm" />
-</body>
+
+	<partial name="_PostForm"/>
+

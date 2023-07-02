@@ -1,16 +1,10 @@
 ﻿@using ForumManagementSystem.Models
 @model Post
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<title> @this.Model.Title</title>
-	<link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-	
-	<div class="body-content">
+@{
+	this.ViewData["Title"] = "World Travel Forum - Details";
+}
+
 		<h2> @this.Model.Title</h2>
 
 		<p class="margin12">Title: @this.Model.Title</p>
@@ -29,6 +23,3 @@
 		}
 
 		<a href="/Posts/Index" class="nav">Go Back</a>
-	</div>
-</body>
-</html>

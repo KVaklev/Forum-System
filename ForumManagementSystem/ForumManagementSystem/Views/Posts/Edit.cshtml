@@ -1,19 +1,15 @@
 ﻿@model PostViewModel
 
-<head>
-	<meta charset="utf-8" />
-	<title>Edit post</title>
-	<link rel="stylesheet" href="~/css/site.css" />
-</head>
+@{
+	this.ViewData["Title"] = "World Travel Forum - Edit Post";
+}
 
-<body>
 	@{
 		this.ViewData["Action"] = "Edit";
 		this.ViewData["ButtonText"] = "Save changes";
 		this.ViewData["NameVisibility"] = "name-hidden";
 	}
+
 	<h2>Edit information</h2>
 
 	<partial name="_PostForm" />
-
-</body>

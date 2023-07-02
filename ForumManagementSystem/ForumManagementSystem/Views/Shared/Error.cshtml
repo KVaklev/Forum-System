@@ -1,21 +1,9 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<title>Error</title>
-	<link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-	
+﻿@{
+	this.ViewData["Title"] = "Error";
+}
 
-	<div class="body-content">
-		<h2 class="label-error">Oops...something went wrong :(</h2>
-		<p>
-			Status Code: @this.Context.Response.StatusCode<br />
-			Message: @this.ViewData["ErrorMessage"]
-		</p>
-	</div>
-
-	
-</body>
-</html>
+	<h2 class="label-error">Oops...something went wrong :(</h2>
+	<p>
+		Status Code: @this.Context.Response.StatusCode<br />
+		Message: @this.ViewData["ErrorMessage"]
+	</p>

@@ -74,11 +74,11 @@ namespace ForumManagementSystem.Repository
         {
             Post postToUpdate = this.GetById(id);
 
-            postToUpdate.Title = post.Title;
+            //postToUpdate.Title = post.Title;
             postToUpdate.Content = post.Content;
             postToUpdate.PostTags = post.PostTags;
             postToUpdate.CategoryId = post.CategoryId;
-            postToUpdate.UserId = post.UserId;
+            //postToUpdate.UserId = post.UserId;
             context.SaveChanges();
 
             return postToUpdate;

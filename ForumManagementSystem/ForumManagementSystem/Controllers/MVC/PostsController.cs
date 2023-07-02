@@ -65,10 +65,11 @@ namespace ForumManagementSystem.Controllers.MVC
             this.InitializeCategories(postViewModel);
             try
             {
-                if (this.ModelState.IsValid)
+				
+				if (this.ModelState.IsValid)
                 {
-                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
-                    var tagNames = new List<string>();
+					var user = authManager.TryGetUser("ivanchoDraganchov:123");
+					var tagNames = new List<string>();
                     var post = mapper.Map<Post>(postViewModel);
                     var createdPost = postService.Create(post, user, tagNames);
                     return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
@@ -97,7 +98,7 @@ namespace ForumManagementSystem.Controllers.MVC
             }
             catch (EntityNotFoundException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
@@ -144,7 +145,6 @@ namespace ForumManagementSystem.Controllers.MVC
             try
             {
                 var user = this.authManager.TryGetUser("ivanchoDraganchov:123");
-                var post = this.postService.GetById(id);
                 this.postService.Delete(id, user);
 
                 return this.RedirectToAction("Index", "Posts");
