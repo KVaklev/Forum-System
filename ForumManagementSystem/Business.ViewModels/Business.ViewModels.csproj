@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess.Models\DataAccess.Models.csproj" />
+    <ProjectReference Include="..\DataAccess.Repositories\DataAccess.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

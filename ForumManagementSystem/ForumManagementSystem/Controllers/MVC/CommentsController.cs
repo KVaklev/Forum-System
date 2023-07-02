@@ -8,6 +8,7 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
+using System.Net;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.Xml;
 
@@ -40,9 +41,6 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-
-
-                Post post = this.postService.GetById(id);
                 CommentQueryParameters parameter = new CommentQueryParameters()
                 {
                     postID = id
@@ -60,6 +58,132 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.View("Error");
             }
+
+
         }
-    }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var commentViewModel = new CommentViewModel();
+
+            return this.View(commentViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromRoute] int id, CommentViewModel commentViewModel)
+        {
+            try
+            {
+               if (this.ModelState.IsValid)
+               {
+                    var commentCreateVireModel = new CommentCreateViewModel()
+                    {
+                        Content = commentViewModel.Content,
+                        PostId = id
+                    };
+                    var comment = this.mapper.Map<Comment>(commentCreateVireModel);
+                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                    var createdComment = this.commentService.Create(comment, user);
+                    return this.RedirectToAction("Index", "Posts", new { id = createdComment.Id });
+               }
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+
+            return this.View(commentViewModel);
+        }
+        [HttpGet]
+        public IActionResult Edit([FromRoute] int id)
+        {
+            try
+            {
+                var comment = this.commentService.GetByID(id);
+                var commentCreateViewModel = this.mapper.Map<CommentCreateViewModel>(comment);
+                               
+                return this.View(commentCreateViewModel);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int id, CommentCreateViewModel commentCreateViewModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return View(commentCreateViewModel);
+            }
+            var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
+            var comment = mapper.Map<Comment>(commentCreateViewModel);
+            var updatedComment = this.commentService.Update(id, comment, loggedUser);
+
+            return this.RedirectToAction("Index", "Posts", new { id = updatedComment.Id });
+        }
+
+        [HttpGet]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            try
+            {
+                var comment = this.commentService.GetByID(id);
+                return this.View(comment);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed([FromRoute] int id)
+        {
+            try
+            {
+                var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                this.commentService.Delete(id, user);
+
+                return this.RedirectToAction("Index", "Posts");
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Like([FromRoute] int id)
+        {
+			try
+			{
+				User userLoger = authManager.TryGetUser("ivanchoDraganchov:123");
+				Comment comment = commentService.GetByID(id);
+				likeCommentService.Update(comment, userLoger);
+
+				return this.RedirectToAction("Index", "Posts");
+			}
+			catch (EntityNotFoundException ex)
+			{
+				this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+			}
+		}
+
+	}
 }

@@ -39,8 +39,13 @@ namespace ForumManagementSystem.Models
             CreateMap<Post, PostViewModel>();
             CreateMap<PostViewModel, Post>();
             CreateMap<Comment, CommentGetViewModel>()
-                .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username));
-            CreateMap<CommentViewModel, Comment>();
-        }
+                .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
+                .ForMember(c => c.PostTitle, u => u.MapFrom(c => c.Post.Title))
+                .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Post.Category.Name));
+            CreateMap<Comment, CommentViewModel>();
+			CreateMap<Comment, CommentCreateViewModel>();
+			CreateMap<CommentViewModel, Comment>();
+			CreateMap<CommentCreateViewModel, Comment>();
+		}
     }
 }
