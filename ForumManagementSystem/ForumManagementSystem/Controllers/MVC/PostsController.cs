@@ -71,7 +71,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var tagNames = new List<string>();
                     var post = mapper.Map<Post>(postViewModel);
                     var createdPost = postService.Create(post, user, tagNames);
-                    return RedirectToAction("Index", "Posts", new { id = createdPost.Id });
+                    return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
                 }                
             }
             catch (DuplicateEntityException ex)
@@ -117,7 +117,7 @@ namespace ForumManagementSystem.Controllers.MVC
             var tagsToEdit = new List<string>();
             var updatedPost = this.postService.Update(id, post, loggedUser, tagsToEdit);
 
-            return this.RedirectToAction("Details", "Post", new { id = updatedPost.Id });
+            return this.RedirectToAction("Details", "Posts", new { id = updatedPost.Id });
         }
 
         [HttpGet]
@@ -147,7 +147,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var post = this.postService.GetById(id);
                 this.postService.Delete(id, user);
 
-                return this.RedirectToAction("Index", "Post");
+                return this.RedirectToAction("Index", "Posts");
             }
             catch (EntityNotFoundException ex)
             {

@@ -28,7 +28,7 @@
                         <div class="cell">@post.CreatedBy.Username</div>
                         <div class="cell">@post.Category.Name</div>
                         <div class="cell">
-                            <a asp-controller="Posts" asp-action="Index" asp-route-id="@post.Id" class="btn btn-primary"> Posts </a>
+                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary"> Details</a>
                             | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning"> Edit </a>
                             | <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger"> Delete </a>
                            
