@@ -9,6 +9,8 @@
     <div class="body-content">
         <h2>Posts</h2>
 
+        <h3><a asp-controller="Posts" asp-action="Create" class="header-cell">Create a new post</a></h3>
+
         <div class="table">
             <div class="header">
                 <div class="header-cell">Title</div>
@@ -26,7 +28,7 @@
                         <div class="cell">@post.CreatedBy.Username</div>
                         <div class="cell">@post.Category.Name</div>
                         <div class="cell">
-                            <a asp-controller="Posts" asp-action="Index" asp-route-id="@post.Id" class="btn btn-primary"> Posts </a>
+                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary"> Details</a>
                             | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning"> Edit </a>
                             | <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger"> Delete </a>
                            
@@ -39,8 +41,4 @@
             }
         </div>
     </div>
-
-    <footer>
-        <small>© Copyright @DateTime.Now.Year, Posts</small>
-    </footer>
 </body>

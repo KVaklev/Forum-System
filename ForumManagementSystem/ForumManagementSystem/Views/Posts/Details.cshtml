@@ -9,17 +9,7 @@
 	<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-	<header>
-		<div>
-			<h3>
-				<a href="/Home/Index" class="nav">Home</a>
-				| <a href="/Posts/Index" class="nav">Posts</a>
-				| <a href="/Home/About" class="nav">About</a>
-				| <a href="/api/swagger" class="nav">Developer API</a>
-			</h3>
-		</div>
-	</header>
-
+	
 	<div class="body-content">
 		<h2> @this.Model.Title</h2>
 
@@ -40,9 +30,5 @@
 
 		<a href="/Posts/Index" class="nav">Go Back</a>
 	</div>
-
-	<footer>
-		<small>© Copyright @DateTime.Now.Year, Posts</small>
-	</footer>
 </body>
 </html>

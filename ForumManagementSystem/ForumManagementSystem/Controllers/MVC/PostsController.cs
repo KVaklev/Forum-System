@@ -5,6 +5,7 @@ using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Presentation.Helpers;
 
 namespace ForumManagementSystem.Controllers.MVC
@@ -15,13 +16,15 @@ namespace ForumManagementSystem.Controllers.MVC
         private readonly IAuthManager authManager;
         private readonly IMapper mapper;
         private readonly ILikePostService likePostService;
+        private readonly ICategoryService categoryService;
 
-        public PostsController(IPostService postService, IAuthManager authManager, IMapper mapper, ILikePostService likePostService)
+        public PostsController(IPostService postService, IAuthManager authManager, IMapper mapper, ILikePostService likePostService, ICategoryService categoryService)
         {
             this.postService = postService;
             this.authManager = authManager;
             this.mapper = mapper;
             this.likePostService = likePostService;
+            this.categoryService = categoryService;
         }
 
         [HttpGet]
@@ -52,51 +55,34 @@ namespace ForumManagementSystem.Controllers.MVC
         public IActionResult Create()
         {
             var postViewModel = new PostViewModel();
-            //var categories = categoryService.GetAll();
-            //postViewModel.Categories = new System.Web.Mvc.SelectList(categories);
-
-            return View(postViewModel);
+            this.InitializeCategories(postViewModel);
+            return this.View(postViewModel);
         }
 
         [HttpPost]
         public IActionResult Create(PostViewModel postViewModel)
         {
-            var user = authManager.TryGetUser("ivanchoDraganchov:123");
-            var tagNames = new List<string>();
-            var post = mapper.Map<Post>(postViewModel);
-            var createdPost = postService.Create(post, user, tagNames);
-            // return RedirectToAction("Index", "Posts");
-            return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
+            this.InitializeCategories(postViewModel);
+            try
+            {
+                if (this.ModelState.IsValid)
+                {
+                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                    var tagNames = new List<string>();
+                    var post = mapper.Map<Post>(postViewModel);
+                    var createdPost = postService.Create(post, user, tagNames);
+                    return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
+                }                
+            }
+            catch (DuplicateEntityException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+                this.ViewData["ErrorMessage"] = ex.Message;
+                return this.View(postViewModel);
+            }
 
+            return this.View(postViewModel);
         }
-
-        //[HttpPost]
-        //public IActionResult Create(PostViewModel postViewModel)
-        //{
-        //    try
-        //    {
-        //        if (this.ModelState.IsValid)
-        //        {
-        //            var post = mapper.Map<Post>(postViewModel);
-        //            var user = authManager.TryGetUser("ivanchoDraganchov:123");
-        //            var tagNames = new List<string>();
-        //            var createdPost = postService.Create(post, user, tagNames);
-        //            // return RedirectToAction("Index", "Posts");
-        //            return RedirectToAction("Details", "Posts",
-        //                new { id = createdPost.Id });
-        //        }
-        //    }
-
-        //    catch (DuplicateEntityException ex)
-        //    {
-        //        this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
-        //        this.ViewData["ErrorMessage"] = ex.Message;
-        //        return this.View(postViewModel);
-        //    }
-
-        //    return this.View(postViewModel);
-        //}
-
 
         [HttpGet]
         public IActionResult Edit([FromRoute] int id)
@@ -106,7 +92,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var post = postService.GetById(id);
 
                 var postViewModel = this.mapper.Map<PostViewModel>(post);
-
+                this.InitializeCategories(postViewModel);
                 return this.View(postViewModel);
             }
             catch (EntityNotFoundException ex)
@@ -123,6 +109,7 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             if (!this.ModelState.IsValid)
             {
+                this.InitializeCategories(postViewModel);
                 return View(postViewModel);
             }
             var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
@@ -130,7 +117,7 @@ namespace ForumManagementSystem.Controllers.MVC
             var tagsToEdit = new List<string>();
             var updatedPost = this.postService.Update(id, post, loggedUser, tagsToEdit);
 
-            return this.RedirectToAction("Details", "Post", new { id = updatedPost.Id });
+            return this.RedirectToAction("Details", "Posts", new { id = updatedPost.Id });
         }
 
         [HttpGet]
@@ -160,7 +147,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var post = this.postService.GetById(id);
                 this.postService.Delete(id, user);
 
-                return this.RedirectToAction("Index", "Post");
+                return this.RedirectToAction("Index", "Posts");
             }
             catch (EntityNotFoundException ex)
             {
@@ -171,6 +158,11 @@ namespace ForumManagementSystem.Controllers.MVC
             }
         }
 
+        private void InitializeCategories(PostViewModel postViewModel)
+        {
+            var categories = categoryService.GetAll();
+            postViewModel.Categories = new SelectList(categories, "Id", "Name");
+        }
 
     }
 }
