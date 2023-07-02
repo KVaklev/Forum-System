@@ -1,6 +1,7 @@
 ﻿@model List<CommentGetViewModel>
 
 
+
 @{
     CommentGetViewModel commentMenu = this.Model[0];
 }
@@ -41,7 +42,7 @@
                 <div class="cell">@comment.LikesCount</div>
                 <div class="cell">
                       <a asp-controller="Comments" asp-action="Index" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
-                    | <a asp-controller="Comments" asp-action="Create" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
+                    | <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
                     | <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                     | <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                 </div>

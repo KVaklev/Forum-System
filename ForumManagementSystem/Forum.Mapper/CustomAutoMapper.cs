@@ -46,6 +46,8 @@ namespace ForumManagementSystem.Models
 			CreateMap<Comment, CommentCreateViewModel>();
 			CreateMap<CommentViewModel, Comment>();
 			CreateMap<CommentCreateViewModel, Comment>();
+			CreateMap<CommentReplyCreateViewModel, Comment>();
+
 		}
     }
 }

@@ -185,5 +185,43 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 		}
 
+		[HttpGet]
+		public IActionResult CreateReply()
+		{
+			var commentViewModel = new CommentViewModel();
+			return this.View(commentViewModel);
+		}
+
+		[HttpPost]
+		public IActionResult CreateReply([FromRoute] int id, CommentViewModel commentViewModel)
+		{
+			try
+			{
+				if (this.ModelState.IsValid)
+				{
+                    var comment = commentService.GetByID(id);
+                    var commentReplyCreateViewModel = new CommentReplyCreateViewModel()
+                    {
+                        Content =$"{comment.Content} " + $"\n\n {commentViewModel.Content}",
+                        PostId = comment.PostId,
+                        CommentId = comment.Id
+					};
+					var commentReply = this.mapper.Map<Comment>(commentReplyCreateViewModel);
+					var user = authManager.TryGetUser("ivanchoDraganchov:123");
+					var createdComment = this.commentService.Create(commentReply, user);
+					return this.RedirectToAction("Index", "Posts", new { id = createdComment.Id });
+				}
+			}
+			catch (EntityNotFoundException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("Error");
+			}
+
+			return this.View(commentViewModel);
+		}
+
 	}
 }
