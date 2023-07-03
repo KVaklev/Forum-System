@@ -15,6 +15,7 @@
                 <div class="header-cell">Lastname</div>
                 <div class="header-cell">Email</div>
                 <div class="header-cell">Username</div>
+                <div class="header-cell">Actions</div>
             </div>
 
             @{
@@ -26,9 +27,9 @@
                         <div class="cell">@user.Email</div>
                         <div class="cell">@user.Username</div>
                         <div class="cell">
-                        <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id">Details</a>
-                        <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
-                        <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                            <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="btn btn-primary"> View </a>
+                            | <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning"> Edit </a>
+                            | <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger"> Delete </a>
                         </div>
                     </div>
                 }

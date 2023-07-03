@@ -4,12 +4,12 @@
 }
 
 
-<h3>
-    | <a asp-controller="Home" asp-action="Index" class="nav">@commentMenu.CategoryName</a>
-    > <a asp-controller="Posts" asp-action="Index" class="nav">@commentMenu.PostTitle</a>
-</h3>
+<h5>
+    | <a asp-controller="Home" asp-action="Index">@commentMenu.CategoryName</a>
+    > <a asp-controller="Posts" asp-action="Index">@commentMenu.PostTitle</a>
+</h5>
 
-
+<div></div>
     <div>
     <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentMenu.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
     </div>
@@ -39,10 +39,14 @@
                 @comment.Content
                 </div>
                 <div class="cell">@comment.DateTime</div>
-                <div class="cell">@comment.LikesCount</div>
+                
                 <div class="cell">
-                      <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
-                    | <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
+                    @comment.LikesCount
+                    |  <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
+                 </div>
+                 <div class="cell">
+                     <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
+
                     | <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                     | <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                 </div>
