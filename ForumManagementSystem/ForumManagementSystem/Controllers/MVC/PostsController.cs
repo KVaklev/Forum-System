@@ -128,7 +128,7 @@ namespace ForumManagementSystem.Controllers.MVC
             var tagsToEdit = new List<string>();
             var updatedPost = this.postService.Update(id, post, loggedUser, tagsToEdit);
 
-            return this.RedirectToAction("Details", "Posts", new { id = updatedPost.Id });
+            return this.RedirectToAction("Index", "Posts", new { id = updatedPost.Id });
         }
 
         [HttpGet]
