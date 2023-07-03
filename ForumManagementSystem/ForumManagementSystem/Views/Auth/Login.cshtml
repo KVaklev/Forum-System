@@ -8,7 +8,7 @@
 <body>
 	<h2>Login</h2>
 
-	<form asp-controller="Users" asp-action="Login" method="post">
+	<form asp-controller="Auth" asp-action="Login" method="post">
 
 		<label asp-for="Username" class="form-label"></label>
 		<br/>
@@ -18,12 +18,12 @@
 		
 		<label asp-for="Password" class="form-label"></label>
 		<br/>
-		<input asp-for="Password" type="text" class="form-input" />
+		<input asp-for="Password" type="password" class="form-input" />
 		<br />
 		<span asp-validation-for="Password" class="text-danger"></span>
 		
 		<input type="submit" value="Login" class="btn btn-primary" />
-		<a asp-controller="Users" asp-action="Register" class="btn btn-secondary">Register</a>
+		<a asp-controller="Auth" asp-action="Register" class="btn btn-secondary">Register</a>
 	</form>
 
 </body>

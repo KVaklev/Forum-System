@@ -27,13 +27,9 @@ namespace ForumManagementSystem
                 options.EnableSensitiveDataLogging();
             });
 
-            // Http Session
             builder.Services.AddSession(options =>
             {
-                // With IdleTimeout you can change the number of seconds after which the session expires.
-                // The seconds reset every time you access the session.
-                // This only applies to the session, not the cookie.
-                options.IdleTimeout = TimeSpan.FromSeconds(60);
+                options.IdleTimeout = TimeSpan.FromSeconds(1000);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -73,16 +69,12 @@ namespace ForumManagementSystem
 
             app.UseDeveloperExceptionPage();
             app.UseRouting();
-
-            // Enables session
             app.UseSession();
-
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseStaticFiles();
             app.UseAuthorization();
             app.MapDefaultControllerRoute();

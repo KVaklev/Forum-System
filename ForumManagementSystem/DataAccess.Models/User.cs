@@ -29,7 +29,7 @@ namespace ForumManagementSystem.Models
 
         [Password]
         public string Password { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public bool IsBlocked { get; set; }
 

@@ -9,38 +9,13 @@ namespace Presentation.Helpers
 {
     public class AuthManager : IAuthManager
     {
-        private const string CURRENT_USER = "CURRENT_USER";
         private readonly IUserService userService;
-        private readonly IHttpContextAccessor contextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AuthManager(IUserService userService, IHttpContextAccessor contextAccessor)
+        public AuthManager(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
-            this.userService = userService;   
-            this.contextAccessor = contextAccessor;
-        }
-
-        public void Login(string username, string password)
-        {
-            this.CurrentUser = this.TryGetUser(username, password);
-
-            if (this.CurrentUser == null)
-            {
-                int? loginAttempts = this.contextAccessor.HttpContext.Session.GetInt32("LOGIN_ATTEMPTS");
-
-                if (loginAttempts.HasValue && loginAttempts == 5)
-                {
-                    // redirect
-                }
-                else
-                {
-                    this.contextAccessor.HttpContext.Session.SetInt32("LOGIN_ATTEMPTS", (int)loginAttempts + 1);
-                }
-            }
-        }
-
-        public void Logout()
-        {
-            this.CurrentUser = null;
+            this.userService = userService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public User TryGetUser(string credentials)
@@ -66,54 +41,29 @@ namespace Presentation.Helpers
             }
         }
 
-        public User TryGetUser(string username, string password)
-        {
+        public User TryGetUserByUsername(string username)
+		{
             try
             {
-                User user = this.userService.GetByUsername(username);
-
-                // check for password mismatch
-                if (user.Password != password)
-                {
-                    throw new UnauthorizedOperationException("Invalid username or password");
-                }
-
-                return user;
+                return this.userService.GetByUsername(username);
             }
             catch (EntityNotFoundException)
             {
-                throw new UnauthorizedOperationException("Invalid username or password");
+                throw new UnauthorizedOperationException("Invalid username!");
             }
-        }
-        public User CurrentUser
+		}
+
+		public User TryGetUser(string username, string password)
         {
-            get
+            var user = TryGetUserByUsername(username);
+
+            if (user.Password.Equals(password))
             {
-                try
-                {
-                    string username = this.contextAccessor.HttpContext.Session.GetString(CURRENT_USER);
-                    User user = this.userService.GetByUsername(username);
-                    return user;
-                }
-                catch (EntityNotFoundException)
-                {
-                    return null;
-                }
+                throw new AuthenticationException("Invalid credentials!");
             }
-            set
-            {
-                // User
-                User user = value;
-                if (user != null)
-                {
-                    // add username to session
-                    this.contextAccessor.HttpContext.Session.SetString(CURRENT_USER, user.Username);
-                }
-                else
-                {
-                    this.contextAccessor.HttpContext.Session.Remove(CURRENT_USER);
-                }
-            }
+
+            return user;
         }
+
     }
 }

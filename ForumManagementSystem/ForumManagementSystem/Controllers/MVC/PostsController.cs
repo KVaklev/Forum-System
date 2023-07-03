@@ -54,6 +54,16 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Create()
         {
+            if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
+            {
+               return RedirectToAction("Login", "Auth");
+            }
+
+            //if (this.HttpContext.Session.GetString("LoggedUser") == null)
+            //{
+            //    return RedirectToAction("Login", "Auth");
+            //}
+
             var postViewModel = new PostViewModel();
             this.InitializeCategories(postViewModel);
             return this.View(postViewModel);
