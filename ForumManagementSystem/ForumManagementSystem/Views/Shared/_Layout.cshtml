@@ -2,6 +2,9 @@
 @inject AuthManager authManager;
 ﻿@using ForumManagementSystem.Models
 @using Presentation.Helpers;
+@{
+    var isLogged = Context.Session.Keys.Contains("LoggedUser");
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,16 +24,20 @@
                 | <a asp-controller="Posts" asp-action="Index" class="nav">Posts</a>
                 | <a href="/swagger/index.html" class="nav">Developer API</a>|
 
+                @if (isLogged)
+                {
+                   <a asp-controller="Auth" asp-action="Logout" class="btn btn-outline-danger">LOG OUT</a>
+                }
+                 else
+                {
+                   <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-success">LOG IN</a>
+                }
+                
+                @if (!isLogged)
+                {
+                    <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-success">REGISTER</a>
+                }
 
-                @if (this.authManager.CurrentUser == null)
-                {
-                    <a asp-controller="Users" asp-action="Login" class="btn btn-outline-success">LOG IN</a>
-                }
-                else
-                {
-                    <a asp-controller="Users" asp-action="Logout" class="btn btn-outline-danger">LOG OUT</a>
-                }
-                / <a asp-controller="Users" asp-action="Register" class="btn btn-outline-success">REGISTER</a>
             </h3>
         </div>
         </header>

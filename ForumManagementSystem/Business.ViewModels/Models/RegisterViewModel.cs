@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Business.ViewModels.Models
 {
-    public class RegisterViewModel : LoginViewModel
+    public class RegisterViewModel
     {
         [Required]
         [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
@@ -24,12 +24,14 @@ namespace Business.ViewModels.Models
         [MaxLength(30, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required.")]
         [Password]
         public string Password { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Confirm Password is required.")]
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
-        public string? PhoneNumber { get; set; }
+        //public string? PhoneNumber { get; set; }
     }
 }

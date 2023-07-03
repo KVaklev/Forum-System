@@ -15,7 +15,7 @@ namespace ForumManagementSystem.Services
         User Update(int id, User user, User loggedUser);
         void Delete(int id, User loggedUser);
         bool IsAuthorized(User user, User loggedUser);
-        bool CheckIfUsernameExists(string username);
-        bool CheckIfEmailExists(string email);
+        bool UsernameExists(string username);
+        bool EmailExists(string email);
     }
 }

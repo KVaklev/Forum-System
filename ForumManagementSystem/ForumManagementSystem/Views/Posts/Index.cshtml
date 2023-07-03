@@ -2,12 +2,17 @@
 
 @{
     this.ViewData["Title"] = "World Travel Forum - Posts";
+    var isLogged = Context.Session.Keys.Contains("LoggedUser");
 }
+
 
     <div class="body-content">
         <h2>Posts</h2>
 
+        @if (isLogged)
+    {
         <h3><a asp-controller="Posts" asp-action="Create" class="header-cell">Create a new post</a></h3>
+    }
 
         <div class="table">
             <div class="header">

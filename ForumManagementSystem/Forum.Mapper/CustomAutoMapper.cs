@@ -34,10 +34,14 @@ namespace ForumManagementSystem.Models
             CreateMap<UpdateUserDto, User>();
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
+            CreateMap<User, LoginViewModel>();
+            CreateMap<LoginViewModel, User>();
+            CreateMap<User, RegisterViewModel>();
+            CreateMap<RegisterViewModel,User>();
             CreateMap<Category, CategoryViewModel>();
             CreateMap<CategoryViewModel, Category>();
-            CreateMap<Post, PostViewModel>()
-            .ForMember(c => c.Category, u => u.MapFrom(c => c.Category.Name));
+            CreateMap<Post, PostViewModel>();
+           // .ForMember(c => c.Category, u => u.MapFrom(c => c.Category.Name));
 
 			CreateMap<PostViewModel, Post>();
             CreateMap<Comment, CommentGetViewModel>()

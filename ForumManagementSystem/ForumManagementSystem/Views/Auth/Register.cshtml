@@ -1,6 +1,5 @@
 ﻿@model RegisterViewModel
 
-
 @{
 	this.ViewData["Title"] = "World Travel Forum - Register";
 }
@@ -14,7 +13,7 @@
 		}
 	}
 
-		<form asp-controller="Users" asp-action="Register" method="post">
+		<form asp-controller="Auth" asp-action="Register" method="post">
 		<label asp-for="FirstName" class="form-label"></label>
 		<br />
 		<input asp-for="FirstName" type="text" class="form-input" />
@@ -26,12 +25,6 @@
 		<input asp-for="LastName" type="text" class="form-input" />
 		<br />
 		<span asp-validation-for="LastName" class="form-error"></span>
-
-		<label asp-for="PhoneNumber" class="form-label"></label>
-		<br />
-		<input asp-for="PhoneNumber" type="number" class="form-input" />
-		<br />
-		<span asp-validation-for="PhoneNumber" class="form-error"></span>
 
 		<label asp-for="Username" class="form-label"></label>
 		<br />
@@ -47,17 +40,17 @@
 
 		<label asp-for="Password" class="form-label"></label>
 		<br />
-		<input asp-for="Password" type="text" class="form-input" />
+		<input asp-for="Password" type="password" class="form-input" />
 		<br />
 		<span asp-validation-for="Password" class="form-error"></span>
 
 		<label asp-for="ConfirmPassword" class="form-label"></label>
 		<br />
-		<input asp-for="ConfirmPassword" type="text" class="form-input" />
+		<input asp-for="ConfirmPassword" type="password" class="form-input" />
 		<br />
 		<span asp-validation-for="ConfirmPassword" class="form-error"></span>
 
 		<input type="submit" value="Register" class="btn-primary" />
-		<a asp-controller="Users" asp-action="Login" class="btn btn-secondary">Login</a>
+		<a asp-controller="Auth" asp-action="Login" class="btn btn-secondary">Login</a>
 	</form>
 </body>
