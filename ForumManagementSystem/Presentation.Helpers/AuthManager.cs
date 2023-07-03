@@ -55,7 +55,7 @@ namespace Presentation.Helpers
 
 		public User TryGetUser(string username, string password)
         {
-            var user = TryGetUser(username);
+            var user = TryGetUserByUsername(username);
 
             if (user.Password.Equals(password))
             {
