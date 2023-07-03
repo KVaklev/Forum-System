@@ -34,6 +34,8 @@ namespace ForumManagementSystem
                 options.Cookie.IsEssential = true;
             });
 
+            builder.Services.AddHttpContextAccessor();
+
             // Repositories
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();

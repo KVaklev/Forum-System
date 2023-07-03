@@ -10,10 +10,12 @@ namespace Presentation.Helpers
     public class AuthManager : IAuthManager
     {
         private readonly IUserService userService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AuthManager(IUserService userService)
+        public AuthManager(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
-            this.userService = userService;   
+            this.userService = userService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
 		//public User TryGetUser(string credentials)
