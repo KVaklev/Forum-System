@@ -1,7 +1,10 @@
-﻿@model List<User>
+﻿@using Microsoft.AspNetCore.Http;
+@model List<User>
+
 
 @{
     this.ViewData["Title"] = "World Travel Forum - Users";
+    var isLogged = Context.Session.Keys.Contains("LoggedUser");
 }
 
 <body>
