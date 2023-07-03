@@ -79,15 +79,24 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpPost]
         public IActionResult Edit([FromRoute] int id, CategoryViewModel categoryViewModel)
         {
-            if (!this.ModelState.IsValid)
+            try
             {
-                return View(categoryViewModel);
-            }
-            var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
-            var category = mapper.Map<Category>(categoryViewModel);
-            var updatedCategory = this.categoryService.Update(id, category, loggedUser);
+                if (!this.ModelState.IsValid)
+                {
+                    return View(categoryViewModel);
+                }
+                var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
+                var category = mapper.Map<Category>(categoryViewModel);
+                var updatedCategory = this.categoryService.Update(id, category, loggedUser);
 
-            return this.RedirectToAction("Index", "Home", new { id = updatedCategory.Id });
+                return this.RedirectToAction("Index", "Home", new { id = updatedCategory.Id });
+            }
+            catch (DuplicateEntityException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+                this.ViewData["ErrorMessage"] = ex.Message;
+                return this.View(categoryViewModel);
+            }
         }
 
         [HttpGet]

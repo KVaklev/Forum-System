@@ -74,7 +74,7 @@ namespace ForumManagementSystem.Repository
         {
             Post postToUpdate = this.GetById(id);
 
-            //postToUpdate.Title = post.Title;
+            postToUpdate.Title = post.Title;
             postToUpdate.Content = post.Content;
             postToUpdate.PostTags = post.PostTags;
             postToUpdate.CategoryId = post.CategoryId;

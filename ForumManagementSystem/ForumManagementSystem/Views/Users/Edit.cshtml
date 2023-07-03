@@ -44,9 +44,9 @@
 	<input asp-for="Email" type="text" class="form-input" />
 	<br />
 	<span asp-validation-for="Email" class="form-error"></span>
-	
-	<input type="submit" value="@this.ViewData["ButtonText"]" class="btn-primary" />
-	<a asp-controller="Users" asp-action="Index" class="nav">Back</a>
+
+		<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
+		<a asp-controller="Users" asp-action="Index" class="btn btn-primary">Back</a>
 	</form>
 </body>
 

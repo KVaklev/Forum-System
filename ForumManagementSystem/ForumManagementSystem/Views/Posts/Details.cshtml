@@ -1,5 +1,4 @@
-﻿@using ForumManagementSystem.Models
-@model Post
+﻿@model Post
 
 @{
 	this.ViewData["Title"] = "World Travel Forum - Details";
@@ -22,4 +21,4 @@
 			}
 		}
 
-		<a href="/Posts/Index" class="nav">Go Back</a>
+<a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>

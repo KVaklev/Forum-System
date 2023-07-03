@@ -8,12 +8,13 @@
 <body>
 
 	<div class="body-content">
-		<h2>Are you sure you want to delete <b>@this.Model.Name</b>?</h2>
+		<h2>Are you sure you want to delete the category: <b>@this.Model.Name</b>?</h2>
 
 		<form asp-controller="Categories" asp-action="Delete" method="post">
-			<input type="submit" value="Delete" class="btn-danger" />
+			<input type="submit" value="Delete" class="btn btn-danger" />
+			<a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
 		</form>
-		<a asp-controller="Home" asp-action="Index" class="nav">Back</a>
+		
 	</div>
 
 </body>

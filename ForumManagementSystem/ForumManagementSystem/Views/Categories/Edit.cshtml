@@ -14,7 +14,12 @@
 		this.ViewData["NameVisibility"] = "name-hidden";
 	}
 	<h2>Edit a category</h2>
-
+	@{
+		if (ViewData["ErrorMessage"] != null)
+		{
+			<h3><p>@ViewData["ErrorMessage"]</p></h3>
+		}
+	}
 	<partial name="_CategoryForm" />
 
 </body>

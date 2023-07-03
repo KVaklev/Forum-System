@@ -202,7 +202,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var comment = commentService.GetByID(id);
                     var commentReplyCreateViewModel = new CommentReplyCreateViewModel()
                     {
-                        Content =$"{comment.Content} " + $"\n\n {commentViewModel.Content}",
+                        Content =$"\"{comment.Content}\" - " + $" {commentViewModel.Content}",
                         PostId = comment.PostId,
                         CommentId = comment.Id
 					};

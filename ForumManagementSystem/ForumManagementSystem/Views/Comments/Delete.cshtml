@@ -13,9 +13,11 @@
             @this.Model.Content
 		</div>
 		<form asp-controller="Comments" asp-action="Delete" method="post">
-			<input type="submit" value="Delete" class="btn-danger" />
+			<input type="submit" value="Delete" class="btn btn-danger" />
+			<a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
 		</form>
-		<a asp-controller="Posts" asp-action="Index" class="nav">Back</a>
+		
+
 	</div>
 
 </body>
