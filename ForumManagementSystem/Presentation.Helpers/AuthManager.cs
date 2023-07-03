@@ -18,30 +18,30 @@ namespace Presentation.Helpers
             this.httpContextAccessor = httpContextAccessor;
         }
 
-		//public User TryGetUser(string credentials)
-		//{
-		//    string[] credentialsArray = credentials.Split(':');
-		//    string username = credentialsArray[0];
-		//    string password = credentialsArray[1];
+        public User TryGetUser(string credentials)
+        {
+            string[] credentialsArray = credentials.Split(':');
+            string username = credentialsArray[0];
+            string password = credentialsArray[1];
 
-		//    string encodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
+            string encodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(password));
 
-		//    try
-		//    {
-		//        var user = this.userService.GetByUsername(username);
-		//        if (user.Password == encodedPassword)
-		//        {
-		//            return user;
-		//        }
-		//        throw new UnauthenticatedOperationException("Invalid credentials");
-		//    }
-		//    catch (EntityNotFoundException)
-		//    {
-		//        throw new UnauthorizedOperationException("Invalid username!");
-		//    }
-		//}
+            try
+            {
+                var user = this.userService.GetByUsername(username);
+                if (user.Password == encodedPassword)
+                {
+                    return user;
+                }
+                throw new UnauthenticatedOperationException("Invalid credentials");
+            }
+            catch (EntityNotFoundException)
+            {
+                throw new UnauthorizedOperationException("Invalid username!");
+            }
+        }
 
-		public User TryGetUser(string username)
+        public User TryGetUserByUsername(string username)
 		{
             try
             {
