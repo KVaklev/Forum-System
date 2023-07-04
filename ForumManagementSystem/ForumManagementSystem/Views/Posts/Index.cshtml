@@ -11,9 +11,11 @@
 
         @if (isLogged)
     {
-        <h3><a asp-controller="Posts" asp-action="Create" class="header-cell">Create a new post</a></h3>
-        <br/>
+       @* <h3><a asp-controller="Posts" asp-action="Create" class="header-cell">Create a new post</a></h3>
+        <br/>*@
         <a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a>
+        <a asp-controller="Posts" asp-action="Index" asp-route-tag="Bmw" class="btn btn-primary">Tags</a>
+        <a asp-controller="Posts" asp-action="Category" class="btn btn-primary">Category</a>
     }
 
         <div class="table">

@@ -27,12 +27,6 @@
 	<br />
 	<span asp-validation-for="PhoneNumber" class="form-error"></span>
 
-@*	<label asp-for="Username" class="form-label"></label>
-	<br />
-	<input asp-for="Username" type="hidden" class="form-input" />
-	<br />
-	<span asp-validation-for="Username" class="form-error"></span>*@
-
 	<label asp-for="Password" class="form-label"></label>
 	<br />
 	<input asp-for="Password" type="text" class="form-input" />
@@ -45,8 +39,38 @@
 	<br />
 	<span asp-validation-for="Email" class="form-error"></span>
 
-		<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
-		<a asp-controller="Users" asp-action="Index" class="btn btn-primary">Back</a>
+		<label asp-for="Admin" class="form-label"></label>
+		<div class="form-check">
+			<input asp-for="Admin" class="form-check-input" type="radio" value="true" id="isAdminTrue">
+			<label class="form-check-label" for="isAdminTrue">
+				True
+			</label>
+		</div>
+		<div class="form-check">
+			<input asp-for="Admin" class="form-check-input" type="radio" value="false" id="isAdminFalse">
+			<label class="form-check-label" for="isAdminFalse">
+				False
+			</label>
+		</div>
+		<br />
+
+		<label asp-for="Blocked" class="form-label"></label>
+		<div class="form-check">
+			<input asp-for="Blocked" class="form-check-input" type="radio" value="true" id="isBlockedTrue">
+			<label class="form-check-label" for="isBlockedTrue">
+				True
+			</label>
+		</div>
+		<div class="form-check">
+			<input asp-for="Blocked" class="form-check-input" type="radio" value="false" id="isBlockedFalse">
+			<label class="form-check-label" for="isBlockedFalse">
+				False
+			</label>
+		</div>
+		<br />
+
+	<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
+	<a asp-controller="Users" asp-action="Index" class="btn btn-primary">Back</a>
 	</form>
 </body>
 

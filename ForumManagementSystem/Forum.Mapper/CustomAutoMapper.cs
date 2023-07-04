@@ -42,14 +42,13 @@ namespace ForumManagementSystem.Models
             .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
                 .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Category.Name))
                 .ForMember(c => c.DateCreated, u => u.MapFrom(c => c.DateTime));
-			CreateMap<Post, PostViewModel>();
-			// .ForMember(c => c.CategoryId, u => u.MapFrom(c => c.Category.Name));
-			CreateMap<PostViewModel, Post>();
+            CreateMap<Post, PostViewModel>();
+            CreateMap<PostViewModel, Post>();
+               
+            //Users
+            //Dto
 
-			//Users
-                    //Dto
-
-			CreateMap<GetUserDto, User>();
+            CreateMap<GetUserDto, User>();
             CreateMap<CreateUserDto, User>();
             CreateMap<User, GetUserDto>();
             CreateMap<User, CreateUserDto>();

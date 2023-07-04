@@ -25,5 +25,9 @@ namespace Business.ViewModels.Models
 		public string Password { get; set; }
 
 		public string? PhoneNumber { get; set; }
+
+		public bool? Admin { get; set; }
+
+		public bool? Blocked { get; set; }
 	}
 }

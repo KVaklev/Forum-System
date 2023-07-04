@@ -27,5 +27,7 @@ namespace Business.ViewModels.Models
 
         public SelectList? Categories { get; set; }
 
+        public SelectList? SelectTags {  get; set; }
+
     }
 }

@@ -12,8 +12,10 @@ namespace DataAccess.Models
 
         // Navigation property
         [JsonIgnore]
-        public Post Post { get; set; }
+        public Post? Post { get; set; }
         [JsonIgnore]
-        public Tag Tag { get; set; }
+        public Tag? Tag { get; set; }
+
+       
     }
 }

@@ -13,7 +13,7 @@ namespace ForumManagementSystem.Models
 
         // Foreign key
         [JsonIgnore]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [JsonIgnore]
         // Navigation property
         public User CreatedBy { get; set; }
@@ -35,7 +35,7 @@ namespace ForumManagementSystem.Models
 
         public int LikesCount { get; set; }
 
-        public int CommentId { get; set; }
+        public int CommentId { get; set; } //??
 
         public List<LikeComment> Likes { get; set; } = new List<LikeComment>();
     }
