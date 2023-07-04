@@ -52,7 +52,7 @@ namespace DataAccess.Repositories.Data
                      LastName = "Petrova",
                      Email = "m.petrova@gmail.com",
                      Username = "mariicheto",
-                     Password = "wdljsl",
+                     Password = "MTIz",
                      PhoneNumber = "0897554285",
                      IsAdmin = false,
                      IsBlocked = false
