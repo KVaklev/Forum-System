@@ -87,14 +87,14 @@ namespace ForumManagementSystem.Services
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
-            return category.CountComment++;
+            return category.CountComments++;
         }
 
         public int DecreaseComentCount(Comment comment)
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
-            return category.CountComment--;
+            return category.CountComments--;
         }
     }
 }

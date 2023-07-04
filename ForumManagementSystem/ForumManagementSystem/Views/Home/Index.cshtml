@@ -2,6 +2,8 @@
 
 @{
     this.ViewData["Title"] = "World Travel Forum - Home";
+    var isLogged = Context.Session.Keys.Contains("LoggedUser");
+    var isAdmin = Context.Session.Keys.Contains("IsAdmin");
 }
 
     <div class="body-content">
@@ -28,17 +30,26 @@
                 <div class="cell">@category.Name</div>
                 <div class="cell">@category.Description</div>
                 <div class="cell">@category.CountPosts</div>
-                <div class="cell">@category.CountComment</div>
+                <div class="cell">@category.CountComments</div>
                 <div class="cell">
+                @if(isLogged)
+                {
                     <a asp-controller="Posts" asp-action="Index" asp-route-id="@category.Id" class="btn btn-primary"> Posts </a>
-                    | <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning"> Edit </a>
-                    | <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger"> Delete </a>
-               </div>
+                }
+                @if(isLogged & isAdmin)
+                {
+                    <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning"> Edit </a>
+                    <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger"> Delete </a>
+                }
+                    </div>
             </div>
             }
             }
     
      <div>
     <br />
+    @if(isLogged & isAdmin)
+                {
         <h3><a asp-controller="Categories" asp-action="Create" class="btn btn-primary">Add a new category</a></h3>
+                }
     </div>

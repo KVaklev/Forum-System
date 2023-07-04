@@ -28,7 +28,7 @@ namespace ForumManagementSystem.Controllers.MVC
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index([FromRoute] int id)
         {
             List<Post> posts = this.postService.GetAll();
 

@@ -52,7 +52,7 @@ namespace DataAccess.Repositories.Data
                      LastName = "Petrova",
                      Email = "m.petrova@gmail.com",
                      Username = "mariicheto",
-                     Password = "wdljsl",
+                     Password = "MTIz",
                      PhoneNumber = "0897554285",
                      IsAdmin = false,
                      IsBlocked = false
@@ -65,10 +65,10 @@ namespace DataAccess.Repositories.Data
                      LastName = "Dobreva",
                      Email = "m.dobreva@gmail.com",
                      Username = "marcheto",
-                     Password = "fjsdda",
+                     Password = "MTIz",
                      PhoneNumber = "0797556285",
                      IsAdmin = false,
-                     IsBlocked = false
+                     IsBlocked = true
                 }
             };
 
@@ -83,7 +83,9 @@ namespace DataAccess.Repositories.Data
                     Id = 1,
                     Name = "Asian",
                     Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
-                    DateTime = DateTime.Now
+                    DateTime = DateTime.Now,
+                    CountPosts =1,
+                    CountComments = 1
                 },
 
                 new Category
@@ -91,7 +93,9 @@ namespace DataAccess.Repositories.Data
                     Id = 2,
                     Name = "Europe",
                     Description = "European countries related discussions in this forum and that includes the UK as well you dumbo!",
-                    DateTime = DateTime.Now
+                    DateTime = DateTime.Now,
+                    CountPosts =1,
+                    CountComments = 1
                 },
 
                 new Category
@@ -99,7 +103,9 @@ namespace DataAccess.Repositories.Data
                     Id = 3,
                     Name = "North America",
                     Description = "Yes USA and Canada and whatever else is up there. Please feel free to ask why they drive on the wrong side of the road if you like.",
-                    DateTime = DateTime.Now
+                    DateTime = DateTime.Now,
+                    CountPosts =1,
+                    CountComments = 1
                 },
 
                 new Category
@@ -189,19 +195,19 @@ namespace DataAccess.Repositories.Data
                 new Tag()
                 {
                     Id= 1,
-                    Name = "Bmw"
+                    Name = "Windsor"
                 },
 
                 new Tag()
                 {
                     Id= 2,
-                    Name = "Fiat",
+                    Name = "kitchen",
                 },
 
                 new Tag()
                 {
                     Id= 3,
-                    Name = "Toyota",
+                    Name = "Camping",
                 }
             };
 
@@ -214,15 +220,15 @@ namespace DataAccess.Repositories.Data
                 new PostTag()
                 {
                     Id= 1,
-                    PostId=1,
+                    PostId=2,
                     TagId=1,
                 },
 
                 new PostTag()
                 {
                     Id= 2,
-                    PostId=1,
-                    TagId=2,
+                    PostId=3,
+                    TagId=3,
                 },
 
                 new PostTag()
@@ -235,8 +241,8 @@ namespace DataAccess.Repositories.Data
                 new PostTag()
                 {
                     Id= 4,
-                    PostId=2,
-                    TagId=2,
+                    PostId=1,
+                    TagId=3,
                 }
             };
 

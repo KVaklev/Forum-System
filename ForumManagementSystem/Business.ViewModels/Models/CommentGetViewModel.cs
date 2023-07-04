@@ -12,6 +12,8 @@ namespace Business.ViewModels.Models
         public string CategoryName { get; set; }
         public int PostId { get; set; }
         public string PostTitle { get; set; }
+
+        public int UserId { get; set; }
         public string Username { get; set; }
         public DateTime DateTime { get; set; }
         public string Content { get; set; }
