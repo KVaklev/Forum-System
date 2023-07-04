@@ -2,6 +2,7 @@
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ForumManagementSystem.Repository
 {
@@ -57,6 +58,10 @@ namespace ForumManagementSystem.Repository
         public User Delete(int id)
         {
             User userToDelete = this.GetById(id);
+            userToDelete=context.Users
+                .Include(u=>u.Comments)
+                .FirstOrDefault(u => u.Id == id);
+            context.Comments.RemoveRange(userToDelete.Comments);
             context.Users.Remove(userToDelete);
             context.SaveChanges();
 
