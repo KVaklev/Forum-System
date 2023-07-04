@@ -11,6 +11,7 @@ using Presentation.Helpers;
 using System.Net;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.Xml;
+using System.Xml.Linq;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
@@ -165,7 +166,7 @@ namespace ForumManagementSystem.Controllers.MVC
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Like([FromRoute] int id)
         {
 			try
@@ -173,8 +174,16 @@ namespace ForumManagementSystem.Controllers.MVC
 				User userLoger = authManager.TryGetUser("ivanchoDraganchov:123");
 				Comment comment = commentService.GetByID(id);
 				likeCommentService.Update(comment, userLoger);
+                CommentQueryParameters parameter = new CommentQueryParameters()
+                {
+                    postID = comment.PostId
+                };
+                List<Comment> comments = this.commentService.FilterBy(parameter);
 
-				return this.RedirectToAction("Index", "Posts");
+                List<CommentGetViewModel> commentsGetView = comments
+                        .Select(comment => mapper.Map<CommentGetViewModel>(comment)).ToList();
+
+                return View(commentsGetView);
 			}
 			catch (EntityNotFoundException ex)
 			{
