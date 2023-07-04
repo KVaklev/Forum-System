@@ -32,6 +32,5 @@ namespace Business.ViewModels.Models
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
-        //public string? PhoneNumber { get; set; }
     }
 }

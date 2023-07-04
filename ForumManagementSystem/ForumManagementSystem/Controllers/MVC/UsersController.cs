@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Business.Exceptions;
 using Business.ViewModels.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -29,7 +28,7 @@ namespace ForumManagementSystem.Controllers.MVC
 			return this.View(users);
 		}
 		[HttpGet]
-		public IActionResult Details(int id)
+		public IActionResult Details([FromRoute] int id)
 		{
 			try
 			{
@@ -80,9 +79,9 @@ namespace ForumManagementSystem.Controllers.MVC
 			{
 				var user = userService.GetById(id);
 
-				var userViewModel = this.mapper.Map<UserViewModel>(user);
+				var userEditViewModel = this.mapper.Map<UserEditViewModel>(user);
 
-				return this.View(userViewModel);
+				return this.View(userEditViewModel);
 			}
 			catch (EntityNotFoundException ex)
 			{
@@ -93,14 +92,16 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 		}
 		[HttpPost]
-		public IActionResult Edit([FromRoute] int id, UserViewModel userViewModel)
+		public IActionResult Edit([FromRoute] int id, UserEditViewModel userEditViewModel)
 		{
 			if (!this.ModelState.IsValid)
 			{
-				return View(userViewModel);
+				return View(userEditViewModel);
 			}
-			var loggedUser = this.authManager.TryGetUser("admin");
-			var user = mapper.Map<User>(userViewModel);
+			var loggedUser = this.authManager.TryGetUser("ivanchoDraganchov:123");
+
+			var user = mapper.Map<User>(userEditViewModel);
+
 			var updatedUser = this.userService.Update(id, user, loggedUser);
 
 			return this.RedirectToAction("Details", "Users", new { id = updatedUser.Id });
@@ -128,7 +129,7 @@ namespace ForumManagementSystem.Controllers.MVC
 		{
 			try
 			{
-				var user = this.authManager.TryGetUser("admin");
+				var user = this.authManager.TryGetUser("ivanchoDraganchov:123");
 				this.userService.Delete(id, user);
 
 				return this.RedirectToAction("Index", "Users");

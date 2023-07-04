@@ -41,6 +41,8 @@ namespace ForumManagementSystem.Controllers.MVC
 			{
 				var user = this.authManager.TryGetUser(loginViewModel.Username, loginViewModel.Password);
 				this.HttpContext.Session.SetString("LoggedUser", user.Username);
+				this.HttpContext.Session.SetInt32("UserId", user.Id);
+				this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 
 				return RedirectToAction("Index", "Home");
 			}

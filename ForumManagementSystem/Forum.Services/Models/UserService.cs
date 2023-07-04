@@ -58,21 +58,24 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyUserErrorMessage);
             }
-
-            if (user.Username!=null)
+            //if (user.Username!=null)
+            //{
+            //    throw new InvalidOperationException(Constants.ModifyUsernameErrorMessage);
+            //}
+            if (user.Email==userToUpdate.Email)
             {
-                throw new InvalidOperationException(Constants.ModifyUsernameErrorMessage);
-            }
-
-            if (EmailExists(user.Email))
+                return user;
+			}
+            else
             {
-                throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
-            }
-
-            User updatedUser = this.repository.Update(id, user);
-
-            return updatedUser;
-        }
+				if (EmailExists(user.Email))
+				{
+					throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
+				}
+			}
+			userToUpdate = this.repository.Update(id, user);
+			return userToUpdate;
+		}
 
         public void Delete(int id, User loggedUser)
         {

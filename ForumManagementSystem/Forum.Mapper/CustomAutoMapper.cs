@@ -14,45 +14,61 @@ namespace ForumManagementSystem.Models
     {
         public CustomAutoMapper()
         {
+            //Categories
             CreateMap<CategoryDto, Category>();
-            CreateMap<CommentDto, Comment>();
+			CreateMap<Category, CategoryViewModel>();
+			CreateMap<CategoryViewModel, Category>();
+
+			//Comments
+			CreateMap<CommentDto, Comment>();
             CreateMap<Comment, RequireCommentDto>()
                 .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
                 .ForMember(c => c.categoryName, u => u.MapFrom(c => c.Post.Category.Name));
-            CreateMap<CreatePostDto, Post>();
+			CreateMap<Comment, CommentGetViewModel>()
+			 .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
+			 .ForMember(c => c.PostTitle, u => u.MapFrom(c => c.Post.Title))
+			 .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Post.Category.Name));
+			CreateMap<Comment, CommentViewModel>();
+			CreateMap<Comment, CommentCreateViewModel>();
+			CreateMap<CommentViewModel, Comment>();
+			CreateMap<CommentCreateViewModel, Comment>();
+			CreateMap<CommentReplyCreateViewModel, Comment>();
+
+			//Posts
+			CreateMap<CreatePostDto, Post>();
             CreateMap<Post, CreatePostDto>();
             CreateMap<GetPostDto, Post>();
             CreateMap<Post, GetPostDto>()
             .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
                 .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Category.Name))
                 .ForMember(c => c.DateCreated, u => u.MapFrom(c => c.DateTime));
-            CreateMap<GetUserDto, User>();
+			CreateMap<Post, PostViewModel>();
+			// .ForMember(c => c.CategoryId, u => u.MapFrom(c => c.Category.Name));
+			CreateMap<PostViewModel, Post>();
+
+			//Users
+                    //Dto
+
+			CreateMap<GetUserDto, User>();
             CreateMap<CreateUserDto, User>();
             CreateMap<User, GetUserDto>();
             CreateMap<User, CreateUserDto>();
             CreateMap<User, UpdateUserDto>();
             CreateMap<UpdateUserDto, User>();
+
+                    //MV
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
             CreateMap<User, LoginViewModel>();
             CreateMap<LoginViewModel, User>();
             CreateMap<User, RegisterViewModel>();
             CreateMap<RegisterViewModel,User>();
-            CreateMap<Category, CategoryViewModel>();
-            CreateMap<CategoryViewModel, Category>();
-            CreateMap<Post, PostViewModel>();
-            // .ForMember(c => c.CategoryId, u => u.MapFrom(c => c.Category.Name));
-            CreateMap<PostViewModel, Post>();
-            CreateMap<Comment, CommentGetViewModel>()
-                .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
-                .ForMember(c => c.PostTitle, u => u.MapFrom(c => c.Post.Title))
-                .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Post.Category.Name));
-            CreateMap<Comment, CommentViewModel>();
-            CreateMap<Comment, CommentCreateViewModel>();
-            CreateMap<CommentViewModel, Comment>();
-            CreateMap<CommentCreateViewModel, Comment>();
-            CreateMap<CommentReplyCreateViewModel, Comment>();
+            CreateMap<User, UserEditViewModel>();
 
-        }
+
+            CreateMap<UserEditViewModel, User>();
+
+
+		}
     }
 }

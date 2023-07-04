@@ -5,7 +5,7 @@ namespace Business.ViewModels.Models
 {
     public class UserViewModel
     {
-        [Required]
+		[Required]
         [MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
         [MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string FirstName { get; set; }
