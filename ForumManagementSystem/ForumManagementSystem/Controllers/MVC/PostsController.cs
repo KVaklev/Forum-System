@@ -28,11 +28,14 @@ namespace ForumManagementSystem.Controllers.MVC
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
         {
-            List<Post> posts = this.postService.GetAll();
+            List<Post> posts = this.postService.FilterBy(queryParameters);
+
+            //List<PostViewModel> postsViewModel = posts.Select(post => mapper.Map<PostViewModel>(posts)).ToList();
 
             return View(posts);
+            
         }
 
 

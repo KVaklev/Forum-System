@@ -110,6 +110,8 @@ namespace ForumManagementSystem.Repository
             List<Post> result = context.Posts
                 .Include(u => u.CreatedBy)
                 .Include(c => c.Category)
+                .Include(p=>p.PostTags)
+                .ThenInclude(pt=>pt.Tag)
                 .ToList();
 
             if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
@@ -125,6 +127,16 @@ namespace ForumManagementSystem.Repository
             if (filterParameters.Category != null && !string.IsNullOrEmpty(filterParameters.Category))
             {
                 result = result.FindAll(post => post.Category.Name.Contains(filterParameters.Category));
+            }
+
+            if (filterParameters.Tag != null && !string.IsNullOrEmpty(filterParameters.Tag))
+            {
+                result = result.FindAll((post => post.PostTags.Any(pt => pt.Tag.Name == filterParameters.Tag)));
+            }
+
+            if (filterParameters.CategoryId != null )
+            {
+                result = result.FindAll(post => post.Category.Id == (filterParameters.CategoryId));
             }
 
             if (filterParameters.FromDateTime.HasValue)

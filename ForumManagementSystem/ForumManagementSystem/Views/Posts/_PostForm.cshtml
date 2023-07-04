@@ -14,7 +14,17 @@
      <input asp-for="Content" type="text" class="form-input">
      <br />
      <span asp-validation-for="Content" class="form-error"></span>
-   
+
+
+
+    <label asp-for="SelectTags" class="form-label"></label>
+    <br />
+    <select asp-items="@Model.SelectTags" asp-for="SelectTags" class="form-input"></select>
+    <br />
+    <span asp-validation-for="SelectTags" class="form-error"></span>
+
+
+       
      <label asp-for="Tags" class="form-label"></label>
      <br />
      <input asp-for="Tags" type="text" class="form-input">
@@ -27,6 +37,7 @@
     <br />
     <span asp-validation-for="CategoryId" class="form-error"></span>
 
+   
 
      <input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
      <a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>

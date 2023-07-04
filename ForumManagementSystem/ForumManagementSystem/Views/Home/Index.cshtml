@@ -30,7 +30,7 @@
                 <div class="cell">@category.CountPosts</div>
                 <div class="cell">@category.CountComment</div>
                 <div class="cell">
-                    <a asp-controller="Posts" asp-action="Index" asp-route-id="@category.Id" class="btn btn-primary"> Posts </a>
+                    <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary"> Posts </a>
                     | <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning"> Edit </a>
                     | <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger"> Delete </a>
                </div>
