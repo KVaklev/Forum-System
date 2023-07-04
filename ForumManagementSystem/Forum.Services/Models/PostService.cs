@@ -17,8 +17,8 @@ namespace ForumManagementSystem.Services
         private readonly ICategoryRepository categoryRepository;
 
         public PostService(
-            IPostRepository repository, 
-            ITagService tagService, 
+            IPostRepository repository,
+            ITagService tagService,
             ILikePostRepository likePostRepository,
             ICategoryRepository categoryRepository)
         {
@@ -48,30 +48,19 @@ namespace ForumManagementSystem.Services
         {
             CheckIfBlocked(user);
 
-            if (this.repository.TitleExists(post.Title))
-            {
-                throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
-            }
+            //if (this.repository.TitleExists(post.Title))
+            //{
+            //    throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
+            //}
 
             Post createdPost = this.repository.Create(post, user);
+            
             IncreasePostCount(post);
 
-            if (tagsToAdd == null)
-            {
-                return createdPost;
-            }
-            else
-            {
-                foreach (var name in tagsToAdd)
-                {
-
-                    Tag tag = this.tagService.Create(name);
-
-                    this.repository.AddTagToPost(tag.Id, createdPost.Id);
-                }
-            }
+            AddTags(createdPost, tagsToAdd);
 
             return createdPost;
+
         }
 
         public Post Update(int id, Post post, User loggedUser, List<string> tagsToAdd)
@@ -82,23 +71,18 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthenticatedOperationException(Constants.ModifyPostErrorMessage);
             }
-         
-            if (this.repository.TitleExists(post.Title))
-            {
-                throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
-            }
+
+            //if (this.repository.TitleExists(post.Title))
+            //{
+            //    throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
+            //}
 
             Post updatedPost = this.repository.Update(id, post);
 
             updatedPost.PostTags.Clear();
 
-            foreach (var name in tagsToAdd)
-            {
-                Tag tag = this.tagService.Create(name);
+            AddTags(updatedPost, tagsToAdd);
 
-                this.repository.AddTagToPost(tag.Id, updatedPost.Id);
-            }
-            
             return updatedPost;
         }
 
@@ -144,6 +128,26 @@ namespace ForumManagementSystem.Services
             Category category = this.categoryRepository.GetById(post.CategoryId);
             category.CountPosts--;
             return category.CountPosts;
+        }
+
+        public Post AddTags(Post newlyCreatedPost, List<string> tagsToAdd)
+        {
+            if (tagsToAdd == null)
+            {
+                return newlyCreatedPost;
+            }
+            else
+            {
+                foreach (var name in tagsToAdd)
+                {
+
+                    Tag tag = this.tagService.Create(name);
+
+                    this.repository.AddTagToPost(tag.Id, newlyCreatedPost.Id);
+                }
+            }
+
+            return newlyCreatedPost;
         }
     }
 }

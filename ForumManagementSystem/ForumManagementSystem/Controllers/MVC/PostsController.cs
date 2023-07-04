@@ -35,6 +35,7 @@ namespace ForumManagementSystem.Controllers.MVC
             return View(posts);
         }
 
+
         [HttpGet]
         public IActionResult Details(int id)
         {
