@@ -1,5 +1,4 @@
-﻿
-@model List<Category>
+﻿﻿
 
 @{
     this.ViewData["Title"] = "World Travel Forum - Home";
@@ -59,7 +58,7 @@
                 }
     </div>
 
-    @*@{
+    @{
         string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
         string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
     }
@@ -79,4 +78,5 @@
                 <span><a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@i">@i</a></span>
             }
         }
-    }*@
+    }
+    <a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
