@@ -38,7 +38,7 @@
                 <div class="cell">
                 @if(isLogged)
                 {
-                    <a asp-controller="Posts" asp-action="Index" asp-route-id="@category.Id" class="btn btn-primary"> Posts </a>
+                    <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary"> Posts </a>
                 }
                     @if (isLogged & isAdmin)
                     {

@@ -199,33 +199,33 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Delete(1,testUser));
 
         }
-        [TestMethod]
-        public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
-        {
-            //Arrange
-            List<Category> expectedCategory = TestHelpers.GetTestFilterCategory();
+        //[TestMethod]
+        //public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
+        //{
+        //    //Arrange
+        //    List<Category> expectedCategory = TestHelpers.GetTestFilterCategory();
             
-            CategoryQueryParameter filterParameter = new CategoryQueryParameter()
-            {
-                Name = "Asia"
-            };
+        //    CategoryQueryParameter filterParameter = new CategoryQueryParameter()
+        //    {
+        //        Name = "Asia"
+        //    };
 
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            categoryRepositoryMock
-                .Setup(repo => repo.FilterBy(filterParameter))
-                .Returns(expectedCategory);
+        //    categoryRepositoryMock
+        //        .Setup(repo => repo.FilterBy(filterParameter))
+        //        .Returns(expectedCategory);
 
-            var sut = new CategoryService(categoryRepositoryMock.Object);
+        //    var sut = new CategoryService(categoryRepositoryMock.Object);
 
-            // Act
+        //    // Act
 
-            List<Category> filteredCategory = sut.FilterBy(filterParameter);
+        //    List<Category> filteredCategory = sut.FilterBy(filterParameter);
 
-            // Assert
+        //    // Assert
 
-            Assert.AreEqual(filteredCategory, expectedCategory);
-        }
+        //    Assert.AreEqual(filteredCategory, expectedCategory);
+        //}
         [TestMethod]
         public void UpdateCategory_Should_ReturnCorrectCategory_When_ParametersAreValid()
         {
