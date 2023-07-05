@@ -14,10 +14,11 @@ namespace ForumManagementSystem.Repository
         User BlockUser (User user);
         User UnblockUser (User user);
         User Create(User user);
-        User Update(int id, User loggedUser);
+        User Update(int id, User user, User loggedUser);
         User Delete(int id);
+		void UpdatePhoneNumber(User user, User userToUpdate, User loggedUser);
         bool UsernameExists(string username);
         bool EmailExists(string email);
 
-    }
+	}
 }

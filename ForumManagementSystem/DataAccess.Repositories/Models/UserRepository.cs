@@ -68,7 +68,7 @@ namespace ForumManagementSystem.Repository
             return userToDelete;
         }
 
-        public User Update(int id, User user)
+        public User Update(int id, User user, User loggedUser)
         {
             User userToUpdate = this.GetById(id);
 
@@ -77,15 +77,19 @@ namespace ForumManagementSystem.Repository
             userToUpdate.Password = user.Password ?? userToUpdate.Password;
             userToUpdate.Email = user.Email ?? userToUpdate.Email;
             userToUpdate.Username = user.Username ?? userToUpdate.Username;
-            UpdatePhoneNumber(user, userToUpdate);
+            userToUpdate.IsAdmin = user.IsAdmin;
+            userToUpdate.IsBlocked = user.IsBlocked;
+
+            UpdatePhoneNumber(user, userToUpdate, loggedUser);
+
             context.SaveChanges();
 
             return userToUpdate;
         }
 
-        public void UpdatePhoneNumber(User user, User userToUpdate)
+        public void UpdatePhoneNumber(User user, User userToUpdate, User loggedUser)
         {
-            if (user.IsAdmin)
+            if (user.IsAdmin || loggedUser.IsAdmin)
             {
               userToUpdate.PhoneNumber = user.PhoneNumber ?? userToUpdate.PhoneNumber;
             }
