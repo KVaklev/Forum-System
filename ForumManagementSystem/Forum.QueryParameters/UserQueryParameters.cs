@@ -11,5 +11,8 @@
         public bool? Admin { get; set; }
         public bool? Blocked { get; set; }
 
+        public int PageSize { get; set; } = 2;
+        public int PageNumber { get; set; } = 1;
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AspNetCoreDemo.Models;
+using Business.Exceptions;
 using Business.Services.Helpers;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
@@ -29,7 +30,7 @@ namespace ForumManagementSystem.Services
         {
             return this.repository.GetByUsername(username);
         }
-        public List<User> FilterBy(UserQueryParameters filterParameters)
+        public PaginatedList<User> FilterBy(UserQueryParameters filterParameters)
         {
             return this.repository.FilterBy(filterParameters);
         }

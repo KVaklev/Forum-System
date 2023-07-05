@@ -1,11 +1,12 @@
-﻿using ForumManagementSystem.Models;
+﻿using AspNetCoreDemo.Models;
+using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Services
 {
     public interface IUserService
     {
         List<User> GetAll();
-        List<User> FilterBy(UserQueryParameters filterParameters);
+        PaginatedList<User> FilterBy(UserQueryParameters filterParameters);
         User GetById(int id);
         User GetByUsername(string username);
         User Promote(User user);
