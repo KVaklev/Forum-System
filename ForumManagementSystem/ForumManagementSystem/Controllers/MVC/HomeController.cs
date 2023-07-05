@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreDemo.Models;
+using AutoMapper;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ namespace ForumManagementSystem.Controllers.MVC
             this.authManager = authManager;
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index([FromQuery] CategoryQueryParameter categoryQueryParameter)
         {
-            List<Category> result = categoryService.GetAll();
+            PaginatedList<Category> result = categoryService.FilterBy(categoryQueryParameter);
             return View(result);
         }
         public IActionResult About()

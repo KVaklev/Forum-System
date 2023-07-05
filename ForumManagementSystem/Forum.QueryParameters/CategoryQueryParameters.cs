@@ -9,5 +9,8 @@
         public string? SortBy { get; set; }
 
         public string? SortOrder { get; set; }
+
+        public int PageSize { get; set; } = 2;
+        public int PageNumber { get; set; } = 1;
     }
 }

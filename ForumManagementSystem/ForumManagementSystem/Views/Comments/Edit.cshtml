@@ -1,4 +1,4 @@
-﻿@model CommentCreateViewModel
+﻿@model CommentViewModel
 
 <head>
 	<meta charset="utf-8" />
@@ -19,21 +19,6 @@
 			<h3><p>@ViewData["ErrorMessage"]</p></h3>
 		}
 	}
-	<form asp-controller="Comments" asp-action="@this.ViewData["Action"]" method="post">
-
-		<label asp-for="Content" class="form-label"></label>
-		<br />
-		<input asp-for="Content" type="text" class="form-input" />
-		<br />
-		<span asp-validation-for="Content" class="form-error"></span>
-		<br />
-		<label asp-for="PostId" class="form-label"></label>
-		<br />
-		<input asp-for="PostId" type="text" class="form-input" />
-		<br />
-		<span asp-validation-for="PostId" class="form-error"></span>
-		<br />
-		<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
-		<a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
-	</form>
+	
+	<partial name="_CommentForm" />
 </body>

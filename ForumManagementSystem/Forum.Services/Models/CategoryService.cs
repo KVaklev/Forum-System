@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AspNetCoreDemo.Models;
+using Business.Exceptions;
 using Business.Services.Helpers;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -43,7 +44,7 @@ namespace ForumManagementSystem.Services
             return repository.Delete(id);
         }
 
-        public List<Category> FilterBy(CategoryQueryParameter parameters)
+        public PaginatedList<Category> FilterBy(CategoryQueryParameter parameters)
         {
             return this.repository.FilterBy(parameters);
         }

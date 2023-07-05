@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Models;
+﻿using AspNetCoreDemo.Models;
+using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Services
 {
@@ -8,7 +9,7 @@ namespace ForumManagementSystem.Services
 
         Category GetById(int id);
 
-        List<Category> FilterBy(CategoryQueryParameter parameters);
+        PaginatedList<Category> FilterBy(CategoryQueryParameter parameters);
 
         Category Create(Category category, User user);
 

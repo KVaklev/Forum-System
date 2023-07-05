@@ -37,7 +37,7 @@
         foreach (var comment in this.Model)
         {
             <div class="row">
-                <div class="cell">@comment.Username</div>
+                <div width="20px" class="cell">@comment.Username</div>
                 <div class="cell">
                 @comment.Content
                 </div>
@@ -58,7 +58,7 @@
                     }
                     @if(isLogged & comment.UserId==loggedUserId)
                     {
-                     <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
+                        <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.PostId" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                      <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                     }
                     </div>
