@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories.Data;
+﻿using AspNetCoreDemo.Models;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 
@@ -30,7 +31,7 @@ namespace ForumManagementSystem.Repository
             return category;
         }
 
-        public List<Category> FilterBy(Models.CategoryQueryParameter parameters)
+        public PaginatedList<Category> FilterBy(Models.CategoryQueryParameter parameters)
         {
             List<Category> result = context.Categories.ToList();
 
@@ -62,8 +63,22 @@ namespace ForumManagementSystem.Repository
             {
                 throw new EntityNotFoundException("These are no category with this name or description.");
             }
-            return result;
+
+            int totalPages = (result.Count() + 1) / parameters.PageSize;
+
+            result = Paginate(result, parameters.PageNumber, parameters.PageSize);
+
+            return new PaginatedList<Category>(result.ToList(), totalPages, parameters.PageNumber);
+            }
+
+        public static List<Category> Paginate(List<Category> result, int pageNumber, int pageSize)
+        {
+            return result
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
+
 
         public List<Category> GetAll()
         {

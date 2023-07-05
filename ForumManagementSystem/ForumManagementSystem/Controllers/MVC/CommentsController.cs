@@ -85,7 +85,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var comment = this.mapper.Map<Comment>(commentCreateVireModel);
                     var user = authManager.TryGetUser("ivanchoDraganchov:123");
                     var createdComment = this.commentService.Create(comment, user);
-                    return this.RedirectToAction("Index", "Posts", new { id = createdComment.Id });
+                    return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
                }
             }
             catch (EntityNotFoundException ex)
@@ -104,9 +104,9 @@ namespace ForumManagementSystem.Controllers.MVC
             try
             {
                 var comment = this.commentService.GetByID(id);
-                var commentCreateViewModel = this.mapper.Map<CommentCreateViewModel>(comment);
+                var commentViewModel = this.mapper.Map<CommentViewModel>(comment);
                                
-                return this.View(commentCreateViewModel);
+                return this.View(commentViewModel);
             }
             catch (EntityNotFoundException ex)
             {
@@ -117,17 +117,25 @@ namespace ForumManagementSystem.Controllers.MVC
             }
         }
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, CommentCreateViewModel commentCreateViewModel)
+        public IActionResult Edit([FromRoute] int id, CommentViewModel commentViewModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return View(commentCreateViewModel);
+                return View(commentViewModel);
             }
             var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
-            var comment = mapper.Map<Comment>(commentCreateViewModel);
-            var updatedComment = this.commentService.Update(id, comment, loggedUser);
+            var commentToUpdate = this.commentService.GetByID(id);
 
-            return this.RedirectToAction("Index", "Posts", new { id = updatedComment.Id });
+            var commentCreateViewModel = new CommentCreateViewModel()
+            {
+                PostId = commentToUpdate.PostId,
+                Content = commentViewModel.Content
+            };
+
+			var inputComment = mapper.Map<Comment>(commentCreateViewModel);
+            var updatedComment = this.commentService.Update(id, inputComment, loggedUser);
+
+            return this.RedirectToAction("Index", "Comments", new { id = updatedComment.PostId });
         }
 
         [HttpGet]
@@ -155,7 +163,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var user = authManager.TryGetUser("ivanchoDraganchov:123");
                 this.commentService.Delete(id, user);
 
-                return this.RedirectToAction("Index", "Posts");
+                return this.RedirectToAction("Index", "Comments", new { id = id });
             }
             catch (EntityNotFoundException ex)
             {
@@ -174,16 +182,7 @@ namespace ForumManagementSystem.Controllers.MVC
 				User userLoger = authManager.TryGetUser("ivanchoDraganchov:123");
 				Comment comment = commentService.GetByID(id);
 				likeCommentService.Update(comment, userLoger);
-                CommentQueryParameters parameter = new CommentQueryParameters()
-                {
-                    postID = comment.PostId
-                };
-                List<Comment> comments = this.commentService.FilterBy(parameter);
-
-                List<CommentGetViewModel> commentsGetView = comments
-                        .Select(comment => mapper.Map<CommentGetViewModel>(comment)).ToList();
-
-                return View(commentsGetView);
+                return this.RedirectToAction("Index", "Comments", new { id = comment.PostId }); 
 			}
 			catch (EntityNotFoundException ex)
 			{
@@ -218,7 +217,7 @@ namespace ForumManagementSystem.Controllers.MVC
 					var commentReply = this.mapper.Map<Comment>(commentReplyCreateViewModel);
 					var user = authManager.TryGetUser("ivanchoDraganchov:123");
 					var createdComment = this.commentService.Create(commentReply, user);
-					return this.RedirectToAction("Index", "Posts", new { id = createdComment.Id });
+					return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
 				}
 			}
 			catch (EntityNotFoundException ex)
