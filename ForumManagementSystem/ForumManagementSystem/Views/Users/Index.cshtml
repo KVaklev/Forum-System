@@ -7,6 +7,7 @@
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var loggedUserId = this.Context.Session.GetInt32("UserId");
     var loggedUser = this.Context.Session.GetString("IsAdmin");
+    //var Blocked = this.Context.Session.IsAvailable;
 }
 
 <body>
@@ -14,12 +15,32 @@
     <div class="body-content">
         <h2>Users</h2>
 
+        <p>Find a user</p>
+        <form asp-controller="Users" asp-action="Index" method="get">
+        <input type="text" name="Firstname" />
+        <input type="text" name="Lastname" />
+        <input type="text" name="Email" />
+        <input type="text" name="Username" />
+            <span style="margin-right: 20px;"></span>
+        <input type="checkbox" name="Admin" value="true" /> Admin
+            <span style="margin-right: 20px;"></span>
+        @if (loggedUser == "True")
+            {
+                 <span>
+                 <input type="checkbox" name="Blocked" value="true" /> Blocked
+                </span>
+            }
+            <span style="margin-right: 30px;"></span>
+        <input type="submit" value="Search" class="btn btn-primary" />
+        </form>
+
         <div class="table">
             <div class="header">
                 <div class="header-cell">Firstname</div>
                 <div class="header-cell">Lastname</div>
                 <div class="header-cell">Email</div>
                 <div class="header-cell">Username</div>
+                <div class="header-cell">Role</div>
                 <div class="header-cell">Actions</div>
             </div>
 
@@ -31,6 +52,14 @@
                         <div class="cell">@user.LastName</div>
                         <div class="cell">@user.Email</div>
                         <div class="cell">@user.Username</div>
+                        @if (user.IsAdmin)
+                        {
+                            <div class="cell">Admin</div>
+                        }
+                        else
+                        {
+                            <div class="cell">Regular User</div>
+                        }
                         <div class="cell">
                             <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="btn btn-primary"> Details </a>
                             @if (loggedUser == "True")

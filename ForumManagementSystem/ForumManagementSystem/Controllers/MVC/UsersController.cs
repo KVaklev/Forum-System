@@ -21,13 +21,13 @@ namespace ForumManagementSystem.Controllers.MVC
 		}
 
 		[HttpGet]
-		public IActionResult Index()
+		public IActionResult Index(UserQueryParameters userQueryParameters)
 		{
             if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
             {
                 return RedirectToAction("Login", "Auth");
             }
-            List<User> users = this.userService.GetAll();
+            List<User> users = this.userService.FilterBy(userQueryParameters);
 
 			return this.View(users);
 		}

@@ -122,6 +122,16 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.FindAll(user => user.Email.Contains(filterParameters.Email));
             }
+            if (filterParameters.Admin.HasValue)
+            {
+                result = result.FindAll(user => user.IsAdmin == filterParameters.Admin.Value);
+            }
+
+            if (filterParameters.Blocked.HasValue)
+            {
+                result = result.FindAll(user => user.IsBlocked == filterParameters.Blocked.Value);
+            }
+
 
             if (!string.IsNullOrEmpty(filterParameters.SortBy))
             {
