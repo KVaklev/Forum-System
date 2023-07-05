@@ -129,6 +129,11 @@ namespace ForumManagementSystem.Repository
                 result = result.FindAll(post => post.Category.Name.Contains(filterParameters.Category));
             }
 
+            if (filterParameters.Category != null && !string.IsNullOrEmpty(filterParameters.Category))
+            {
+                result = result.FindAll(post => post.Category.Name == filterParameters.Category);
+            }
+
             if (filterParameters.Tag != null && !string.IsNullOrEmpty(filterParameters.Tag))
             {
                 result = result.FindAll((post => post.PostTags.Any(pt => pt.Tag.Name == filterParameters.Tag)));

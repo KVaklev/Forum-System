@@ -83,7 +83,8 @@ namespace ForumManagementSystem.Controllers.MVC
                         PostId = id
                     };
                     var comment = this.mapper.Map<Comment>(commentCreateVireModel);
-                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                    var username = this.HttpContext.Session.GetString("LoggedUser");
+                    var user = authManager.TryGetUserByUsername(username);
                     var createdComment = this.commentService.Create(comment, user);
                     return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
                }
@@ -123,17 +124,17 @@ namespace ForumManagementSystem.Controllers.MVC
             {
                 return View(commentViewModel);
             }
-            var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
+            
             var commentToUpdate = this.commentService.GetByID(id);
-
             var commentCreateViewModel = new CommentCreateViewModel()
             {
                 PostId = commentToUpdate.PostId,
                 Content = commentViewModel.Content
             };
-
 			var inputComment = mapper.Map<Comment>(commentCreateViewModel);
-            var updatedComment = this.commentService.Update(id, inputComment, loggedUser);
+            var username = this.HttpContext.Session.GetString("LoggedUser");
+            var user = authManager.TryGetUserByUsername(username);
+            var updatedComment = this.commentService.Update(id, inputComment, user);
 
             return this.RedirectToAction("Index", "Comments", new { id = updatedComment.PostId });
         }
@@ -160,10 +161,11 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                var user = authManager.TryGetUser("ivanchoDraganchov:123");
-                this.commentService.Delete(id, user);
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(username);
+                var comment = this.commentService.Delete(id, user);
 
-                return this.RedirectToAction("Index", "Comments", new { id = id });
+                return this.RedirectToAction("Index", "Comments", new { id = comment.PostId });
             }
             catch (EntityNotFoundException ex)
             {
@@ -179,9 +181,10 @@ namespace ForumManagementSystem.Controllers.MVC
         {
 			try
 			{
-				User userLoger = authManager.TryGetUser("ivanchoDraganchov:123");
-				Comment comment = commentService.GetByID(id);
-				likeCommentService.Update(comment, userLoger);
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(username);
+                Comment comment = commentService.GetByID(id);
+				likeCommentService.Update(comment, user);
                 return this.RedirectToAction("Index", "Comments", new { id = comment.PostId }); 
 			}
 			catch (EntityNotFoundException ex)
@@ -215,8 +218,10 @@ namespace ForumManagementSystem.Controllers.MVC
                         CommentId = comment.Id
 					};
 					var commentReply = this.mapper.Map<Comment>(commentReplyCreateViewModel);
-					var user = authManager.TryGetUser("ivanchoDraganchov:123");
-					var createdComment = this.commentService.Create(commentReply, user);
+
+                    var username = this.HttpContext.Session.GetString("LoggedUser");
+                    var user = authManager.TryGetUserByUsername(username);
+                    var createdComment = this.commentService.Create(commentReply, user);
 					return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
 				}
 			}

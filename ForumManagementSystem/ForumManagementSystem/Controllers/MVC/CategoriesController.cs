@@ -44,7 +44,9 @@ namespace ForumManagementSystem.Controllers.MVC
                 if (this.ModelState.IsValid)
                 {
                     var category = this.mapper.Map<Category>(categoryViewModel);
-                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
+
+                    var username = this.HttpContext.Session.GetString("LoggedUser");
+                    var user = authManager.TryGetUserByUsername(username);
                     var createdCategory = this.categoryService.Create(category, user);
                     return this.RedirectToAction("Index", "Home", new { id = createdCategory.Id });
                 }
@@ -85,9 +87,10 @@ namespace ForumManagementSystem.Controllers.MVC
                 {
                     return View(categoryViewModel);
                 }
-                var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(username);
                 var category = mapper.Map<Category>(categoryViewModel);
-                var updatedCategory = this.categoryService.Update(id, category, loggedUser);
+                var updatedCategory = this.categoryService.Update(id, category, user);
 
                 return this.RedirectToAction("Index", "Home", new { id = updatedCategory.Id });
             }
@@ -122,7 +125,8 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(username);
                 var category = this.categoryService.GetById(id);
                 this.categoryService.Delete(id, user);
 

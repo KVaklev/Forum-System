@@ -23,6 +23,8 @@ namespace Business.ViewModels.Models
 
         public int? CategoryId { get; set; }
 
+        public string? CategoryName { get; set; }
+
         public List<string>? Tags { get; set; }
 
         public SelectList? Categories { get; set; }

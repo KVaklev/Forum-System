@@ -1,8 +1,16 @@
 ﻿@model List<Post>
 
+@using ForumManagementSystem.Services
+@using Business.Services.Contracts
+
+@inject ICategoryService categoryService
+@inject ITagService tagService
+
 @{
     this.ViewData["Title"] = "World Travel Forum - Posts";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
+    var categories = new SelectList(categoryService.GetAll(), "Id", "Name");
+    var tags = new SelectList(tagService.GetAll(), "Id", "Name");
 }
 
 
@@ -11,11 +19,23 @@
 
         @if (isLogged)
     {
-       @* <h3><a asp-controller="Posts" asp-action="Create" class="header-cell">Create a new post</a></h3>
-        <br/>*@
-        <a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a>
-        <a asp-controller="Posts" asp-action="Index" asp-route-tag="Bmw" class="btn btn-primary">Tags</a>
-        <a asp-controller="Posts" asp-action="Category" class="btn btn-primary">Category</a>
+        <h3><a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a></h3>
+        
+        <form asp-controller="Post" asp-action="Index" method="get">
+
+            <label class="form-label"> CategoryName </label>
+            <select asp-items="@categories" class="form-input"></select>
+            <input type="submit" value="Submit">
+
+        </form>
+
+        <form asp-controller="Post" asp-action="Index" method="get">
+
+            <label class="form-label"> Tags </label>
+            <select asp-items="@tags" class="form-input"></select>
+            <input type="submit" value="Submit">
+
+        </form>
     }
 
         <div class="table">

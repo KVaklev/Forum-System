@@ -17,14 +17,17 @@ namespace ForumManagementSystem.Controllers.MVC
         private readonly IMapper mapper;
         private readonly ILikePostService likePostService;
         private readonly ICategoryService categoryService;
+        private readonly ITagService  tagService;
 
-        public PostsController(IPostService postService, IAuthManager authManager, IMapper mapper, ILikePostService likePostService, ICategoryService categoryService)
+
+        public PostsController(IPostService postService, IAuthManager authManager, IMapper mapper, ILikePostService likePostService, ICategoryService categoryService, ITagService tagService)
         {
             this.postService = postService;
             this.authManager = authManager;
             this.mapper = mapper;
             this.likePostService = likePostService;
             this.categoryService = categoryService;
+            this.tagService = tagService;
         }
 
         [HttpGet]
@@ -70,6 +73,8 @@ namespace ForumManagementSystem.Controllers.MVC
 
             var postViewModel = new PostViewModel();
             this.InitializeCategories(postViewModel);
+            //this.InitializeTags(postViewModel);
+            
             return this.View(postViewModel);
         }
 
@@ -77,6 +82,7 @@ namespace ForumManagementSystem.Controllers.MVC
         public IActionResult Create(PostViewModel postViewModel)
         {
             this.InitializeCategories(postViewModel);
+            //this.InitializeTags(postViewModel);
             try
             {
 				
@@ -108,6 +114,7 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 var postViewModel = this.mapper.Map<PostViewModel>(post);
                 this.InitializeCategories(postViewModel);
+                //this.InitializeTags(postViewModel);
                 return this.View(postViewModel);
             }
             catch (EntityNotFoundException ex)
@@ -125,6 +132,7 @@ namespace ForumManagementSystem.Controllers.MVC
             if (!this.ModelState.IsValid)
             {
                 this.InitializeCategories(postViewModel);
+                //this.InitializeTags(postViewModel);
                 return View(postViewModel);
             }
             var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
@@ -176,6 +184,12 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             var categories = categoryService.GetAll();
             postViewModel.Categories = new SelectList(categories, "Id", "Name");
+        }
+
+        private void InitializeTags(PostViewModel postViewModel)
+        {
+            var tags = tagService.GetAll();
+            postViewModel.SelectTags = new SelectList(tags, "Id", "Name");
         }
 
     }

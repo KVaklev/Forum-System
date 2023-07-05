@@ -1,10 +1,9 @@
-﻿
-@model List<Category>
+﻿﻿
 
 @{
     this.ViewData["Title"] = "World Travel Forum - Home";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
-    var isAdmin = Context.Session.Keys.Contains("IsAdmin");
+    var isAdmin = Context.Session.GetString("IsAdmin");
 }
 
     <div class="body-content">
@@ -21,7 +20,7 @@
                 <div class="header-cell">Posts</div>
                 <div class="header-cell">Comments</div>
         <div class="header-cell">
-                @if(isLogged & isAdmin)
+                @if(isLogged & isAdmin=="True")
                 {
                 <a>Actions</a>
                 }
@@ -39,9 +38,9 @@
                 <div class="cell">
                 @if(isLogged)
                 {
-                    <a asp-controller="Posts" asp-action="Index" asp-route-id="@category.Id" class="btn btn-primary"> Posts </a>
+                    <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary"> Posts </a>
                 }
-                    @if (isLogged & isAdmin)
+                    @if (isLogged & isAdmin == "True")
                     {
                         <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning"> Edit </a>
                         <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger"> Delete </a>
@@ -53,13 +52,13 @@
     
      <div>
     <br />
-    @if(isLogged & isAdmin)
+        @if (isLogged & isAdmin == "True")
                 {
-        <h3><a asp-controller="Categories" asp-action="Create" class="btn btn-primary">Add a new category</a></h3>
+                   <h3><a asp-controller="Categories" asp-action="Create" class="btn btn-primary">Add a new category</a></h3>
                 }
     </div>
 
-    @*@{
+    @{
         string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
         string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
     }
@@ -79,4 +78,5 @@
                 <span><a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@i">@i</a></span>
             }
         }
-    }*@
+    }
+    <a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
