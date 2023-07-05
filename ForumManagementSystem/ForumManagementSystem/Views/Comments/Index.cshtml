@@ -2,7 +2,6 @@
 @{
     CommentGetViewModel commentMenu = this.Model[0];
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
-    var isAdmin = Context.Session.Keys.Contains("IsAdmin");
     var loggedUserId = this.Context.Session.GetInt32("UserId");
 }
 
@@ -52,13 +51,13 @@
                     }
                 </div>
                  <div class="cell">
-                     @if(isLogged)
+                    @if (isLogged)
                     {
                      <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
                     }
                     @if(isLogged & comment.UserId==loggedUserId)
                     {
-                        <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.PostId" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
+                     <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                      <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                     }
                     </div>
