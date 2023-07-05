@@ -258,7 +258,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo=>repo.GetById(2))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.Update(userToUpdate.Id, user))
+                .Setup(repo => repo.Update(userToUpdate.Id, user, loggedUser))
                 .Returns(user);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
@@ -296,7 +296,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.GetById(userToUpdate.Id))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.Update(userToUpdate.Id, user))
+                .Setup(repo => repo.Update(userToUpdate.Id, user, loggedUser))
                 .Returns(user);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
@@ -330,7 +330,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
                 .Setup(repo => repo.GetById(userToUpdate.Id))
                 .Returns(userToUpdate);
             userRepositoryMock
-                .Setup(repo => repo.Update(userToUpdate.Id, user))
+                .Setup(repo => repo.Update(userToUpdate.Id, user, loggedUser))
                 .Returns(user);
 
             var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);

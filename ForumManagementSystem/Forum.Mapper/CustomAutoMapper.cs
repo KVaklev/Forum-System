@@ -62,12 +62,12 @@ namespace ForumManagementSystem.Models
             CreateMap<LoginViewModel, User>();
             CreateMap<User, RegisterViewModel>();
             CreateMap<RegisterViewModel,User>();
-            CreateMap<User, UserEditViewModel>();
-
-
-            CreateMap<UserEditViewModel, User>();
-
-
-		}
+            CreateMap<User, UserEditViewModel>()
+            .ForMember(u => u.Admin, u => u.MapFrom(u => u.IsAdmin))
+            .ForMember(u => u.Blocked, u => u.MapFrom(u => u.IsBlocked));
+            CreateMap<UserEditViewModel, User>()
+            .ForMember(u => u.IsAdmin, u => u.MapFrom(u => u.Admin))
+            .ForMember(u => u.IsBlocked, u => u.MapFrom(u => u.Blocked));
+        }
     }
 }

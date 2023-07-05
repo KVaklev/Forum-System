@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Business.Exceptions;
 using Business.ViewModels.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -148,33 +147,5 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 		}
 
-		[HttpGet]
-        public IActionResult Promote(int id)
-        {
-            try
-            {
-                User loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
-
-                if (loggedUser.IsAdmin)
-                {
-                    User user = userService.GetById(id);
-
-                    User promotedUser = userService.Promote(user);
-
-                    return StatusCode(StatusCodes.Status200OK, promotedUser);
-                }
-                return StatusCode(StatusCodes.Status405MethodNotAllowed);
-            }
-            catch (UnauthorizedOperationException e)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, e.Message);
-            }
-            catch (EntityNotFoundException e)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, e.Message);
-            }
-        }
-
-
-    }
+	}
 }

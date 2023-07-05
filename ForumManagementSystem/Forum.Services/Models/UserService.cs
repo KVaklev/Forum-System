@@ -4,6 +4,7 @@ using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ForumManagementSystem.Services
 {
@@ -52,28 +53,22 @@ namespace ForumManagementSystem.Services
 
         public User Update(int id, User user, User loggedUser)
         {
-            User userToUpdate = this.repository.GetById(id);
+           User userToUpdate = this.repository.GetById(id);
 
             if (!IsAuthorized(userToUpdate, loggedUser))
             {
                 throw new UnauthorizedOperationException(Constants.ModifyUserErrorMessage);
             }
-            //if (user.Username!=null)
-            //{
-            //    throw new InvalidOperationException(Constants.ModifyUsernameErrorMessage);
-            //}
-            if (user.Email==userToUpdate.Email)
-            {
-                return user;
-			}
-            else
+
+            if (user.Email!=userToUpdate.Email)
             {
 				if (EmailExists(user.Email))
 				{
 					throw new DuplicateEntityException($"User with email '{user.Email}' already exists.");
 				}
 			}
-			userToUpdate = this.repository.Update(id, user);
+
+			userToUpdate = this.repository.Update(id, user, loggedUser);
 			return userToUpdate;
 		}
 
