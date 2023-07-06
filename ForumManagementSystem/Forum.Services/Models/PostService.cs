@@ -6,6 +6,7 @@ using Business.Services.Contracts;
 using DataAccess.Models;
 using Business.Services.Helpers;
 using DataAccess.Repositories.Contracts;
+using AspNetCoreDemo.Models;
 
 namespace ForumManagementSystem.Services
 {
@@ -39,7 +40,7 @@ namespace ForumManagementSystem.Services
         {
             return this.repository.GetByUser(user);
         }
-        public List<Post> FilterBy(PostQueryParameters filterParameters)
+        public PaginatedList<Post> FilterBy(PostQueryParameters filterParameters)
         {
             return this.repository.FilterBy(filterParameters);
         }

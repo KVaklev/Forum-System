@@ -21,5 +21,8 @@
         public string? Tag { get; set; }
 
         public int? CategoryId { get; set; }
+
+        public int PageSize { get; set; } = 2;
+        public int PageNumber { get; set; } = 1;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using AspNetCoreDemo.Models;
+using DataAccess.Models;
 using DataAccess.Repositories.Contracts;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
@@ -16,19 +17,20 @@ namespace ForumManagementSystem.Repository
 
         public PostRepository(ApplicationContext context)
         {
-           this.context = context;
+            this.context = context;
         }
 
         public List<Post> GetAll()
         {
             return context.Posts
+
                 .Include(post => post.CreatedBy)
-                
+
                 .Include(post => post.Category)
-                
+
                 .ToList();
 
-                       
+
         }
 
         public Post GetByUser(User user)
@@ -41,11 +43,11 @@ namespace ForumManagementSystem.Repository
 
         {
             Post post = context.Posts
-                .Include(post =>post.CreatedBy)
+                .Include(post => post.CreatedBy)
                 .Include(post => post.Category)
-                .Include(post=>post.PostTags)
-                .ThenInclude(pt=>pt.Tag)
-                .FirstOrDefault(p=>p.Id == id);
+                .Include(post => post.PostTags)
+                .ThenInclude(pt => pt.Tag)
+                .FirstOrDefault(p => p.Id == id);
             return post ?? throw new EntityNotFoundException($"Post with ID = {id} doesn't exist.");
 
         }
@@ -53,16 +55,16 @@ namespace ForumManagementSystem.Repository
         {
             Post post = context.Posts.Where(posts => posts.Title == title).FirstOrDefault();
 
-            if (post==null)
+            if (post == null)
             {
-                post= new Post { Title = title };
+                post = new Post { Title = title };
                 return post;
             }
             else
             {
                 throw new EntityNotFoundException($"Post with title = {title} already exist.");
             }
-            
+
         }
         public Post GetByCategory(string categoryName)
         {
@@ -105,19 +107,19 @@ namespace ForumManagementSystem.Repository
             return postToDelete;
         }
 
-        public List<Post> FilterBy(PostQueryParameters filterParameters)
+        public PaginatedList<Post> FilterBy(PostQueryParameters filterParameters)
         {
             List<Post> result = context.Posts
                 .Include(u => u.CreatedBy)
                 .Include(c => c.Category)
-                .Include(p=>p.PostTags)
-                .ThenInclude(pt=>pt.Tag)
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tag)
                 .ToList();
 
             if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
             {
                 result = result.FindAll(post => post.CreatedBy.Username.Contains(filterParameters.Username));
-            }          
+            }
 
             if (!string.IsNullOrEmpty(filterParameters.Title))
             {
@@ -139,7 +141,7 @@ namespace ForumManagementSystem.Repository
                 result = result.FindAll((post => post.PostTags.Any(pt => pt.Tag.Name == filterParameters.Tag)));
             }
 
-            if (filterParameters.CategoryId != null )
+            if (filterParameters.CategoryId != null)
             {
                 result = result.FindAll(post => post.Category.Id == (filterParameters.CategoryId));
             }
@@ -148,7 +150,7 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.FindAll(post => post.DateTime >= filterParameters.FromDateTime);
             }
-            
+
             if (filterParameters.ToDateTime.HasValue)
             {
                 result = result.FindAll(post => post.DateTime <= filterParameters.ToDateTime);
@@ -177,22 +179,33 @@ namespace ForumManagementSystem.Repository
                     result.Reverse();
                 }
             }
-            return result;
 
+            int totalPages = (result.Count() + 1) / filterParameters.PageSize;
+
+            result = Paginate(result, filterParameters.PageNumber, filterParameters.PageSize);
+
+            return new PaginatedList<Post>(result.ToList(), totalPages, filterParameters.PageNumber);
+
+
+        }
+
+        public static List<Post> Paginate(List<Post> result, int pageNumber, int pageSize)
+        {
+            return result.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
         }
 
         public Category GetByCategoryId(int categoryId)
         {
-            Category category=this.categoryRepository.GetById(categoryId);
+            Category category = this.categoryRepository.GetById(categoryId);
 
             return category;
         }
 
         public User GetByUserId(int userId)
         {
-           User user = this.userRepository.GetById(userId);
-           
-           return user;
+            User user = this.userRepository.GetById(userId);
+
+            return user;
         }
 
         public Tag GetByTag(string tagName)
@@ -204,12 +217,12 @@ namespace ForumManagementSystem.Repository
 
         public void AddTagToPost(int tagId, int postId)
         {
-           PostTag postTag = new PostTag()
-           {
-               TagId = tagId,
-               PostId = postId
-           };
-            Post post= this.GetById(postId);
+            PostTag postTag = new PostTag()
+            {
+                TagId = tagId,
+                PostId = postId
+            };
+            Post post = this.GetById(postId);
             post.PostTags.Add(postTag);
             this.context.PostTags.Add(postTag);
             context.SaveChanges();

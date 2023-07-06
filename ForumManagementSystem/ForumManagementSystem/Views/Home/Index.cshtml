@@ -7,7 +7,7 @@
 }
 
     <div class="body-content">
-        <h2><img src="~/images/WTF.jpg" style="width:50px;height:40px;">WELCOME TO WORLD FORUM TRAVEL</h2>
+        <h2>Welcome to WORLD TRAVEL FORUM</h2>
     </div>
 
 <div class="card-columns" style="display: flex; justify-content: flex-end; position: absolute; top: 100px; right: 20px;">
@@ -18,47 +18,60 @@
                 <span style="font-weight: bold;">"He who does not travel does not know the value of men."</span>
                 <span style="font-size: 14px; font-style: italic; color: #999;"> - Moorish Proverb</span>
             </h5>
-                <p class="card-text">Registered users: @this.Model.UsersCount</p>
-                <p class="card-text">Posts created: @this.Model.PostsCount</p>
+            <p class="card-text" style ="font-style: italic;">Registered users: @this.Model.UsersCount</p>
+            <p class="card-text" style="font-style: italic;">Posts created: @this.Model.PostsCount</p>
              
         </div>
     </div>
 </div>
         <h2>Categories</h2>
 
-        <div class="table">
-            <div class="header">
-                <div class="header-cell">Name</div>
-                <div class="header-cell">Description</div>
-            </div>
-            </div>
-
-            @{
-            foreach (var category in this.Model.Categories)
-            {
-            <div class="row">
-                <div class="cell">
-                    @category.Name<br /><br />
-                    Posts: @category.CountPosts<br />
-                    Comments: @category.CountComments
-                </div>
-                <div class="cell">
-                    @category.Description<br /><br />
-                
-                @if(isLogged)
-                {
-                    <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary"> Posts </a>
-                }
-                    @if (isLogged & isAdmin == "True")
+<div class="row text-center">
+    <div class="col-md-10">
+        <div class="table-responsive table-bordered table-hover">
+            <table class="table table-condensed">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        @if (isLogged)
+                        {
+                            <th>Actions</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in this.Model.Categories)
                     {
-                        <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning"> Edit </a>
-                        <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger"> Delete </a>
+                        <tr>
+                            <td>
+                                <h5>@category.Name</h5>
+                                <p>Posts: @category.CountPosts</p>
+                                <p>Comments: @category.CountComments</p>
+                            </td>
+                            <td>
+                                <p>@category.Description</p>
+                            </td>
+                            @if (isLogged)
+                            {
+                                <td>
+                                    <div class="d-flex flex-column">
+                                    <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">Posts</a>
+                                    @if (isAdmin == "True")
+                                    {
+                                        <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning mb-2">Edit</a>
+                                        <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Delete</a>
+                                    }
+                                    </div>
+                                </td>
+                            }
+                        </tr>
                     }
-                </div>
-            </div>
-            }
-            }
-    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
      <div>
     <br />
         @if (isLogged & isAdmin == "True")
