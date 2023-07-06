@@ -1,0 +1,9 @@
+﻿@{
+	this.ViewData["Title"] = "UnauthorizedError";
+}
+
+<h2 class="label-error">Sorry you are not authorized :(</h2>
+<p>
+	Status Code: @this.Context.Response.StatusCode<br />
+	Message: @this.ViewData["ErrorMessage"]
+</p>

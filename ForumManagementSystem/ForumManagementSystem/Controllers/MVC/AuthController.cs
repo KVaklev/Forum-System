@@ -40,12 +40,16 @@ namespace ForumManagementSystem.Controllers.MVC
 			try
 			{
 				var user = this.authManager.TryGetUser(loginViewModel.Username, loginViewModel.Password);
+				var users = this.userService.GetAll();
+				var posts=this.userService.GetAll();
 				this.HttpContext.Session.SetString("LoggedUser", user.Username);
 				this.HttpContext.Session.SetInt32("UserId", user.Id);
 				this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
-				
+				this.HttpContext.Session.SetString("IsBlocked", user.IsBlocked.ToString());
+				this.HttpContext.Session.SetString("FirstName", user.FirstName);
+                this.HttpContext.Session.SetString("LastName", user.LastName);
 
-				return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
 			}
 			catch (AuthenticationException ex)
 			{

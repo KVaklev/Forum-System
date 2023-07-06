@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using AspNetCoreDemo.Models;
+using AutoMapper;
 using Business.Dto;
+using Business.Exceptions;
 using Business.Services.Contracts;
 using Business.Services.Models;
 using Business.ViewModels.Models;
@@ -8,6 +10,7 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
+using System.Data;
 using System.Net;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.Xml;
@@ -46,9 +49,12 @@ namespace ForumManagementSystem.Controllers.MVC
                 {
                     postID = id
                 };
-                List<Comment> comments = this.commentService.FilterBy(parameter);
-                List<CommentGetViewModel> commentsGetView = comments
-                        .Select(comment => mapper.Map<CommentGetViewModel>(comment)).ToList();
+                PaginatedList<Comment> comments = this.commentService.FilterBy(parameter);
+                PaginatedList<CommentGetViewModel> commentsGetView = new PaginatedList<CommentGetViewModel>(
+                    comments.Select(comment => mapper.Map<CommentGetViewModel>(comment)).ToList(),
+                    comments.TotalPages,
+                    comments.PageNumber
+);
 
                 return View(commentsGetView);
             }
@@ -86,6 +92,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var username = this.HttpContext.Session.GetString("LoggedUser");
                     var user = authManager.TryGetUserByUsername(username);
                     var createdComment = this.commentService.Create(comment, user);
+                    
                     return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
                }
             }
@@ -95,6 +102,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
             }
 
             return this.View(commentViewModel);
@@ -120,23 +134,42 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpPost]
         public IActionResult Edit([FromRoute] int id, CommentViewModel commentViewModel)
         {
-            if (!this.ModelState.IsValid)
+            try
             {
-                return View(commentViewModel);
-            }
-            
-            var commentToUpdate = this.commentService.GetByID(id);
-            var commentCreateViewModel = new CommentCreateViewModel()
-            {
-                PostId = commentToUpdate.PostId,
-                Content = commentViewModel.Content
-            };
-			var inputComment = mapper.Map<Comment>(commentCreateViewModel);
-            var username = this.HttpContext.Session.GetString("LoggedUser");
-            var user = authManager.TryGetUserByUsername(username);
-            var updatedComment = this.commentService.Update(id, inputComment, user);
 
-            return this.RedirectToAction("Index", "Comments", new { id = updatedComment.PostId });
+                if (!this.ModelState.IsValid)
+                {
+                    return View(commentViewModel);
+                }
+
+                var commentToUpdate = this.commentService.GetByID(id);
+                var commentCreateViewModel = new CommentCreateViewModel()
+                {
+                    PostId = commentToUpdate.PostId,
+                    Content = commentViewModel.Content
+                };
+                var inputComment = mapper.Map<Comment>(commentCreateViewModel);
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(username);
+                var updatedComment = this.commentService.Update(id, inputComment, user);
+
+                return this.RedirectToAction("Index", "Comments", new { id = updatedComment.PostId });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
+            }
+
         }
 
         [HttpGet]
@@ -154,7 +187,14 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.View("Error");
             }
-        }
+			catch (UnauthorizedOperationException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("UnauthorizedError");
+			}
+		}
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed([FromRoute] int id)
@@ -174,7 +214,14 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.View("Error");
             }
-        }
+			catch (UnauthorizedOperationException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("UnauthorizedError");
+			}
+		}
 
         [HttpGet]
         public IActionResult Like([FromRoute] int id)
@@ -231,6 +278,13 @@ namespace ForumManagementSystem.Controllers.MVC
 				this.ViewData["ErrorMessage"] = ex.Message;
 
 				return this.View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("UnauthorizedError");
 			}
 
 			return this.View(commentViewModel);

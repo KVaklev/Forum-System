@@ -1,4 +1,5 @@
-﻿using DataAccess.Repositories.Data;
+﻿using AspNetCoreDemo.Models;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,7 @@ namespace ForumManagementSystem.Repository
             return commentToDelete;
         }
         
-        public List<Comment> FilterBy(CommentQueryParameters parameters)
+        public PaginatedList<Comment> FilterBy(CommentQueryParameters parameters)
         {
             List<Comment> result = context.Comments
                 .Include(u => u.CreatedBy)
@@ -72,10 +73,22 @@ namespace ForumManagementSystem.Repository
             }
 
 
-            return result; 
-        }
+			int totalPages = (result.Count() + 1) / parameters.PageSize;
 
-        public List<Comment> GetAll()
+			result = Paginate(result, parameters.PageNumber, parameters.PageSize);
+
+			return new PaginatedList<Comment>(result.ToList(), totalPages, parameters.PageNumber);
+		}
+
+		public static List<Comment> Paginate(List<Comment> result, int pageNumber, int pageSize)
+		{
+			return result
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
+				.ToList();
+		}
+
+		public List<Comment> GetAll()
         {
             return context.Comments.ToList();
         }
