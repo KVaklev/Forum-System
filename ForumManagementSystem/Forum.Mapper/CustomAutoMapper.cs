@@ -42,7 +42,8 @@ namespace ForumManagementSystem.Models
             .ForMember(c => c.Username, u => u.MapFrom(c => c.CreatedBy.Username))
                 .ForMember(c => c.CategoryName, u => u.MapFrom(c => c.Category.Name))
                 .ForMember(c => c.DateCreated, u => u.MapFrom(c => c.DateTime));
-            CreateMap<Post, PostViewModel>();
+            CreateMap<Post, PostViewModel>()
+            .ForMember(p => p.CategoryName, u => u.MapFrom(p => p.Category.Name));
             CreateMap<PostViewModel, Post>();
                
             //Users

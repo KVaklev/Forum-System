@@ -9,6 +9,7 @@
      <br />
      <span asp-validation-for="Title" class="form-error"></span>
 
+
      <label asp-for="Content" class="form-label"></label>
      <br />
      <input asp-for="Content" type="text" class="form-input">
@@ -16,20 +17,21 @@
      <span asp-validation-for="Content" class="form-error"></span>
 
 
-
     <label asp-for="SelectTags" class="form-label"></label>
     <br />
-    <select asp-items="@Model.SelectTags" asp-for="SelectTags" class="form-input"></select>
+    <select asp-items="@Model.SelectTags" asp-for="SelectTags" class="form-input">
+        <option selected> </option>
+    </select>
     <br />
     <span asp-validation-for="SelectTags" class="form-error"></span>
 
-
-       
+           
      <label asp-for="Tags" class="form-label"></label>
      <br />
      <input asp-for="Tags" type="text" class="form-input">
      <br />
      <span asp-validation-for="Tags" class="form-error"></span>
+
 
     <label asp-for="CategoryId" class="form-label"></label>
     <br />
