@@ -17,25 +17,20 @@
             <div class="header">
                 <div class="header-cell">Name</div>
                 <div class="header-cell">Description</div>
-                <div class="header-cell">Posts</div>
-                <div class="header-cell">Comments</div>
-        <div class="header-cell">
-                @if(isLogged & isAdmin=="True")
-                {
-                <a>Actions</a>
-                }
-        </div>
             </div>
 
             @{
             foreach (var category in this.Model)
             {
             <div class="row">
-                <div class="cell">@category.Name</div>
-                <div class="cell">@category.Description</div>
-                <div class="cell">@category.CountPosts</div>
-                <div class="cell">@category.CountComments</div>
                 <div class="cell">
+                    @category.Name<br /><br />
+                    Posts: @category.CountPosts<br />
+                    Comments: @category.CountComments
+                </div>
+                <div class="cell">
+                    @category.Description<br /><br />
+                
                 @if(isLogged)
                 {
                     <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary"> Posts </a>
