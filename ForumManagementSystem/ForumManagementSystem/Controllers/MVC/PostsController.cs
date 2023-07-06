@@ -92,9 +92,8 @@ namespace ForumManagementSystem.Controllers.MVC
                 if (this.ModelState.IsValid)
                 {
                     var user = authManager.TryGetUser("ivanchoDraganchov:123");
-                    var tagNames = new List<string>();
                     var post = mapper.Map<Post>(postViewModel);
-                    var createdPost = postService.Create(post, user, tagNames);
+                    var createdPost = postService.Create(post, user, postViewModel.Tags);
                     return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
                 }
             }
