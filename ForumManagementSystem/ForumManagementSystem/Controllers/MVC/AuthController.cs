@@ -46,9 +46,10 @@ namespace ForumManagementSystem.Controllers.MVC
 				this.HttpContext.Session.SetInt32("UserId", user.Id);
 				this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 				this.HttpContext.Session.SetString("IsBlocked", user.IsBlocked.ToString());
-				
-				
-				return RedirectToAction("Index", "Home");
+				this.HttpContext.Session.SetString("FirstName", user.FirstName);
+                this.HttpContext.Session.SetString("LastName", user.LastName);
+
+                return RedirectToAction("Index", "Home");
 			}
 			catch (AuthenticationException ex)
 			{
