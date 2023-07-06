@@ -1,5 +1,6 @@
 ﻿
 @{
+    
     this.ViewData["Title"] = "World Travel Forum - Home";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var isAdmin = Context.Session.GetString("IsAdmin");
@@ -30,7 +31,7 @@
                 <div class="header-cell">Name</div>
                 <div class="header-cell">Description</div>
             </div>
-            <</div>
+            </div>
 
             @{
             foreach (var category in this.Model.Categories)
