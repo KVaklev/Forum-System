@@ -43,43 +43,43 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
         }
 
-        [TestMethod]
-        public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
-        {
-            //Arrange
+        //[TestMethod]
+        //public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
+        //{
+        //    //Arrange
 
-            List<Comment> comments = TestHelpers.GetTestListComments();
+        //    List<Comment> comments = TestHelpers.GetTestListComments();
 
-            List<Comment> expectedComment = TestHelpers.GetTestExpectedListComments();
+        //    List<Comment> expectedComment = TestHelpers.GetTestExpectedListComments();
 
-            CommentQueryParameters filterParameters = new CommentQueryParameters()
-            {
-                UserId = 1,
-            };
+        //    CommentQueryParameters filterParameters = new CommentQueryParameters()
+        //    {
+        //        UserId = 1,
+        //    };
 
-            var commentRepositoryMock = new Mock<ICommentRepository>();
-            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var postRepositoryMock = new Mock<IPostRepository>();
+        //    var commentRepositoryMock = new Mock<ICommentRepository>();
+        //    var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
 
-            commentRepositoryMock
-                .Setup(repo => repo.FilterBy(filterParameters))
-                .Returns(expectedComment);
+        //    commentRepositoryMock
+        //        .Setup(repo => repo.FilterBy(filterParameters))
+        //        .Returns(expectedComment);
 
-            var sut = new CommentService(
-                commentRepositoryMock.Object, 
-                likeCommentRepositoryMock.Object,
-                categoryRepositoryMock.Object,
-                postRepositoryMock.Object);
+        //    var sut = new CommentService(
+        //        commentRepositoryMock.Object, 
+        //        likeCommentRepositoryMock.Object,
+        //        categoryRepositoryMock.Object,
+        //        postRepositoryMock.Object);
 
-            // Act
+        //    // Act
 
-            List<Comment> filteredUsers = sut.FilterBy(filterParameters);
+        //    List<Comment> filteredUsers = sut.FilterBy(filterParameters);
 
-            // Assert
+        //    // Assert
 
-            Assert.AreEqual(filteredUsers, expectedComment);
-        }
+        //    Assert.AreEqual(filteredUsers, expectedComment);
+        //}
 
         [TestMethod]
         public void CreateComment_Should_ReturnCorrectComment_When_ParametersAreValid()

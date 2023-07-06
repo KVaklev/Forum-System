@@ -4,6 +4,8 @@
 @using Presentation.Helpers;
 @{
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
+    var username= this.Context.Session.GetString("LoggedUser");
+    var fullName = string.Concat(this.Context.Session.GetString("FirstName"), " ", this.Context.Session.GetString("LastName"));
 }
 
 <!DOCTYPE html>
@@ -17,6 +19,7 @@
 <body>
     
     <header>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">World Travel Forum</a>
@@ -29,29 +32,39 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ml-3">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ml-3">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item ml-3">
                             <a class="nav-link text-dark" href="/swagger/index.html">Developer API</a>
                         </li>
-                        <li class="nav-item">
-                            @if (!isLogged)
+                        <li class="nav-item ml-auto">
+                  
+                            @if (isLogged)
                             {
-                                <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-success">Log in</a>
+                                <li class ="nav-item">
+                                <a class="nav-link text-dark">@fullName</a>
+                                </li>
+
+                                <li class="dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="https://itkonekt.com/media/2019/01/Uncle_Bob_400x400.png" alt="Profile Picture" class="rounded-circle" style="width: 30px; height: 30px;" />
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                        <a class="dropdown-item" href="#">Profile</a>
+                                        <a class="dropdown-item" href="#">Log Out</a>
+                                    </div>
+                                </li>
                             }
                             else
                             {
-                                <a asp-controller="Auth" asp-action="Logout" class="btn btn-outline-danger">Log out</a>
-                            }
-                             @if (!isLogged)
-                            {
+                                <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-success">Log in</a>
                                 <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-success">REGISTER</a>
                             }
-                            
+                            <li>
                         </li>
                     </ul>
                 </div>
