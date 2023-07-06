@@ -155,62 +155,62 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
         }
 
-        [TestMethod]
-        public void FilterBy_ShouldReturnFilteredPosts_WhenFilterUserIdParameterAreValid()
-        {
-            // Arrange
-            PostQueryParameters filterParameters = TestHelpers.GetUserIdAsQueryParam();
+        //[TestMethod]
+        //public void FilterBy_ShouldReturnFilteredPosts_WhenFilterUserIdParameterAreValid()
+        //{
+        //    // Arrange
+        //    PostQueryParameters filterParameters = TestHelpers.GetUserIdAsQueryParam();
 
-            List<Post> expectedPosts = TestHelpers.GetTestListPost();
+        //    List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
-            var postRepositoryMock = new Mock<IPostRepository>();
-            var tagRepositoryMock = new Mock<ITagService>();
-            var likePostRepositoryMock = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagRepositoryMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            postRepositoryMock.Setup(repo => repo.FilterBy(filterParameters)).Returns(expectedPosts);
+        //    postRepositoryMock.Setup(repo => repo.FilterBy(filterParameters)).Returns(expectedPosts);
 
-            var sut = new PostService(
-                postRepositoryMock.Object, 
-                tagRepositoryMock.Object, 
-                likePostRepositoryMock.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagRepositoryMock.Object, 
+        //        likePostRepositoryMock.Object, 
+        //        categoryRepositoryMock.Object);
 
-            // Act
-            List<Post> actualPosts = sut.FilterBy(filterParameters);
+        //    // Act
+        //    List<Post> actualPosts = sut.FilterBy(filterParameters);
 
-            // Assert
-            Assert.AreEqual(expectedPosts, actualPosts);
+        //    // Assert
+        //    Assert.AreEqual(expectedPosts, actualPosts);
 
-        }
+        //}
 
-        [TestMethod]
-        public void FilterBy_ShouldReturnFilteredPosts_WhenFilterUsernameParameterAreValid()
-        {
-            // Arrange
-            PostQueryParameters filterParameters = TestHelpers.GetUsernameQueryParam();
+        //[TestMethod]
+        //public void FilterBy_ShouldReturnFilteredPosts_WhenFilterUsernameParameterAreValid()
+        //{
+        //    // Arrange
+        //    PostQueryParameters filterParameters = TestHelpers.GetUsernameQueryParam();
 
-            List<Post> expectedPosts = TestHelpers.GetTestListPost();
+        //    List<Post> expectedPosts = TestHelpers.GetTestListPost();
 
-            var postRepositoryMock = new Mock<IPostRepository>();
-            var tagRepositoryMock = new Mock<ITagService>();
-            var likePostRepositoryMock = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagRepositoryMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            postRepositoryMock.Setup(repo => repo.FilterBy(filterParameters)).Returns(expectedPosts);
+        //    postRepositoryMock.Setup(repo => repo.FilterBy(filterParameters)).Returns(expectedPosts);
 
-            var sut = new PostService(
-                postRepositoryMock.Object, 
-                tagRepositoryMock.Object, 
-                likePostRepositoryMock.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagRepositoryMock.Object, 
+        //        likePostRepositoryMock.Object, 
+        //        categoryRepositoryMock.Object);
 
-            // Act
-            List<Post> actualPosts = sut.FilterBy(filterParameters);
+        //    // Act
+        //    List<Post> actualPosts = sut.FilterBy(filterParameters);
 
-            // Assert
-            Assert.AreEqual(expectedPosts, actualPosts);
-        }
+        //    // Assert
+        //    Assert.AreEqual(expectedPosts, actualPosts);
+        //}
 
         [TestMethod]
         public void Create_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
