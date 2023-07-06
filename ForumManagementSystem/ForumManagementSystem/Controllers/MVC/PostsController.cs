@@ -17,7 +17,7 @@ namespace ForumManagementSystem.Controllers.MVC
         private readonly IMapper mapper;
         private readonly ILikePostService likePostService;
         private readonly ICategoryService categoryService;
-        private readonly ITagService  tagService;
+        private readonly ITagService tagService;
 
 
         public PostsController(IPostService postService, IAuthManager authManager, IMapper mapper, ILikePostService likePostService, ICategoryService categoryService, ITagService tagService)
@@ -35,10 +35,13 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             List<Post> posts = this.postService.FilterBy(queryParameters);
 
+
+            //posts = posts.Where(p => p.CategoryId == id).ToList(); // Apply category filter
+
             //List<PostViewModel> postsViewModel = posts.Select(post => mapper.Map<PostViewModel>(posts)).ToList();
 
             return View(posts);
-            
+
         }
 
 
@@ -63,7 +66,7 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
             {
-               return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Login", "Auth");
             }
 
             //if (this.HttpContext.Session.GetString("LoggedUser") == null)
@@ -73,8 +76,8 @@ namespace ForumManagementSystem.Controllers.MVC
 
             var postViewModel = new PostViewModel();
             this.InitializeCategories(postViewModel);
-            //this.InitializeTags(postViewModel);
-            
+            this.InitializeTags(postViewModel);
+
             return this.View(postViewModel);
         }
 
@@ -82,18 +85,18 @@ namespace ForumManagementSystem.Controllers.MVC
         public IActionResult Create(PostViewModel postViewModel)
         {
             this.InitializeCategories(postViewModel);
-            //this.InitializeTags(postViewModel);
+            this.InitializeTags(postViewModel);
             try
             {
-				
-				if (this.ModelState.IsValid)
+
+                if (this.ModelState.IsValid)
                 {
-					var user = authManager.TryGetUser("ivanchoDraganchov:123");
-					var tagNames = new List<string>();
+                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                    var tagNames = new List<string>();
                     var post = mapper.Map<Post>(postViewModel);
                     var createdPost = postService.Create(post, user, tagNames);
                     return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
-                }                
+                }
             }
             catch (DuplicateEntityException ex)
             {
@@ -114,7 +117,7 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 var postViewModel = this.mapper.Map<PostViewModel>(post);
                 this.InitializeCategories(postViewModel);
-                //this.InitializeTags(postViewModel);
+                this.InitializeTags(postViewModel);
                 return this.View(postViewModel);
             }
             catch (EntityNotFoundException ex)
@@ -132,7 +135,7 @@ namespace ForumManagementSystem.Controllers.MVC
             if (!this.ModelState.IsValid)
             {
                 this.InitializeCategories(postViewModel);
-                //this.InitializeTags(postViewModel);
+                this.InitializeTags(postViewModel);
                 return View(postViewModel);
             }
             var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");

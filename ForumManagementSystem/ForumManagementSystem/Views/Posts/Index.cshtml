@@ -1,7 +1,12 @@
-﻿@model List<Post>
+﻿@model PaginatedList<Post>
+
 
 @using ForumManagementSystem.Services
 @using Business.Services.Contracts
+@using AspNetCoreDemo.Models
+
+
+
 
 @inject ICategoryService categoryService
 @inject ITagService tagService
@@ -14,67 +19,90 @@
 }
 
 
-    <div class="body-content">
-        <h2>Posts</h2>
+<div class="body-content">
+    <h2>Posts</h2>
 
-        @if (isLogged)
+    @if (isLogged)
     {
         <h3><a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a></h3>
-        
+
         <form asp-controller="Post" asp-action="Index" method="get">
 
-            <label class="form-label"> CategoryName </label>
+            <label class="form-label"> Select a category </label>
             <select asp-items="@categories" class="form-input"></select>
-            <input type="submit" value="Submit">
+
+            <input type="submit" value="Search" class="btn btn-primary" />
 
         </form>
 
         <form asp-controller="Post" asp-action="Index" method="get">
 
-            <label class="form-label"> Tags </label>
+            <label class="form-label"> Select a tag </label>
             <select asp-items="@tags" class="form-input"></select>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Search" class="btn btn-primary" />
 
         </form>
     }
 
-        <div class="table">
-            <div class="header">
-                
-                <div class="header-cell">Username</div>
-                <div class="header-cell">Title</div>
-                <div class="header-cell">Content</div>
-  
+    <div class="table">
+        <div class="header">
+
+            <div class="header-cell">Username</div>
+            <div class="header-cell">Title</div>
+            <div class="header-cell">Content</div>
+
             <div class="header-cell">Likes</div>
             <div class="header-cell">Actions</div>
             <div class="header-cell">Comments</div>
-            </div>
+        </div>
 
-            @{
-                foreach (var post in this.Model)
-                {
+        @{
+            foreach (var post in this.Model)
+            {
                 <div class="row">
-                        <div class="cell">@post.CreatedBy.Username</div>
-                        <div class="cell">@post.Title</div>
-                        <div> @post.Content</div>
-                
-                        <div class="cell">
-                            @post.PostLikesCount
-                            | <a asp-controller="Posts" asp-action="Like" asp-route-id="@post.Id" class="btn btn-warning"> Like </a>
-                        </div>
-                    
-                        <div class="cell">
-                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
-                            | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
-                            | <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
-                        </div>
+                    <div class="cell">@post.CreatedBy.Username</div>
+                    <div class="cell">@post.Title</div>
+                    <div> @post.Content</div>
+
+                    <div class="cell">
+                        @post.PostLikesCount
+                        | <a asp-controller="Posts" asp-action="Like" asp-route-id="@post.Id" class="btn btn-warning"> Like </a>
+                    </div>
+
+                    <div class="cell">
+                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
+                        | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
+                        | <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
+                    </div>
                     <div>
                         <a asp-controller="Comments" asp-action="Index" asp-route-id="@post.Id" class="btn btn-primary">Comments</a>
-                         | <a asp-controller="Comments" asp-action="Create" asp-route-id="@post.Id" class="btn btn-primary">New Comment</a>
+                        | <a asp-controller="Comments" asp-action="Create" asp-route-id="@post.Id" class="btn btn-primary">New Comment</a>
                     </div>
-                        
-                    </div>
-                }
+
+                </div>
             }
-        </div>
+        }
     </div>
+</div>
+@{
+    string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
+    string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+}
+
+<a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
+@{
+    int currentPageNumber = this.Model.PageNumber;
+
+    for (int i = 1; i <= this.Model.TotalPages; i++)
+    {
+        if (i == currentPageNumber)
+        {
+            <span>@i</span>
+        }
+        else
+        {
+            <span><a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@i">@i</a></span>
+        }
+    }
+}
+<a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>

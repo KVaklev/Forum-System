@@ -1,11 +1,12 @@
-﻿using ForumManagementSystem.Models;
+﻿using AspNetCoreDemo.Models;
+using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Services
 {
     public interface IPostService
     {
         List<Post> GetAll();
-        List<Post> FilterBy(PostQueryParameters filterParameters);
+        PaginatedList<Post> FilterBy(PostQueryParameters filterParameters);
         Post GetById(int id);
         Post GetByUser(User user);
         Post Create(Post post, User user, List<string> tagNames);

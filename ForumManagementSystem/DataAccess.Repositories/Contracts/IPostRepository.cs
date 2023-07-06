@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using AspNetCoreDemo.Models;
+using DataAccess.Models;
 using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
@@ -16,7 +17,7 @@ namespace ForumManagementSystem.Repository
 
         Post GetByCategory(string category);
 
-        List<Post> FilterBy(PostQueryParameters parameters);
+        PaginatedList<Post> FilterBy(PostQueryParameters parameters);
 
         Post Create(Post post, User user);
 
