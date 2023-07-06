@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Helpers", "Pre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ForumManagementSystem.Tests", "ForumManagementSystem.Tests\ForumManagementSystem.Tests.csproj", "{CB4CA18A-7B69-4299-B2D6-D8B34E283533}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business.ViewModels", "Business.ViewModels\Business.ViewModels.csproj", "{99983446-0235-4E36-9DDC-4E79DCD203C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business.ViewModels", "Business.ViewModels\Business.ViewModels.csproj", "{99983446-0235-4E36-9DDC-4E79DCD203C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

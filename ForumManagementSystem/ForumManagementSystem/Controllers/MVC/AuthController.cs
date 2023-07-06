@@ -40,11 +40,12 @@ namespace ForumManagementSystem.Controllers.MVC
 			try
 			{
 				var user = this.authManager.TryGetUser(loginViewModel.Username, loginViewModel.Password);
+				var users = this.userService.GetAll();
+				var posts=this.userService.GetAll();
 				this.HttpContext.Session.SetString("LoggedUser", user.Username);
 				this.HttpContext.Session.SetInt32("UserId", user.Id);
 				this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
 				
-
 				return RedirectToAction("Index", "Home");
 			}
 			catch (AuthenticationException ex)

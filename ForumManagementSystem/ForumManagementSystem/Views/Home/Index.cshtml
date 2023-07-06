@@ -1,5 +1,4 @@
-﻿﻿
-
+﻿
 @{
     this.ViewData["Title"] = "World Travel Forum - Home";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
@@ -10,7 +9,20 @@
         <h2><img src="~/images/WTF.jpg" style="width:50px;height:40px;">WELCOME TO WORLD FORUM TRAVEL</h2>
     </div>
 
-   
+<div class="card-columns" style="display: flex; justify-content: flex-end; position: absolute; top: 100px; right: 20px;">
+    <div class="card" style="width: 300px;">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: flex-start;">
+            <img class="card-img-top" src="~/Images/Traveller.jpg" alt="Card image cap" style="width: 100%;">
+            <h5 class="card-title" style="font-style: italic;">
+                <span style="font-weight: bold;">"He who does not travel does not know the value of men."</span>
+                <span style="font-size: 14px; font-style: italic; color: #999;"> - Moorish Proverb</span>
+            </h5>
+                <p class="card-text">Registered users: @this.Model.UsersCount</p>
+                <p class="card-text">Posts created: @this.Model.PostsCount</p>
+             
+        </div>
+    </div>
+</div>
         <h2>Categories</h2>
 
         <div class="table">
@@ -26,9 +38,10 @@
                 }
         </div>
             </div>
+            <</div>
 
             @{
-            foreach (var category in this.Model)
+            foreach (var category in this.Model.Categories)
             {
             <div class="row">
                 <div class="cell">@category.Name</div>
@@ -59,15 +72,15 @@
     </div>
 
     @{
-        string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
-        string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+        string prevButtonState = this.Model.Categories.HasPrevPage ? "" : "disabled";
+        string nextButtonState = this.Model.Categories.HasNextPage ? "" : "disabled";
     }
 
-    <a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+    <a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@(this.Model.Categories.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
     @{
-        int currentPageNumber = this.Model.PageNumber;
+        int currentPageNumber = this.Model.Categories.PageNumber;
 
-        for (int i = 1; i <= this.Model.TotalPages; i++)
+        for (int i = 1; i <= this.Model.Categories.TotalPages; i++)
         {
             if (i == currentPageNumber)
             {
@@ -79,4 +92,4 @@
             }
         }
     }
-    <a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
+    <a asp-controller="Home" asp-action="Index" asp-route-PageNumber="@(this.Model.Categories.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
