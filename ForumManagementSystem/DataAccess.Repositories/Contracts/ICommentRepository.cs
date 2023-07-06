@@ -1,4 +1,5 @@
-﻿using ForumManagementSystem.Models;
+﻿using AspNetCoreDemo.Models;
+using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
 {
@@ -10,7 +11,7 @@ namespace ForumManagementSystem.Repository
 
         Comment GetByUser(User user);
 
-        List<Comment> FilterBy(CommentQueryParameters parameters);
+        PaginatedList<Comment> FilterBy(CommentQueryParameters parameters);
 
         Comment Create(Comment comment, User user);
 

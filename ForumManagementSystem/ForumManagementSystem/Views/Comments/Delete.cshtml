@@ -16,7 +16,7 @@
 		<br/>
 		<form asp-controller="Comments" asp-action="Delete"  method="post">
 			<input type="submit" value="Delete" class="btn btn-danger" />
-			<a asp-controller="Comments" asp-action="Index" class="btn btn-primary">Back</a>
+			<a asp-controller="Comments" asp-action="Index" asp-route-id="@this.Model.PostId" class="btn btn-primary">Back</a>
 		</form>
 		
 

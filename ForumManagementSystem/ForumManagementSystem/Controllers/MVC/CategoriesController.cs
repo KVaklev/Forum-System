@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Business.Exceptions;
 using Business.ViewModels.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -57,6 +58,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
                 return this.View(categoryViewModel);
             }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
+            }
 
             return this.View(categoryViewModel);
         }
@@ -76,6 +84,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
             }
         }
         [HttpPost]
@@ -100,6 +115,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
                 return this.View(categoryViewModel);
             }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
+            }
         }
 
         [HttpGet]
@@ -117,6 +139,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
             }
         }
 
@@ -138,6 +167,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
             }
         }
 		

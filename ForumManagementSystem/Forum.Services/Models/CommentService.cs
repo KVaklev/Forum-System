@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AspNetCoreDemo.Models;
+using Business.Exceptions;
 using Business.Services.Helpers;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Models;
@@ -47,7 +48,7 @@ namespace ForumManagementSystem.Services
             return this.repository.Delete(id);
         }
 
-        public List<Comment> FilterBy(CommentQueryParameters parameters)
+        public PaginatedList<Comment> FilterBy(CommentQueryParameters parameters)
         {
             
             return this.repository.FilterBy(parameters);
