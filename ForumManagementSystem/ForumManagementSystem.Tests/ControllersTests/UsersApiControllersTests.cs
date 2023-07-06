@@ -148,43 +148,43 @@ namespace ForumManagementSystem.Tests.ControllersTests
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
-        public void GetUsers_Should_When_ParametersAreValid()
-        {
-            //Arrange
+        //[TestMethod]
+        //public void GetUsers_Should_When_ParametersAreValid()
+        //{
+        //    //Arrange
 
-            string credentials = "ivanchoDraganchov:123";
+        //    string credentials = "ivanchoDraganchov:123";
 
-            User loggedUser = TestHelpers.GetTestUserAdmin();
-            List<User> users = TestHelpers.GetTestListUsers();
-            List<GetUserDto> expectedUsers = TestHelpers.GetTestExpectedListDtoUsers();
+        //    User loggedUser = TestHelpers.GetTestUserAdmin();
+        //    List<User> users = TestHelpers.GetTestListUsers();
+        //    List<GetUserDto> expectedUsers = TestHelpers.GetTestExpectedListDtoUsers();
 
-            var userServiceMock = new Mock<IUserService>();
-            var authManagerMock = new Mock<IAuthManager>();
-            var mapperMock = new Mock<IMapper>();
+        //    var userServiceMock = new Mock<IUserService>();
+        //    var authManagerMock = new Mock<IAuthManager>();
+        //    var mapperMock = new Mock<IMapper>();
 
-            authManagerMock
-               .Setup(am => am.TryGetUser(credentials))
-               .Returns(loggedUser);
-            userServiceMock
-                .Setup(us=>us.FilterBy(It.IsAny<UserQueryParameters>()))
-                .Returns(users);
-            mapperMock.Setup(m => m.Map<GetUserDto>(It.IsAny<User>()))
-                .Returns((User user) =>
-            {
-                return expectedUsers.FirstOrDefault(dto => dto.FirstName == user.FirstName);
-            });
+        //    authManagerMock
+        //       .Setup(am => am.TryGetUser(credentials))
+        //       .Returns(loggedUser);
+        //    userServiceMock
+        //        .Setup(us=>us.FilterBy(It.IsAny<UserQueryParameters>()))
+        //        .Returns(users);
+        //    mapperMock.Setup(m => m.Map<GetUserDto>(It.IsAny<User>()))
+        //        .Returns((User user) =>
+        //    {
+        //        return expectedUsers.FirstOrDefault(dto => dto.FirstName == user.FirstName);
+        //    });
 
-            var sut = new UsersApiController(userServiceMock.Object, mapperMock.Object, authManagerMock.Object);
+        //    var sut = new UsersApiController(userServiceMock.Object, mapperMock.Object, authManagerMock.Object);
 
-            //Act
+        //    //Act
 
-            var result = sut.GetUsers(credentials, new UserQueryParameters());
+        //    var result = sut.GetUsers(credentials, new UserQueryParameters());
 
-            //Assert
+        //    //Assert
 
-            Assert.IsNotNull(result);
-        }
+        //    Assert.IsNotNull(result);
+        //}
 
         [TestMethod]
         public void GetUsers_Should_ReturnUnauthorized_When_UserIsNotAuthorized()

@@ -1,11 +1,13 @@
-﻿using ForumManagementSystem.Models;
+﻿using AspNetCoreDemo.Models;
+using ForumManagementSystem.Models;
 
 namespace ForumManagementSystem.Repository
 {
     public interface IUserRepository
     {
         List<User> GetAll();
-        List<User> FilterBy(UserQueryParameters filterParameters);
+        PaginatedList<User> FilterBy(UserQueryParameters filterParameters);
+        List<User> Paginate(List<User> result, int pageNumber, int pageSize);
         User GetById(int id);
         User GetByUsername(string username);
         User GetByEmail(string email);

@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AspNetCoreDemo.Models;
+using Business.Exceptions;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -102,7 +103,7 @@ namespace ForumManagementSystem.Repository
             }
         }
 
-        public List<User> FilterBy(UserQueryParameters filterParameters)
+        public PaginatedList<User> FilterBy(UserQueryParameters filterParameters)
         {
             List<User> result = context.Users.ToList();
 
@@ -150,7 +151,18 @@ namespace ForumManagementSystem.Repository
                 }
             }
 
-            return result;
+            int totalPages = (result.Count() + 1) / filterParameters.PageSize;
+            
+            result = Paginate(result, filterParameters.PageNumber, filterParameters.PageSize);
+
+            return new PaginatedList<User>(result, totalPages, filterParameters.PageNumber);
+        }
+
+        public List<User> Paginate(List<User> result, int pageNumber, int pageSize)
+        {
+            return result
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize).ToList();
         }
 
         public User Promote(User user)

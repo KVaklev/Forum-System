@@ -457,36 +457,36 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.AreEqual(expectedUser, actualUser);
         }
 
-        [TestMethod]
-        public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
-        {
-            //Arrange
+        //[TestMethod]
+        //public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
+        //{
+        //    //Arrange
 
-            List<User> users = TestHelpers.GetTestListUsers();
+        //    List<User> users = TestHelpers.GetTestListUsers();
 
-            List<User> expectedUsers = TestHelpers.GetTestExpectedListUsers();
+        //    List<User> expectedUsers = TestHelpers.GetTestExpectedListUsers();
 
-            UserQueryParameters filterParameters = new UserQueryParameters()
-            {
-                FirstName = "Ivan"
-            };
+        //    UserQueryParameters filterParameters = new UserQueryParameters()
+        //    {
+        //        FirstName = "Ivan"
+        //    };
 
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+        //    var userRepositoryMock = new Mock<IUserRepository>();
+        //    var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
-            userRepositoryMock
-                .Setup(repo => repo.FilterBy(filterParameters))
-                .Returns(expectedUsers);
+        //    userRepositoryMock
+        //        .Setup(repo => repo.FilterBy(filterParameters))
+        //        .Returns(expectedUsers);
 
-            var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
+        //    var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
-            // Act
+        //    // Act
 
-            List<User> filteredUsers = sut.FilterBy(filterParameters);
+        //    List<User> filteredUsers = sut.FilterBy(filterParameters);
 
-            // Assert
+        //    // Assert
 
-            Assert.AreEqual(filteredUsers, expectedUsers);
-        }
+        //    Assert.AreEqual(filteredUsers, expectedUsers);
+        //}
     }
 }

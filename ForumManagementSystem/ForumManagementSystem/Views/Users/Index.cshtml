@@ -1,5 +1,6 @@
-﻿@using Microsoft.AspNetCore.Http;
-@model List<User>
+﻿@using AspNetCoreDemo.Models;
+@using Microsoft.AspNetCore.Http;
+@model PaginatedList<User>
 
 
 @{
@@ -15,12 +16,12 @@
     <div class="body-content">
         <h2>Users</h2>
 
-        <p>Find a user</p>
+        <h5>Find user by:</h5>
         <form asp-controller="Users" asp-action="Index" method="get">
-        <input type="text" name="Firstname" />
-        <input type="text" name="Lastname" />
-        <input type="text" name="Email" />
-        <input type="text" name="Username" />
+        <input type="text" name="Firstname" placeholder="First name"/>
+        <input type="text" name="Lastname" placeholder="Last name"/>
+        <input type="text" name="Email" placeholder="Email" />
+        <input type="text" name="Username" placeholder="Username" />
             <span style="margin-right: 20px;"></span>
         <input type="checkbox" name="Admin" value="true" /> Admin
             <span style="margin-right: 20px;"></span>
@@ -32,49 +33,70 @@
             }
             <span style="margin-right: 30px;"></span>
         <input type="submit" value="Search" class="btn btn-primary" />
+        <br />
+        <br />
         </form>
 
-        <div class="table">
-            <div class="header">
-                <div class="header-cell">Firstname</div>
-                <div class="header-cell">Lastname</div>
-                <div class="header-cell">Email</div>
-                <div class="header-cell">Username</div>
-                <div class="header-cell">Role</div>
-                <div class="header-cell">Actions</div>
-            </div>
-
-            @{
-                foreach (var user in this.Model)
-                {
-                    <div class="row">
-                        <div class="cell">@user.FirstName</div>
-                        <div class="cell">@user.LastName</div>
-                        <div class="cell">@user.Email</div>
-                        <div class="cell">@user.Username</div>
-                        @if (user.IsAdmin)
-                        {
-                            <div class="cell">Admin</div>
-                        }
-                        else
-                        {
-                            <div class="cell">Regular User</div>
-                        }
-                        <div class="cell">
-                            <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="btn btn-primary"> Details </a>
-                            @if (loggedUser == "True")
-                            {
-                                <span>| </span>
-                                <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning"> Edit </a>
-                                <span>| </span>
-                                <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger"> Delete </a>
-                            }
-                          
-                        </div>
-                    </div>
-                }
-            }
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Username</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.Username</td>
+                            <td>@(user.IsAdmin ? "Admin" : "Regular User")</td>
+                            <td class="text-center">
+                                <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="btn btn-primary">Details</a>
+                                @if (loggedUser == "True")
+                                {
+                                    <span>|</span>
+                                    <a asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning">Edit</a>
+                                    <span>|</span>
+                                    <a asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-    </div>
+        @{
+            string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
+            string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+        }
 
+        <a asp-controller="Users" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
+
+        @{
+            int currentPageNumber = this.Model.PageNumber;
+
+            for (int i = 1; i <= this.Model.TotalPages; i++)
+            {
+                if (i == currentPageNumber)
+                {
+                    <span>@i</span>
+                }
+                else
+                {
+                    <span><a asp-controller="Users" asp-action="Index" asp-route-PageNumber="@i">@i</a></span>
+                }
+
+            }
+        }
+        <a asp-controller="Users" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>
+    </div>
+   
 </body>
