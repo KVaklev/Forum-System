@@ -1,8 +1,9 @@
-﻿@model List<CommentGetViewModel>
+﻿
 @{
     CommentGetViewModel commentMenu = this.Model[0];
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var loggedUserId = this.Context.Session.GetInt32("UserId");
+    var isBlocked = Context.Session.GetString("IsBlocked");
 }
 
 
@@ -12,9 +13,13 @@
 </h5>
 
 <div></div>
+
     <div>
+        @if(isBlocked!="True")
+        {
     <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentMenu.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
-    </div>
+        }    
+</div>
 
 @{
     this.ViewData["Title"] = "World Travel Forum";
@@ -51,7 +56,7 @@
                     }
                 </div>
                  <div class="cell">
-                    @if (isLogged)
+                    @if (isLogged & isBlocked != "True")
                     {
                      <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
                     }
@@ -66,3 +71,24 @@
         }
     }
 </div>
+@{
+    string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
+    string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+}
+<a asp-controller="Comment" asp-action="Index"  asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+@{
+    int currentPageNumber = this.Model.PageNumber;
+
+    for (int i = 1; i <= this.Model.TotalPages; i++)
+    {
+        if (i == currentPageNumber)
+        {
+            <span>@i</span>
+        }
+        else
+        {
+            <span><a asp-controller="Comments" asp-action="Index"   asp-route-PageNumber="@i">@i</a></span>
+        }
+    }
+}
+<a asp-controller="Comments" asp-action="Index"   asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>

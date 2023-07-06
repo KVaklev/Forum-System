@@ -43,6 +43,8 @@ namespace ForumManagementSystem.Controllers.MVC
 				this.HttpContext.Session.SetString("LoggedUser", user.Username);
 				this.HttpContext.Session.SetInt32("UserId", user.Id);
 				this.HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
+				this.HttpContext.Session.SetString("IsBlocked", user.IsBlocked.ToString());
+				
 				
 
 				return RedirectToAction("Index", "Home");
