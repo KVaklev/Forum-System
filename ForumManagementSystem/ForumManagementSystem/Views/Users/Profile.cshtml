@@ -1,0 +1,102 @@
+﻿@model UserUpdateProfileViewModel
+@{
+    this.ViewData["Title"] = "World Travel Forum - Update Profile Information";
+}
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" src="~/Images/Uncle_Bob.jpg">
+                <input id="photo-upload" type="file" style="display: none;">
+                <button id="upload-button" class="btn btn-outline-primary mt-2">Upload Photo</button>
+                <h5 class="font-weight-bold mt-3">@this.Model.FirstName</h5>
+            </div>
+        </div>
+
+        <form asp-controller="Users" asp-action="Profile" method="post">
+            <table>
+                <tr>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.FirstName" class="form-label"></label>
+                        <br />
+                        <input asp-for="FirstName" type="text" class="form-input" placeholder="First name" value="" />
+                        <br />
+                        <span asp-validation-for="FirstName" class="form-error"></span>
+                    </td>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.LastName" class="form-label"></label>
+                        <br />
+                        <input asp-for="LastName" type="text" class="form-input" placeholder="Last name" value="" />
+                        <br />
+                        <span asp-validation-for="LastName" class="form-error"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.PhoneNumber" class="form-label"></label>
+                        <br />
+                        <input asp-for="PhoneNumber" type="text" class="form-input" placeholder="Enter phone number" value="" />
+                        <br />
+                        <span asp-validation-for="PhoneNumber" class="form-error"></span>
+                    </td>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.Email" class="form-label"></label>
+                        <br />
+                        <input asp-for="Email" type="text" class="form-input" placeholder="Enter a valid email" value="" />
+                        <br />
+                        <span asp-validation-for="Email" class="form-error"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.Country" class="form-label"></label>
+                        <br />
+                        <input asp-for="Country" type="text" class="form-input" placeholder="Enter your country" value="" />
+                        <br />
+                        <span asp-validation-for="Country" class="form-error"></span>
+                    </td>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.Address" class="form-label"></label>
+                        <br />
+                        <input asp-for="Address" type="text" class="form-input" placeholder="Enter your address" value="" />
+                        <br />
+                        <span asp-validation-for="Address" class="form-error"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.Password" class="form-label"></label>
+                        <br />
+                        <input asp-for="Password" type="password" class="form-input" placeholder="Enter your current password" value="" />
+                        <br />
+                        <span asp-validation-for="Password" class="form-error"></span>
+
+                    </td>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.NewPassword" class="form-label"></label>
+                        <br />
+                        <input asp-for="NewPassword" type="password" class="form-input" placeholder="Change password" value="" />
+                        <br />
+                        <span asp-validation-for="NewPassword" class="form-error"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 50px;">
+                        <label asp-for="@Model.DateOfBirth" class="form-label"></label>
+                        <br />
+                        <input asp-for="DateOfBirth" type="date" class="form-input" placeholder="Enter your date of birth" value="" />
+                        <br />
+                        <span asp-validation-for="DateOfBirth" class="form-error"></span>
+                    </td>
+                </tr>
+
+            </table>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-primary" type="submit">Save Profile</button>
+            </div>
+            <br />
+        </form>
+    </div>
+</div>
