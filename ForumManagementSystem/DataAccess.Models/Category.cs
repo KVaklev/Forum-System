@@ -23,7 +23,7 @@ namespace ForumManagementSystem.Models
         // Collection navigation containing dependents
         public List<Post> Posts { get; set; } = new List<Post>();
 
-        //TODO - Counts in Category
+        
         public int CountPosts { get; set; }
         
         public int CountComments { get; set; }

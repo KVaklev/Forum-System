@@ -1,5 +1,6 @@
 ﻿
 @{
+    
     this.ViewData["Title"] = "World Travel Forum - Home";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var isAdmin = Context.Session.GetString("IsAdmin");
