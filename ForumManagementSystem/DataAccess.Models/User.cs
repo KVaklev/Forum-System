@@ -1,5 +1,7 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ForumManagementSystem.Models
 {
@@ -28,13 +30,22 @@ namespace ForumManagementSystem.Models
         public string Username { get; set; }
 
         [Password]
-        public string Password { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string? Password { get; set; }
 
-        public bool IsBlocked { get; set; }
+		public string? PhoneNumber { get; set; }
+		public DateTime? DateOfBirth { get; set; }
+		public string? Address { get; set; }
+
+		public string? Country { get; set; }
+
+		public bool IsBlocked { get; set; }
 
         public bool IsAdmin { get; set; }
 
+        public string? ProfilePhotoPath { get; set; }
+
+        [NotMapped]
+        public IFormFile? Image { get; set; }
         public List<LikeComment> LikeComments { get; set; } = new List<LikeComment>();
         public List<LikePost> LikePosts { get; set;} = new List<LikePost>();
       

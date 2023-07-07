@@ -75,7 +75,10 @@ namespace ForumManagementSystem.Repository
 
             userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
             userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
-            userToUpdate.Password = user.Password ?? userToUpdate.Password;
+            userToUpdate.Password = user.Password;
+            userToUpdate.Address = user.Address ?? userToUpdate.Address;
+            userToUpdate.Country = user.Country ?? userToUpdate.Country;
+            userToUpdate.DateOfBirth = user.DateOfBirth ?? userToUpdate.DateOfBirth;
             userToUpdate.Email = user.Email ?? userToUpdate.Email;
             userToUpdate.Username = user.Username ?? userToUpdate.Username;
             userToUpdate.IsAdmin = user.IsAdmin;

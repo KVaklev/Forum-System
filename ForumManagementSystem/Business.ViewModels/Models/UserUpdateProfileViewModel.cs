@@ -3,30 +3,32 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Business.ViewModels.Models
 {
-	public class UserEditViewModel
+	public class UserUpdateProfileViewModel
 	{
-		public int Id { get; set; }
-		[Required]
 		[MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
 		[MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
-		public string FirstName { get; set; }
+		public string? FirstName { get; set; }
 
-		[Required]
 		[MinLength(2, ErrorMessage = "The {0} must be at least {1} characters long.")]
 		[MaxLength(32, ErrorMessage = "The {0} must be no more than {1} characters long.")]
-		public string LastName { get; set; }
+		public string? LastName { get; set; }
 
-		[Required]
+		[DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
+		public DateTime? DateOfBirth { get; set; }
+
 		[EmailAddress(ErrorMessage = "Please provide a valid email.")]
-		public string Email { get; set; }
+		public string? Email { get; set; }
 
-		[Password]
-		public string? Password { get; set; }
+        [Required]
+        public string Password { get; set; }
+
+        //[Password]
+        public string? NewPassword { get; set; }
 
 		public string? PhoneNumber { get; set; }
 
-		public bool? Admin { get; set; }
+		public string? Address { get; set; }
 
-		public bool? Blocked { get; set; }
+		public string? Country { get; set; }
 	}
 }

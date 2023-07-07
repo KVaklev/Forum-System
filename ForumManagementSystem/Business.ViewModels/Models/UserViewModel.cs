@@ -24,7 +24,7 @@ namespace Business.ViewModels.Models
         [MaxLength(30, ErrorMessage = "The {0} must be no more than {1} characters long.")]
         public string Username { get; set; }
 
-        [Required]
+        //[Required]
 		[Password]
 		public string Password { get; set; }
 

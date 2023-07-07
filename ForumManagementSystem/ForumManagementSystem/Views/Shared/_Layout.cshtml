@@ -5,6 +5,7 @@
 @{
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var username= this.Context.Session.GetString("LoggedUser");
+    var loggedUserId = this.Context.Session.GetInt32("UserId");
     var fullName = string.Concat(this.Context.Session.GetString("FirstName"), " ", this.Context.Session.GetString("LastName"));
 }
 
@@ -63,8 +64,8 @@
                                         <img src="https://itkonekt.com/media/2019/01/Uncle_Bob_400x400.png" alt="Profile Picture" class="rounded-circle" style="width: 30px; height: 30px;" />
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" href="#">Profile</a>
-                                        <a class="dropdown-item" href="#">Log Out</a>
+                                    <a asp-controller="Users" asp-action="Profile" asp-route-id="@loggedUserId" class="dropdown-item">Profile</a>
+                                    <a asp-controller="Auth" asp-action="Logout" class="dropdown-item">Log Out</a>
                                     </div>
                                 </li>
                             }
