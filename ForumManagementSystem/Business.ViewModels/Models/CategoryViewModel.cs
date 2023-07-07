@@ -18,6 +18,6 @@ namespace Business.ViewModels.Models
         [MinLength(5, ErrorMessage = "The {0} field must be at least {1} character.")]
         public string Description { get; set; }
 
-        public SelectList Categories { get; set; }
+       
     }
 }
