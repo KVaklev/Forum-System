@@ -139,8 +139,7 @@ namespace ForumManagementSystem.Controllers.MVC
             }
             var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
             var post = mapper.Map<Post>(postViewModel);
-            var tagsToEdit = new List<string>();
-            var updatedPost = this.postService.Update(id, post, loggedUser, tagsToEdit);
+            var updatedPost = this.postService.Update(id, post, loggedUser, postViewModel.Tags);
 
             return this.RedirectToAction("Index", "Posts", new { id = updatedPost.Id });
         }

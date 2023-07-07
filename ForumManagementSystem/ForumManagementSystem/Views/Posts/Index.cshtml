@@ -28,7 +28,7 @@
 
         <form asp-controller="Post" asp-action="Index" method="get">
 
-            <label class="form-label"> Select a category </label>
+            <label class="form-label"> Filter By Category </label>
             <select asp-items="@categories" class="form-input"></select>
 
             <input type="submit" value="Search" class="btn btn-primary" />
@@ -37,7 +37,7 @@
 
         <form asp-controller="Post" asp-action="Index" method="get">
 
-            <label class="form-label"> Select a tag </label>
+            <label class="form-label"> Filter By Tag </label>
             <select asp-items="@tags" class="form-input"></select>
             <input type="submit" value="Search" class="btn btn-primary" />
 

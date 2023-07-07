@@ -23,7 +23,7 @@ namespace ForumManagementSystem.Models
         [Range(1, int.MaxValue, ErrorMessage = "The {0} field must be in the range from {1} to {2}.")]
         public int CategoryId { get; set; }
 
-        public List<string>? Tags { get; set; }
+        public string? Tags { get; set; }
 
     }
 }
