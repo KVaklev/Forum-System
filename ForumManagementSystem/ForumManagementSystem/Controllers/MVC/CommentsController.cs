@@ -22,6 +22,7 @@ namespace ForumManagementSystem.Controllers.MVC
     {
         private readonly ICommentService commentService;
         private readonly IPostService postService;
+        private readonly IUserService userService;
         private readonly IAuthManager authManager;
         private readonly IMapper mapper;
         private readonly ILikeCommentService likeCommentService;
@@ -29,34 +30,27 @@ namespace ForumManagementSystem.Controllers.MVC
         public CommentsController(
             ICommentService commentService,
             IPostService postService,
+            IUserService userService,
             IMapper mapper,
             IAuthManager authManager,
             ILikeCommentService likeCommentService)
         {
                 this.commentService = commentService;
                 this.postService = postService;
+                this.userService = userService;
                 this.mapper = mapper;
                 this.authManager = authManager;
                 this.likeCommentService = likeCommentService;
         }
 
         [HttpGet]
-        public IActionResult Index([FromRoute] int id)
+        public IActionResult Index(CommentQueryParameters parameter)
         {
             try
             {
-                CommentQueryParameters parameter = new CommentQueryParameters()
-                {
-                    postID = id
-                };
                 PaginatedList<Comment> comments = this.commentService.FilterBy(parameter);
-                PaginatedList<CommentGetViewModel> commentsGetView = new PaginatedList<CommentGetViewModel>(
-                    comments.Select(comment => mapper.Map<CommentGetViewModel>(comment)).ToList(),
-                    comments.TotalPages,
-                    comments.PageNumber
-);
 
-                return View(commentsGetView);
+                return View(comments);
             }
             catch (EntityNotFoundException ex)
             {
@@ -155,7 +149,7 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.RedirectToAction("Index", "Comments", new { id = updatedComment.PostId });
             }
-            catch (EntityNotFoundException ex)
+             catch (EntityNotFoundException ex)
             {
                 this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 this.ViewData["ErrorMessage"] = ex.Message;

@@ -1,73 +1,68 @@
 ﻿
 @{
-    CommentGetViewModel commentMenu = this.Model[0];
+    this.ViewData["Title"] = "World Travel Forum - Comments";
+}
+@{
+    Comment commentDetail = this.Model[0];
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var loggedUserId = this.Context.Session.GetInt32("UserId");
     var isBlocked = Context.Session.GetString("IsBlocked");
-}
-
-
-<h5>
-    | <a asp-controller="Home" asp-action="Index">@commentMenu.CategoryName</a>
-    > <a asp-controller="Posts" asp-action="Index">@commentMenu.PostTitle</a>
-</h5>
-
-<div></div>
-
-    <div>
-        @if(isBlocked!="True")
-        {
-    <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentMenu.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
-        }    
-</div>
-
-@{
-    this.ViewData["Title"] = "World Travel Forum";
-}
-
-
+    var isAdmin = Context.Session.GetString("IsAdmin");
+}    
+        <form asp-controller="Comments" asp-action="Index" method="get">
+                | <a asp-controller="Home" asp-action="Index">@commentDetail.Post.Category.Name</a>
+                > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
+            <span style="margin-right:35%"></span>
+            @if (isLogged & isBlocked != "True")
+            {
+            <label class="form-label"> Find user: </label>
+            <input type="text" name="Username" placeholder="" />
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
+            }
+        </form>
+    
 </br>
 <div class="table">
     <div class="header">
         <div class="header-cell">Username</div>
         <div class="header-cell">Content</div>
-        <div class="header-cell">DateTime</div>
-        <div class="header-cell">Likes</div>
-        <div class="header-cell">Actions</div>
-
     </div>
 
     @{
         foreach (var comment in this.Model)
         {
             <div class="row">
-                <div width="20px" class="cell">@comment.Username</div>
+                <div class="cell">
+                    Created by:<br/>
+                    <a asp-controller="Users" asp-action="Index" asp-route-Username="@comment.CreatedBy.Username">@comment.CreatedBy.Username</a>
+                    <br/>
+                    @comment.DateTime
+                </div>
                 <div class="cell">
                 @comment.Content
-                </div>
-                <div class="cell">@comment.DateTime</div>
-                
-                <div class="cell">
+                <br/><br/>
                     @comment.LikesCount
-                    |
                     @if (isLogged)
                     {
                         <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
                     }
-                </div>
-                 <div class="cell">
                     @if (isLogged & isBlocked != "True")
                     {
                      <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
                     }
-                    @if(isLogged & comment.UserId==loggedUserId)
+                    @if (isLogged & comment.UserId == loggedUserId)
                     {
-                     <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
-                     <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
+                        <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
+                        <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                     }
-                    </div>
+                    else if (isAdmin=="True")
+                    {
+                        <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
+                        <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
+                    }
+                </div>
             </div>
-
         }
     }
 </div>
@@ -75,7 +70,7 @@
     string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
     string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
 }
-<a asp-controller="Comment" asp-action="Index"  asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+<a asp-controller="Comments" asp-action="Index" asp-route-Postid="@commentDetail.PostId" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
 @{
     int currentPageNumber = this.Model.PageNumber;
 
@@ -87,8 +82,8 @@
         }
         else
         {
-            <span><a asp-controller="Comments" asp-action="Index"   asp-route-PageNumber="@i">@i</a></span>
+            <span><a asp-controller="Comments" asp-action="Index" asp-route-Postid="@commentDetail.PostId" asp-route-PageNumber="@i">@i</a></span>
         }
     }
 }
-<a asp-controller="Comments" asp-action="Index"   asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
+<a asp-controller="Comments" asp-action="Index" asp-route-Postid="@commentDetail.PostId" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>

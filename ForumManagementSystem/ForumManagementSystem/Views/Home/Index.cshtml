@@ -1,5 +1,6 @@
 ﻿
 @{
+    
     this.ViewData["Title"] = "World Travel Forum - Home";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var isAdmin = Context.Session.GetString("IsAdmin");
@@ -55,8 +56,16 @@
                             {
                                 <td>
                                     <div class="d-flex flex-column">
-                                    <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">Posts</a>
-                                    @if (isAdmin == "True")
+                                        @if (category.CountPosts <= 0)
+                                        {
+
+                                            <a asp-controller="Posts" asp-action="Create" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">New Post</a>
+                                        }
+                                        else
+                                        {
+                                        <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">Posts</a>
+                                        }
+                                        @if (isAdmin == "True")
                                     {
                                         <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning mb-2">Edit</a>
                                         <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Delete</a>

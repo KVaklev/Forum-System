@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Business.ViewModels.Models
 {
@@ -19,5 +20,6 @@ namespace Business.ViewModels.Models
         public string Content { get; set; }
         public int LikesCount { get; set; }
         public int? CommentId { get; set; }
+        
     }
 }

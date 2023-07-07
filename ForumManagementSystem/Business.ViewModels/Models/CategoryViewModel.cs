@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.ViewModels.Models
@@ -17,5 +18,6 @@ namespace Business.ViewModels.Models
         [MinLength(5, ErrorMessage = "The {0} field must be at least {1} character.")]
         public string Description { get; set; }
 
+        public SelectList Categories { get; set; }
     }
 }

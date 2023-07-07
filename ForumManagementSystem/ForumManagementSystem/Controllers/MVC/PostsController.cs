@@ -92,9 +92,8 @@ namespace ForumManagementSystem.Controllers.MVC
                 if (this.ModelState.IsValid)
                 {
                     var user = authManager.TryGetUser("ivanchoDraganchov:123");
-                    var tagNames = new List<string>();
                     var post = mapper.Map<Post>(postViewModel);
-                    var createdPost = postService.Create(post, user, tagNames);
+                    var createdPost = postService.Create(post, user, postViewModel.Tags);
                     return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
                 }
             }
@@ -140,8 +139,7 @@ namespace ForumManagementSystem.Controllers.MVC
             }
             var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
             var post = mapper.Map<Post>(postViewModel);
-            var tagsToEdit = new List<string>();
-            var updatedPost = this.postService.Update(id, post, loggedUser, tagsToEdit);
+            var updatedPost = this.postService.Update(id, post, loggedUser, postViewModel.Tags);
 
             return this.RedirectToAction("Index", "Posts", new { id = updatedPost.Id });
         }

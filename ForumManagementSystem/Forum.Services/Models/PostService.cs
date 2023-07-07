@@ -45,9 +45,13 @@ namespace ForumManagementSystem.Services
             return this.repository.FilterBy(filterParameters);
         }
 
-        public Post Create(Post post, User user, List<string> tagsToAdd)
+        public Post Create(Post post, User user, string tags)
         {
+            var tagsToAdd = tags.Split().ToList();
+
             CheckIfBlocked(user);
+                 
+            
 
             //if (this.repository.TitleExists(post.Title))
             //{
@@ -64,8 +68,10 @@ namespace ForumManagementSystem.Services
 
         }
 
-        public Post Update(int id, Post post, User loggedUser, List<string> tagsToAdd)
+        public Post Update(int id, Post post, User loggedUser, string tags)
         {
+            var tagsToAdd = tags.Split().ToList(); 
+
             Post postToUpdate = this.repository.GetById(id);
 
             if (!IsAuthorized(postToUpdate.CreatedBy, loggedUser))
@@ -150,5 +156,7 @@ namespace ForumManagementSystem.Services
 
             return newlyCreatedPost;
         }
+
+      
     }
 }

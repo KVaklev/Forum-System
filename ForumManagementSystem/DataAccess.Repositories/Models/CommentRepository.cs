@@ -47,17 +47,17 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.FindAll(comment => comment.UserId==parameters.UserId);
             }
+            if (!string.IsNullOrEmpty(parameters.Username))
+            {
+                result = result.Where(p => p.CreatedBy.Username == parameters.Username).ToList();
+            }
             if (parameters.postID.HasValue)
             {
                 result = result.Where(p => p.PostId == parameters.postID).ToList();
             }
             if (!string.IsNullOrEmpty(parameters.SortBy))
-            {
-                if (parameters.SortBy.Equals("userId", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    result = result.OrderBy(c => c.UserId).ToList();
-                }
-                else if (parameters.SortBy.Equals("date", StringComparison.InvariantCultureIgnoreCase))
+            { 
+                if (parameters.SortBy.Equals("date", StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = result.OrderBy(c => c.DateTime).ToList();
                 }
