@@ -33,7 +33,7 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyCommentErrorMessage);
             }
-            IncreaseCommentCount(comment);
+            IncreaseComentCount(comment);
             return this.repository.Create(comment, user);
         }
 
@@ -45,7 +45,7 @@ namespace ForumManagementSystem.Services
             }
             Comment comment = repository.GetByID(id);
             likeRepository.DeleteByComment(comment);
-            DecreaseCommentCount(comment);
+            DecreaseComentCount(comment);
             return this.repository.Delete(id);
         }
 
@@ -84,14 +84,14 @@ namespace ForumManagementSystem.Services
             }
             return isUserUnauthorized;
         }
-        public int IncreaseCommentCount(Comment comment)
+        public int IncreaseComentCount(Comment comment)
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
             return category.CountComments++;
         }
 
-        public int DecreaseCommentCount(Comment comment)
+        public int DecreaseComentCount(Comment comment)
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
