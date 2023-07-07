@@ -280,7 +280,53 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.ThrowsException<UnauthenticatedOperationException>(() => sut.Update(1, updatedPost, unauthorizedUser, null));
         }
 
+        //[TestMethod]
+        //public void Update_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
+        //{
+        //    // Arrange
+        //    User testUser = TestHelpers.GetTestUser();
 
+        //    Post existingPost = new Post
+        //    {
+        //        Id = 1,
+        //        Title = "Existing Title",
+        //        Content = "Existing Content",
+        //        CreatedBy = testUser
+        //    };
+
+        //    Post updatedPost = new Post
+        //    {
+        //        Id = 1,
+        //        Title = "Updated Title",
+        //        Content = "Updated Content",
+        //        CreatedBy = testUser
+        //    };
+
+        //    List<string> tagsToAdd = TestHelpers.GetTestListTag();
+
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagRepositoryMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
+
+        //    postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
+        //    postRepositoryMock.Setup(repo => repo.TitleExists(updatedPost.Title)).Returns(true);
+
+        //    var sut = new PostService(
+        //        repository.Object, 
+        //        tagService.Object, 
+        //        likePostRepository.Object, 
+        //        categoryRepositoryMock.Object);
+
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagRepositoryMock.Object, 
+        //        likePostRepositoryMock.Object, 
+        //        categoryRepositoryMock.Object);
+
+        //    // Act and Assert
+        //    Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(1, updatedPost, testUser, tagsToAdd));
+        //}
 
         //[TestMethod]
         //public void Update_ValidUpdate_ReturnsUpdatedPost()
@@ -295,6 +341,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         //    repository.Setup(r => r.TitleExists(It.IsAny<string>())).Returns(false);
         //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() });
 
+        //    repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(existingPost);
+        //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(updatedPost);
 
         //    var post = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
         //    var loggedUser = new User() { IsAdmin = true };

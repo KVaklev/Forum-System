@@ -50,8 +50,8 @@
             <div class="header-cell">Username</div>
             <div class="header-cell">Title</div>
             <div class="header-cell">Content</div>
-
             <div class="header-cell">Likes</div>
+            <div class="header-cell">CommentsCount</div>
             <div class="header-cell">Actions</div>
             <div class="header-cell">Comments</div>
         </div>
@@ -62,13 +62,21 @@
                 <div class="row">
                     <div class="cell">@post.CreatedBy.Username</div>
                     <div class="cell">@post.Title</div>
-                    <div> @post.Content</div>
+                    <div class="cell"> @post.Content</div>
 
                     <div class="cell">
                         @post.PostLikesCount
                         | <a asp-controller="Posts" asp-action="Like" asp-route-id="@post.Id" class="btn btn-warning"> Like </a>
                     </div>
 
+                    <div class="cell" style="display: flex; justify-content: center; align-items: center; background-color: lightgray; padding: 2px;">
+                        <span style="font-weight: bold; color: black;">
+                            @post.PostCommentsCount
+                        </span>
+                        <a asp-controller="Posts" asp-action="CommentsCount" asp-route-id="@post.Id"></a>
+                    </div>
+
+                   
                     <div class="cell">
                         <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
                         | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
