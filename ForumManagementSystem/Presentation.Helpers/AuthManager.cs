@@ -20,7 +20,7 @@ namespace Presentation.Helpers
 
         public User TryGetUser(string credentials)
         {
-            string[] credentialsArray = credentials.Split(':');
+   string[] credentialsArray = credentials.Split(':');         
             string username = credentialsArray[0];
             string password = credentialsArray[1];
 

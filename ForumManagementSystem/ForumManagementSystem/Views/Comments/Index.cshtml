@@ -1,9 +1,11 @@
-﻿
+﻿@using AspNetCoreDemo.Models;
+@using Microsoft.AspNetCore.Http;
+@model PaginatedList<Comment>
 @{
     this.ViewData["Title"] = "World Travel Forum - Comments";
 }
 @{
-    Comment commentDetail = this.Model[0];
+    Comment commentDetail =this.Model.FirstOrDefault();
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var loggedUserId = this.Context.Session.GetInt32("UserId");
     var isBlocked = Context.Session.GetString("IsBlocked");
@@ -22,24 +24,33 @@
             }
         </form>
     
-</br>
-<div class="table">
-    <div class="header">
-        <div class="header-cell">Username</div>
-        <div class="header-cell">Content</div>
-    </div>
+<br/>
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-hover">
+        <colgroup>
+        <col style="width: 15%"> <!-- Adjust the width value as needed -->
+        <col style="width: 50%">
+        </colgroup>
 
-    @{
+        <thead class="table-dark">
+        <tr>
+        <th>Username</th>
+        <th>Content</th>
+        </tr>
+       </thead>
+     <tbody>
+            
+       @{
         foreach (var comment in this.Model)
-        {
-            <div class="row">
-                <div class="cell">
+                {
+                    <tr>
+                <th>
                     Created by:<br/>
                     <a asp-controller="Users" asp-action="Index" asp-route-Username="@comment.CreatedBy.Username">@comment.CreatedBy.Username</a>
                     <br/>
                     @comment.DateTime
-                </div>
-                <div class="cell">
+                </th>
+                <th>
                 @comment.Content
                 <br/><br/>
                     @comment.LikesCount
@@ -61,11 +72,14 @@
                         <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                         <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                     }
-                </div>
-            </div>
+                
+                </th>
+              </tr>
         }
-    }
-</div>
+    }      
+        </tbody>
+      </table>
+  </div>
 @{
     string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
     string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
