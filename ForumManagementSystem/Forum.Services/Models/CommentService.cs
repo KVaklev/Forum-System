@@ -33,7 +33,8 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyCommentErrorMessage);
             }
-            IncreaseComentCount(comment);
+            IncreaseCategoryCommentCount(comment);
+            IncreasePostCommentCount(comment);
             return this.repository.Create(comment, user);
         }
 
@@ -45,7 +46,8 @@ namespace ForumManagementSystem.Services
             }
             Comment comment = repository.GetByID(id);
             likeRepository.DeleteByComment(comment);
-            DecreaseComentCount(comment);
+            DecreaseCategoryCommentCount(comment);
+            DecreasePostCommentCount(comment);
             return this.repository.Delete(id);
         }
 
@@ -84,18 +86,32 @@ namespace ForumManagementSystem.Services
             }
             return isUserUnauthorized;
         }
-        public int IncreaseComentCount(Comment comment)
+        public int IncreaseCategoryCommentCount(Comment comment)
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
             return category.CountComments++;
         }
 
-        public int DecreaseComentCount(Comment comment)
+        public int IncreasePostCommentCount(Comment comment)
+        {
+            Post post = this.postRepository.GetById(comment.PostId);
+            
+            return post.PostCommentsCount++;
+        }
+
+        public int DecreaseCategoryCommentCount(Comment comment)
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
             return category.CountComments--;
+        }
+
+        public int DecreasePostCommentCount(Comment comment)
+        {
+            Post post = this.postRepository.Delete(comment.PostId);
+
+            return post.PostCommentsCount--;
         }
     }
 }

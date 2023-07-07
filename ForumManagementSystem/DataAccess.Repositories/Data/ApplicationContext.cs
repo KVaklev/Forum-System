@@ -130,7 +130,8 @@ namespace DataAccess.Repositories.Data
                   Content = "When you are able to get an accommodation that has a kitchen and cooking implements, do you cook your own food? My sister has that style. She cooks breakfast at least so they can save a little money. We once had booked in a small hotel in Hong Kong but we forgo with the cooking. For us, a vacation should be savored to the fullest.",
                   UserId = 2,
                   CategoryId = 1,
-                  DateTime = DateTime.Now
+                  DateTime = DateTime.Now,
+                  PostCommentsCount = 1
                   },
 
                 new Post
@@ -140,7 +141,8 @@ namespace DataAccess.Repositories.Data
                   Content = "So the help which I require is that I would like to know what things to do in Windsor?",
                   UserId = 3,
                   CategoryId = 2,
-                  DateTime = DateTime.Now
+                  DateTime = DateTime.Now,
+                  PostCommentsCount = 1
                   },
 
                 new Post
