@@ -46,6 +46,7 @@ namespace ForumManagementSystem.Models
         public DateTime DateTime { get; set; }
 
         public int PostLikesCount { get; set; }
+        public int PostCommentsCount { get; set; }
 
         // Collection navigation containing dependents
         public List<LikePost> LikePosts { get; set; } = new List<LikePost> { };

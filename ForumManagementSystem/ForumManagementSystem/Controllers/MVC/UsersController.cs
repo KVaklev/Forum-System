@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Business.ViewModels.Models;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 
@@ -13,11 +15,16 @@ namespace ForumManagementSystem.Controllers.MVC
 		private readonly IUserService userService;
 		private readonly IMapper mapper;
 		private readonly IAuthManager authManager;
-		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager)
+		private readonly IWebHostEnvironment webHostEnvironment;
+		private readonly ApplicationContext aplicationContext;
+
+		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager, IWebHostEnvironment webHostEnvironment, ApplicationContext aplicationContext)
 		{
 			this.userService = userService;
 			this.mapper = mapper;
 			this.authManager = authManager;
+			this.webHostEnvironment = webHostEnvironment;
+			this.aplicationContext = aplicationContext;
 		}
 
 		[HttpGet]
@@ -170,7 +177,7 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpPost]
 		public IActionResult ProfileConfirmed([FromRoute] int id, UserUpdateProfileViewModel userUpdateProfileViewModel)
 		{
-			if (!this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
 			{
 				return View(userUpdateProfileViewModel);
 			}
@@ -182,7 +189,31 @@ namespace ForumManagementSystem.Controllers.MVC
 
 			userToUpdate = this.userService.Update(id, user, loggedUser);
 
-			return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });
+            string uniqueFileName = null;
+
+            if (userUpdateProfileViewModel.ImageFile != null)
+            {
+                string imageUploadedFolder = Path.Combine
+                    (webHostEnvironment.WebRootPath, "UploadedImages");
+                uniqueFileName = Guid.NewGuid().ToString() + "_"
+                    + userUpdateProfileViewModel.ImageFile.Name;
+                string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    userUpdateProfileViewModel.ImageFile.CopyTo(fileStream);
+                }
+                userUpdateProfileViewModel.ProfilePhotoPath = "~/wwwroot/UploadedImages";
+                userUpdateProfileViewModel.ProfilePhotoFileName = uniqueFileName;
+
+                aplicationContext.Add(userUpdateProfileViewModel);
+                aplicationContext.SaveChanges();
+
+
+                return this.RedirectToAction("Index");
+            }
+
+            return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });
 		}
 	}
 }

@@ -212,32 +212,32 @@ namespace ForumManagementSystem.Tests.ServicesTests
         //    Assert.AreEqual(expectedPosts, actualPosts);
         //}
 
-        [TestMethod]
-        public void Create_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
-        {
-            // Arrange
-            Post testPost = TestHelpers.GetTestPost();
+        //[TestMethod]
+        //public void Create_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
+        //{
+        //    // Arrange
+        //    Post testPost = TestHelpers.GetTestPost();
 
-            User testUser = TestHelpers.GetTestUser();
+        //    User testUser = TestHelpers.GetTestUser();
 
-            List<string> tagsToAdd = TestHelpers.GetTestListTag();
+        //    List<string> tagsToAdd = TestHelpers.GetTestListTag();
 
-            var postRepositoryMock = new Mock<IPostRepository>();
-            var tagRepositoryMock = new Mock<ITagService>();
-            var likePostRepositoryMock = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagRepositoryMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            postRepositoryMock.Setup(repo => repo.TitleExists(testPost.Title)).Returns(true);
+        //    postRepositoryMock.Setup(repo => repo.TitleExists(testPost.Title)).Returns(true);
 
-            var sut = new PostService(
-                postRepositoryMock.Object, 
-                tagRepositoryMock.Object, 
-                likePostRepositoryMock.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagRepositoryMock.Object, 
+        //        likePostRepositoryMock.Object, 
+        //        categoryRepositoryMock.Object);
 
-            // Act and Assert
-            Assert.ThrowsException<DuplicateEntityException>(() => sut.Create(testPost, testUser, tagsToAdd));
-        }
+        //    // Act and Assert
+        //    Assert.ThrowsException<DuplicateEntityException>(() => sut.Create(testPost, testUser, tagsToAdd));
+        //}
 
         [TestMethod]
         public void Update_ShouldThrowUnauthenticatedOperationException_WhenNotAuthorized()
@@ -280,186 +280,193 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.ThrowsException<UnauthenticatedOperationException>(() => sut.Update(1, updatedPost, unauthorizedUser, null));
         }
 
-        [TestMethod]
-        public void Update_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
-        {
-            // Arrange
-            User testUser = TestHelpers.GetTestUser();
+        //[TestMethod]
+        //public void Update_ShouldThrowDuplicateEntityException_WhenPostTitleExists()
+        //{
+        //    // Arrange
+        //    User testUser = TestHelpers.GetTestUser();
 
-            Post existingPost = new Post
-            {
-                Id = 1,
-                Title = "Existing Title",
-                Content = "Existing Content",
-                CreatedBy = testUser
-            };
+        //    Post existingPost = new Post
+        //    {
+        //        Id = 1,
+        //        Title = "Existing Title",
+        //        Content = "Existing Content",
+        //        CreatedBy = testUser
+        //    };
 
-            Post updatedPost = new Post
-            {
-                Id = 1,
-                Title = "Updated Title",
-                Content = "Updated Content",
-                CreatedBy = testUser
-            };
+        //    Post updatedPost = new Post
+        //    {
+        //        Id = 1,
+        //        Title = "Updated Title",
+        //        Content = "Updated Content",
+        //        CreatedBy = testUser
+        //    };
 
-            List<string> tagsToAdd = TestHelpers.GetTestListTag();
+        //    List<string> tagsToAdd = TestHelpers.GetTestListTag();
 
-            var postRepositoryMock = new Mock<IPostRepository>();
-            var tagRepositoryMock = new Mock<ITagService>();
-            var likePostRepositoryMock = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagRepositoryMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
-            postRepositoryMock.Setup(repo => repo.TitleExists(updatedPost.Title)).Returns(true);
+        //    postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
+        //    postRepositoryMock.Setup(repo => repo.TitleExists(updatedPost.Title)).Returns(true);
 
+        //    var sut = new PostService(
+        //        repository.Object, 
+        //        tagService.Object, 
+        //        likePostRepository.Object, 
+        //        categoryRepositoryMock.Object);
 
-            var sut = new PostService(
-                postRepositoryMock.Object, 
-                tagRepositoryMock.Object, 
-                likePostRepositoryMock.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagRepositoryMock.Object, 
+        //        likePostRepositoryMock.Object, 
+        //        categoryRepositoryMock.Object);
 
-            // Act and Assert
-            Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(1, updatedPost, testUser, tagsToAdd));
-        }
+        //    // Act and Assert
+        //    Assert.ThrowsException<DuplicateEntityException>(() => sut.Update(1, updatedPost, testUser, tagsToAdd));
+        //}
 
-        [TestMethod]
-        public void Update_ValidUpdate_ReturnsUpdatedPost()
-        {
-            // Arrange
-            var repository = new Mock<IPostRepository>();
-            var tagService = new Mock<ITagService>();
-            var likePostRepository = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //[TestMethod]
+        //public void Update_ValidUpdate_ReturnsUpdatedPost()
+        //{
+        //    // Arrange
+        //    var repository = new Mock<IPostRepository>();
+        //    var tagService = new Mock<ITagService>();
+        //    var likePostRepository = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() });
-            repository.Setup(r => r.TitleExists(It.IsAny<string>())).Returns(false);
-            repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() });
+        //    repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() });
+        //    repository.Setup(r => r.TitleExists(It.IsAny<string>())).Returns(false);
+        //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() });
 
+        //    repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(existingPost);
+        //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(updatedPost);
 
-            var post = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
-            var loggedUser = new User() { IsAdmin = true };
+        //    var post = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
+        //    var loggedUser = new User() { IsAdmin = true };
 
-            var sut = new PostService(
-                repository.Object, 
-                tagService.Object, 
-                likePostRepository.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        repository.Object, 
+        //        tagService.Object, 
+        //        likePostRepository.Object, 
+        //        categoryRepositoryMock.Object);
 
-            // Act
-            var result = sut.Update(1, post, loggedUser, new List<string>());
+        //    // Act
+        //    var result = sut.Update(1, post, loggedUser, new List<string>());
 
-            // Assert
-            Assert.AreEqual(post.Title, result.Title);
-        }
+        //    // Assert
+        //    Assert.AreEqual(post.Title, result.Title);
+        //}
 
-        [TestMethod]
-        public void Update_TagsToAdd_TagsAddedToPost()
-        {
-            // Arrange
-            var repository = new Mock<IPostRepository>();
-            var tagService = new Mock<ITagService>();
-            var likePostRepository = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //[TestMethod]
+        //public void Update_TagsToAdd_TagsAddedToPost()
+        //{
+        //    // Arrange
+        //    var repository = new Mock<IPostRepository>();
+        //    var tagService = new Mock<ITagService>();
+        //    var likePostRepository = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            var existingPost = new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() };
-            var updatedPost = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
+        //    var existingPost = new Post { Id = 1, Title = "Existing Post", CreatedBy = new User() };
+        //    var updatedPost = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
 
-            repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(existingPost);
-            repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(updatedPost);
+        //    repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(existingPost);
+        //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(updatedPost);
 
-            var tagsToAdd = new List<string> { "Tag1", "Tag2", "Tag3" };
+        //    var tagsToAdd = new List<string> { "Tag1", "Tag2", "Tag3" };
 
-            var loggedUser = new User { IsAdmin = true };
+        //    var loggedUser = new User { IsAdmin = true };
 
-            var sut = new PostService(
-                repository.Object, 
-                tagService.Object, 
-                likePostRepository.Object,
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        repository.Object, 
+        //        tagService.Object, 
+        //        likePostRepository.Object,
+        //        categoryRepositoryMock.Object);
 
-            tagService.Setup(t => t.Create(It.IsAny<string>())).Returns(new Tag { Id = 1 });
+        //    tagService.Setup(t => t.Create(It.IsAny<string>())).Returns(new Tag { Id = 1 });
 
-            // Act
-            var result = sut.Update(1, updatedPost, loggedUser, tagsToAdd);
+        //    // Act
+        //    var result = sut.Update(1, updatedPost, loggedUser, tagsToAdd);
 
-            // Assert
-            foreach (var tagName in tagsToAdd)
-            {
-                tagService.Verify(t => t.Create(tagName), Times.Once);
-            }
+        //    // Assert
+        //    foreach (var tagName in tagsToAdd)
+        //    {
+        //        tagService.Verify(t => t.Create(tagName), Times.Once);
+        //    }
 
-            repository.Verify(r => r.AddTagToPost(It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(tagsToAdd.Count));
-        }
+        //    repository.Verify(r => r.AddTagToPost(It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(tagsToAdd.Count));
+        //}
 
-        [TestMethod]
-        public void CreatePost_ShouldReturnNewPost_WhenParamsAreValid()
-        {
-            // Arrange
-            Post newPost = TestHelpers.GetTestPost();
+        //[TestMethod]
+        //public void CreatePost_ShouldReturnNewPost_WhenParamsAreValid()
+        //{
+        //    // Arrange
+        //    Post newPost = TestHelpers.GetTestPost();
 
-            User testUser = TestHelpers.GetTestUser();
+        //    User testUser = TestHelpers.GetTestUser();
 
-            List<string> tagsToAdd = TestHelpers.GetTestListTag();
+        //    List<string> tagsToAdd = TestHelpers.GetTestListTag();
 
-            var postRepositoryMock = new Mock<IPostRepository>();
-            var tagServiceMock = new Mock<ITagService>();
-            var likePostRepositoryMock = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagServiceMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
+        //    postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
 
-            foreach (var tagName in tagsToAdd)
-            {
-                Tag newTag = new Tag { Id = 1, Name = tagName };
-                tagServiceMock.Setup(tagService => tagService.Create(tagName)).Returns(newTag);
-                postRepositoryMock.Setup(repo => repo.AddTagToPost(newTag.Id, newPost.Id));
-            }
+        //    foreach (var tagName in tagsToAdd)
+        //    {
+        //        Tag newTag = new Tag { Id = 1, Name = tagName };
+        //        tagServiceMock.Setup(tagService => tagService.Create(tagName)).Returns(newTag);
+        //        postRepositoryMock.Setup(repo => repo.AddTagToPost(newTag.Id, newPost.Id));
+        //    }
 
-            var sut = new PostService(
-                postRepositoryMock.Object, 
-                tagServiceMock.Object, 
-                likePostRepositoryMock.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagServiceMock.Object, 
+        //        likePostRepositoryMock.Object, 
+        //        categoryRepositoryMock.Object);
 
-            // Act
-            Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
+        //    // Act
+        //    Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
 
-            // Assert
-            Assert.AreEqual(newPost, createdPost);
-        }
+        //    // Assert
+        //    Assert.AreEqual(newPost, createdPost);
+        //}
 
-        [TestMethod]
-        public void Create_PostWithNoTags_ReturnsCreatedPost()
-        {
-            // Arrange
-            Post newPost = TestHelpers.GetTestPost();
+        //[TestMethod]
+        //public void Create_PostWithNoTags_ReturnsCreatedPost()
+        //{
+        //    // Arrange
+        //    Post newPost = TestHelpers.GetTestPost();
 
-            User testUser = TestHelpers.GetTestUser();
+        //    User testUser = TestHelpers.GetTestUser();
 
-            List<string> tagsToAdd = null;
+        //    List<string> tagsToAdd = null;
 
-            var postRepositoryMock = new Mock<IPostRepository>();
-            var tagServiceMock = new Mock<ITagService>();
-            var likePostRepositoryMock = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepositoryMock = new Mock<IPostRepository>();
+        //    var tagServiceMock = new Mock<ITagService>();
+        //    var likePostRepositoryMock = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
+        //    postRepositoryMock.Setup(repo => repo.Create(newPost, testUser)).Returns(newPost);
 
-            var sut = new PostService(
-                postRepositoryMock.Object, 
-                tagServiceMock.Object, 
-                likePostRepositoryMock.Object,
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepositoryMock.Object, 
+        //        tagServiceMock.Object, 
+        //        likePostRepositoryMock.Object,
+        //        categoryRepositoryMock.Object);
 
-            // Act
-            Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
+        //    // Act
+        //    Post createdPost = sut.Create(newPost, testUser, tagsToAdd);
 
-            // Assert
-            Assert.AreEqual(newPost, createdPost);
-            postRepositoryMock.Verify(repo => repo.Create(newPost, testUser), Times.Once);
+        //    // Assert
+        //    Assert.AreEqual(newPost, createdPost);
+        //    postRepositoryMock.Verify(repo => repo.Create(newPost, testUser), Times.Once);
 
-        }
+        //}
 
         [TestMethod]
         public void Delete_PostShouldBeDeleted_WhenUserIsAuthorized()

@@ -50,9 +50,7 @@ namespace ForumManagementSystem.Services
             var tagsToAdd = tags.Split().ToList();
 
             CheckIfBlocked(user);
-                 
             
-
             //if (this.repository.TitleExists(post.Title))
             //{
             //    throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
