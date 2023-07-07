@@ -9,8 +9,8 @@ namespace ForumManagementSystem.Services
         PaginatedList<Post> FilterBy(PostQueryParameters filterParameters);
         Post GetById(int id);
         Post GetByUser(User user);
-        Post Create(Post post, User user, List<string> tagNames);
-        Post Update(int id, Post post, User loggedUser, List<string> tagNames);
+        Post Create(Post post, User user, string tagNames);
+        Post Update(int id, Post post, User loggedUser, string tagNames);
         void Delete(int id, User loggedUser);
         bool IsAuthorized(User user, User loggedUser);
 

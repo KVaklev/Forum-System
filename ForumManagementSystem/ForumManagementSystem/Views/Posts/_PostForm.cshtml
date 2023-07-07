@@ -17,16 +17,16 @@
      <span asp-validation-for="Content" class="form-error"></span>
 
 
-    <label asp-for="SelectTags" class="form-label"></label>
+    @*<label asp-for="SelectTags" class="form-label"></label>
     <br />
     <select asp-items="@Model.SelectTags" asp-for="SelectTags" class="form-input">
         <option selected> </option>
     </select>
     <br />
     <span asp-validation-for="SelectTags" class="form-error"></span>
+*@
 
-           
-     <label asp-for="Tags" class="form-label"></label>
+    <label asp-for="Tags" class="form-label">Tags (If more than one tag will be added, please separate them with a space)</label>
      <br />
      <input asp-for="Tags" type="text" class="form-input">
      <br />

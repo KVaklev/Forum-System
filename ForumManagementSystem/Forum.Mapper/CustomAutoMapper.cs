@@ -44,7 +44,7 @@ namespace ForumManagementSystem.Models
                 .ForMember(c => c.DateCreated, u => u.MapFrom(c => c.DateTime));
             CreateMap<Post, PostViewModel>()
             .ForMember(p => p.CategoryName, u => u.MapFrom(p => p.Category.Name));
-            CreateMap<PostViewModel, Post>();
+                       CreateMap<PostViewModel, Post>();
                
             //Users
             //Dto

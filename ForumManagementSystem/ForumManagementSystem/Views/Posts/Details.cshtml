@@ -1,24 +1,36 @@
 ﻿@model Post
 
 @{
-	this.ViewData["Title"] = "World Travel Forum - Details";
+    this.ViewData["Title"] = "World Travel Forum - Details";
+    //var postId = this.Model.Id;
+    //var tags = tagService.GetAll();
+    //var postTags = tags.Where(t => t.PostTags);
 }
 
-		<h2> @this.Model.Title</h2>
+<h2> @this.Model.Title</h2>
 
-		<p class="margin12">Title: @this.Model.Title</p>
-		<p class="margin12">Content: @this.Model.Content</p>
-		<p class="margin12">User: @this.Model.CreatedBy.Username</p>
-		<p class="margin12">Category: @this.Model.Category.Name</p>
+<p class="margin12">Title: @this.Model.Title</p>
+<p class="margin12">Content: @this.Model.Content</p>
+<p class="margin12">User: @this.Model.CreatedBy.Username</p>
+<p class="margin12">Category: @this.Model.Category.Name</p>
+
+<p class="margin12">
+    Tags:
+    @foreach (var tag in Model.PostTags)
+    {
+        <span>@tag.Tag.Name</span>
+    }
+</p>
 
 
-		@{
-			foreach (var comment in Model.Comments)
-			{
-				<div> 
-				        @comment.Content
-				</div>
-			}
-		}
+
+@{
+    foreach (var comment in Model.Comments)
+    {
+        <div>
+            @comment.Content
+        </div>
+    }
+}
 
 <a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
