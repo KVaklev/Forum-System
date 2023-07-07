@@ -5,6 +5,7 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
+using System.Text;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
@@ -105,8 +106,12 @@ namespace ForumManagementSystem.Controllers.MVC
 
 				return this.View(registerViewModel);
 			}
+			var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(registerViewModel.Password));
 
-			User user = this.mapper.Map<User>(registerViewModel);
+            registerViewModel.Password = codedPassword.ToString();
+
+            User user = this.mapper.Map<User>(registerViewModel);
+
 			this.userService.Create(user);
 
 			return this.RedirectToAction("Login", "Auth");

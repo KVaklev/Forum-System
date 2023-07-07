@@ -23,11 +23,11 @@ namespace ForumManagementSystem.Controllers.MVC
 		[HttpGet]
 		public IActionResult Index(UserQueryParameters userQueryParameters)
 		{
-            if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-            List<User> users = this.userService.FilterBy(userQueryParameters);
+			if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
+			{
+				return RedirectToAction("Login", "Auth");
+			}
+			List<User> users = this.userService.FilterBy(userQueryParameters);
 
 			return this.View(users);
 		}
@@ -147,5 +147,42 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 		}
 
+		[HttpGet]
+		public IActionResult Profile([FromRoute] int id)
+		{
+			try
+			{
+				var user = userService.GetById(id);
+
+				var userUpdateProfileViewModel = this.mapper.Map<UserUpdateProfileViewModel>(user);
+
+				return this.View(userUpdateProfileViewModel);
+			}
+			catch (EntityNotFoundException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("Error");
+			}
+		}
+        [HttpPost, ActionName("Profile")]
+        [HttpPost]
+		public IActionResult ProfileConfirmed([FromRoute] int id, UserUpdateProfileViewModel userUpdateProfileViewModel)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return View(userUpdateProfileViewModel);
+			}
+			var userToUpdate=userService.GetById(id);
+
+			var loggedUser = this.authManager.TryGetUser(userToUpdate.Username,userUpdateProfileViewModel.Password);
+
+			var user = mapper.Map<User>(userUpdateProfileViewModel);
+
+			userToUpdate = this.userService.Update(id, user, loggedUser);
+
+			return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });
+		}
 	}
 }

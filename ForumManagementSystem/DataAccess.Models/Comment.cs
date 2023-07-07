@@ -35,7 +35,7 @@ namespace ForumManagementSystem.Models
 
         public int LikesCount { get; set; }
 
-        public int CommentId { get; set; } //??
+        public int CommentId { get; set; } 
 
         public List<LikeComment> Likes { get; set; } = new List<LikeComment>();
     }

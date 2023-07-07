@@ -55,12 +55,14 @@ namespace Presentation.Helpers
 
 		public User TryGetUser(string username, string password)
         {
-            var user = TryGetUserByUsername(username);
+            var user = TryGetUser(username+":"+password);
 
-            if (user.Password.Equals(password))
-            {
-                throw new AuthenticationException("Invalid credentials!");
-            }
+            //user = TryGetUserByUsername(username);
+
+            //if (!user.CurrentPassword.Equals(password))
+            //{
+            //    throw new AuthenticationException("Invalid credentials!");
+            //}
 
             return user;
         }

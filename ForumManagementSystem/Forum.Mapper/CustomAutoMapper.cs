@@ -69,6 +69,9 @@ namespace ForumManagementSystem.Models
             CreateMap<UserEditViewModel, User>()
             .ForMember(u => u.IsAdmin, u => u.MapFrom(u => u.Admin))
             .ForMember(u => u.IsBlocked, u => u.MapFrom(u => u.Blocked));
-        }
+            CreateMap<User, UserUpdateProfileViewModel>();
+            CreateMap<UserUpdateProfileViewModel, User>();
+
+		}
     }
 }
