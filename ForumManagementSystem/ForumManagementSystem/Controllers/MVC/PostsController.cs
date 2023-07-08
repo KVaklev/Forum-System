@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Exceptions;
 using Business.Services.Contracts;
 using Business.ViewModels.Models;
 using ForumManagementSystem.Exceptions;
@@ -69,10 +70,6 @@ namespace ForumManagementSystem.Controllers.MVC
                 return RedirectToAction("Login", "Auth");
             }
 
-            //if (this.HttpContext.Session.GetString("LoggedUser") == null)
-            //{
-            //    return RedirectToAction("Login", "Auth");
-            //}
 
             var postViewModel = new PostViewModel();
             this.InitializeCategories(postViewModel);
@@ -91,7 +88,8 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 if (this.ModelState.IsValid)
                 {
-                    var user = authManager.TryGetUser("ivanchoDraganchov:123");
+                    var userName = this.HttpContext.Session.GetString("LoggedUser");
+                    var user = authManager.TryGetUserByUsername(userName);
                     var post = mapper.Map<Post>(postViewModel);
                     var createdPost = postService.Create(post, user, postViewModel.Tags);
                     return RedirectToAction("Details", "Posts", new { id = createdPost.Id });
@@ -102,6 +100,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
                 this.ViewData["ErrorMessage"] = ex.Message;
                 return this.View(postViewModel);
+            }
+
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+                return this.View("UnauthorizedError");
             }
 
             return this.View(postViewModel);
@@ -126,22 +131,38 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.View("Error");
             }
+
+
         }
 
         [HttpPost]
         public IActionResult Edit([FromRoute] int id, PostViewModel postViewModel)
         {
-            if (!this.ModelState.IsValid)
+            try
             {
-                this.InitializeCategories(postViewModel);
-                this.InitializeTags(postViewModel);
-                return View(postViewModel);
-            }
-            var loggedUser = authManager.TryGetUser("ivanchoDraganchov:123");
-            var post = mapper.Map<Post>(postViewModel);
-            var updatedPost = this.postService.Update(id, post, loggedUser, postViewModel.Tags);
+                if (!this.ModelState.IsValid)
+                {
+                    this.InitializeCategories(postViewModel);
+                    this.InitializeTags(postViewModel);
+                    return View(postViewModel);
 
-            return this.RedirectToAction("Index", "Posts", new { id = updatedPost.Id });
+                }
+
+                var userName = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(userName);
+                var post = mapper.Map<Post>(postViewModel);
+                var updatedPost = this.postService.Update(id, post, user, postViewModel.Tags);
+
+                return this.RedirectToAction("Index", "Posts", new { id = updatedPost.Id });
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode =
+                    StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
+            }
         }
 
         [HttpGet]
@@ -167,7 +188,8 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                var user = this.authManager.TryGetUser("ivanchoDraganchov:123");
+                var userName = HttpContext.Session.GetString("LoggedUser");
+                var user = this.authManager.TryGetUserByUsername(userName);
                 this.postService.Delete(id, user);
 
                 return this.RedirectToAction("Index", "Posts");
@@ -178,6 +200,14 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
+            }
+            catch(UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode =
+                    StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("UnauthorizedError");
             }
         }
 

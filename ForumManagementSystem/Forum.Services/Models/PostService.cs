@@ -47,14 +47,16 @@ namespace ForumManagementSystem.Services
 
         public Post Create(Post post, User user, string tags)
         {
-            var tagsToAdd = tags.Split().ToList();
+            string action = "Create";
 
-            CheckIfBlocked(user);
+            var tagsToAdd = new List<string>();
             
-            //if (this.repository.TitleExists(post.Title))
-            //{
-            //    throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
-            //}
+            if (!string.IsNullOrWhiteSpace(tags))
+            {
+                tagsToAdd = tags.Split().ToList();
+            }
+                       
+            CheckIfBlocked(user,action);
 
             Post createdPost = this.repository.Create(post, user);
             
@@ -68,19 +70,22 @@ namespace ForumManagementSystem.Services
 
         public Post Update(int id, Post post, User loggedUser, string tags)
         {
-            var tagsToAdd = tags.Split().ToList(); 
+            string action = "Update";
+            var tagsToAdd = new List<string>();
 
+            if(!string.IsNullOrWhiteSpace(tags))
+            {
+                tagsToAdd = tags.Split().ToList();
+            }
+            
             Post postToUpdate = this.repository.GetById(id);
 
             if (!IsAuthorized(postToUpdate.CreatedBy, loggedUser))
             {
-                throw new UnauthenticatedOperationException(Constants.ModifyPostErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyPostErrorMessage);
             }
 
-            //if (this.repository.TitleExists(post.Title))
-            //{
-            //    throw new DuplicateEntityException($"Post with title '{post.Title}' already exists.");
-            //}
+            CheckIfBlocked(loggedUser,action);
 
             Post updatedPost = this.repository.Update(id, post);
 
@@ -93,22 +98,36 @@ namespace ForumManagementSystem.Services
 
         public void Delete(int id, User loggedUser)
         {
+            string action = "Delete";
+
             Post postToDelete = repository.GetById(id);
 
             if (!IsAuthorized(postToDelete.CreatedBy, loggedUser))
             {
-                throw new UnauthenticatedOperationException(Constants.ModifyPostErrorMessage);
+                throw new UnauthorizedOperationException(Constants.ModifyPostErrorMessage);
             }
 
-            DecreacePostCount(postToDelete);
+            CheckIfBlocked(loggedUser, action);
+
+            DecreasePostCount(postToDelete);
             this.repository.Delete(id);
         }
 
-        public void CheckIfBlocked(User user)
+        public void CheckIfBlocked(User user,string action)
         {
-            if (user.IsBlocked)
+            if (user.IsBlocked && action=="Create")
             {
-                throw new UnauthorizedAccessException(Constants.ModifyPostErrorMessageIfUserIsBlocked);
+                throw new UnauthorizedOperationException(Constants.ModifyPostErrorMessageIfUserIsBlocked);
+            }
+
+            if (user.IsBlocked && action == "Update")
+            {
+                throw new UnauthorizedOperationException(Constants.ModifyPostErrorMessage);
+            }
+
+            if (user.IsBlocked && action == "Delete")
+            {
+                throw new UnauthorizedOperationException(Constants.ModifyPostErrorMessage);
             }
         }
 
@@ -128,7 +147,7 @@ namespace ForumManagementSystem.Services
             category.CountPosts++;
             return category.CountPosts;
         }
-        public int DecreacePostCount(Post post)
+        public int DecreasePostCount(Post post)
         {
             Category category = this.categoryRepository.GetById(post.CategoryId);
             category.CountPosts--;
