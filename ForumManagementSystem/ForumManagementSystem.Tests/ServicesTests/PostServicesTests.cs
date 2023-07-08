@@ -312,6 +312,11 @@ namespace ForumManagementSystem.Tests.ServicesTests
         //    postRepositoryMock.Setup(repo => repo.GetById(1)).Returns(existingPost);
         //    postRepositoryMock.Setup(repo => repo.TitleExists(updatedPost.Title)).Returns(true);
 
+        //    var sut = new PostService(
+        //        repository.Object, 
+        //        tagService.Object, 
+        //        likePostRepository.Object, 
+        //        categoryRepositoryMock.Object);
 
         //    var sut = new PostService(
         //        postRepositoryMock.Object, 
@@ -336,6 +341,8 @@ namespace ForumManagementSystem.Tests.ServicesTests
         //    repository.Setup(r => r.TitleExists(It.IsAny<string>())).Returns(false);
         //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() });
 
+        //    repository.Setup(r => r.GetById(It.IsAny<int>())).Returns(existingPost);
+        //    repository.Setup(r => r.Update(It.IsAny<int>(), It.IsAny<Post>())).Returns(updatedPost);
 
         //    var post = new Post { Id = 1, Title = "Updated Post", CreatedBy = new User() };
         //    var loggedUser = new User() { IsAdmin = true };

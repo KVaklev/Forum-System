@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -44,8 +45,11 @@ namespace ForumManagementSystem.Models
 
         public string? ProfilePhotoPath { get; set; }
 
+        public string? ProfilePhotoFileName { get; set; }
+
         [NotMapped]
-        public IFormFile? Image { get; set; }
+        [DisplayName("Upload File")]
+        public IFormFile? ImageFile { get; set; }
         public List<LikeComment> LikeComments { get; set; } = new List<LikeComment>();
         public List<LikePost> LikePosts { get; set;} = new List<LikePost>();
       
