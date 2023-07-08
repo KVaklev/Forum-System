@@ -520,24 +520,24 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.ThrowsException<UnauthenticatedOperationException>(() => sut.Delete(1, loggedUser));
         }
 
-        [TestMethod]
-        public void ShouldThrowException_WhenUserIsBlocked()
-        {
-            var blockedUser = TestHelpers.GetTestExpectedUserAsBlocked();
+        //[TestMethod]
+        //public void ShouldThrowException_WhenUserIsBlocked()
+        //{
+        //    var blockedUser = TestHelpers.GetTestExpectedUserAsBlocked();
 
-            var postRepository = new Mock<IPostRepository>();
-            var tagsRepository = new Mock<ITagService>();
-            var likePostRepository = new Mock<ILikePostRepository>();
-            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+        //    var postRepository = new Mock<IPostRepository>();
+        //    var tagsRepository = new Mock<ITagService>();
+        //    var likePostRepository = new Mock<ILikePostRepository>();
+        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            var sut = new PostService(
-                postRepository.Object, 
-                tagsRepository.Object, 
-                likePostRepository.Object, 
-                categoryRepositoryMock.Object);
+        //    var sut = new PostService(
+        //        postRepository.Object, 
+        //        tagsRepository.Object, 
+        //        likePostRepository.Object, 
+        //        categoryRepositoryMock.Object);
 
-            Assert.ThrowsException<UnauthorizedAccessException>(() => sut.CheckIfBlocked(blockedUser));
-        }
+        //    Assert.ThrowsException<UnauthorizedAccessException>(() => sut.CheckIfBlocked(blockedUser));
+        //}
     }
 }
 

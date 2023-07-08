@@ -24,17 +24,21 @@
         </div>
     </div>
 </div>
-        <h2>Categories</h2>
+
+<div class="row text-center mt-4">
+    <div class="col-md-10">
+        <div class="text-left mb-3">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Categories</a>
+            <a asp-controller="Home" asp-action="TopTen" class="btn btn-secondary">Top <span class="text h5 font-weight-bold text-white">10</span> posts</a>
+            <a asp-controller="Home" asp-action="LatestTen" class="btn btn-secondary">Latest <span class="text h5 font-weight-bold text-white">10</span> posts</a>
+        </div>
+    </div>
+</div>
 
 <div class="row text-center">
     <div class="col-md-10">
         <div class="table-responsive table-bordered table-hover">
             <table class="table table-condensed">
-                <colgroup>
-                    <col style="width: 8%"> <!-- Adjust the width value as needed -->
-                    <col style="width: 50%">
-                    <col style="width: 10%">
-                </colgroup>
                 <thead class="table-dark">
                     <tr>
                         <th>Name</th>

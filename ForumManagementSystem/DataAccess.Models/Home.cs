@@ -8,5 +8,7 @@ namespace DataAccess.Models
         public int UsersCount { get; set; }
         public int PostsCount { get; set; }
         public PaginatedList<Category> Categories { get; set; }
+
+        public PaginatedList<Post> Posts { get; set; }
     }
 }

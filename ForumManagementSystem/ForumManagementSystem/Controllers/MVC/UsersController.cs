@@ -189,28 +189,24 @@ namespace ForumManagementSystem.Controllers.MVC
 
 			userToUpdate = this.userService.Update(id, user, loggedUser);
 
-            string uniqueFileName = null;
-
             if (userUpdateProfileViewModel.ImageFile != null)
             {
-                string imageUploadedFolder = Path.Combine
-                    (webHostEnvironment.WebRootPath, "UploadedImages");
-                uniqueFileName = Guid.NewGuid().ToString() + "_"
-                    + userUpdateProfileViewModel.ImageFile.Name;
+                string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_"  + userUpdateProfileViewModel.ImageFile.FileName;
                 string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     userUpdateProfileViewModel.ImageFile.CopyTo(fileStream);
                 }
-                userUpdateProfileViewModel.ProfilePhotoPath = "~/wwwroot/UploadedImages";
-                userUpdateProfileViewModel.ProfilePhotoFileName = uniqueFileName;
+                userToUpdate.ProfilePhotoPath = "~/UploadedImages";
+                userToUpdate.ProfilePhotoFileName = uniqueFileName;
 
                 aplicationContext.Add(userUpdateProfileViewModel);
                 aplicationContext.SaveChanges();
 
 
-                return this.RedirectToAction("Index");
+                //return this.RedirectToAction("Index");
             }
 
             return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });

@@ -233,5 +233,18 @@ namespace ForumManagementSystem.Repository
         {
             return context.Posts.Any(p => p.Title == title);
         }
+
+        public PaginatedList<Post> GetTopTenCommented(PostQueryParameters queryParameters)
+        {
+            var posts = this.GetAll()
+                .OrderByDescending(p => p.PostCommentsCount)
+                .ToList();
+
+            var result = posts
+                .Take(10)
+                .ToList();
+
+            return new PaginatedList<Post>(result.ToList(), queryParameters.PageSize, queryParameters.PageNumber);
+        }
     }
 }

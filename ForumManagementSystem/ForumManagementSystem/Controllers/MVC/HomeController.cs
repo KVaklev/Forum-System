@@ -14,12 +14,14 @@ namespace ForumManagementSystem.Controllers.MVC
         private readonly ICategoryService categoryService;
         private readonly IUserService userService;
         private readonly IAuthManager authManager;
+        private readonly IPostService postService;
 
-        public HomeController(ICategoryService categoryService, IAuthManager authManager, IUserService userService)
+        public HomeController(ICategoryService categoryService, IAuthManager authManager, IUserService userService, IPostService postService)
         {
             this.categoryService = categoryService;
             this.authManager = authManager;
             this.userService = userService;
+            this.postService = postService;
         }
         [HttpGet]
         public IActionResult Index([FromQuery] CategoryQueryParameter categoryQueryParameter)
@@ -43,5 +45,22 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult TopTen(PostQueryParameters queryParameters)
+        {
+            PaginatedList<Post> posts = this.postService.GetTopTenCommented(queryParameters);
+
+            var viewModel = new Home();
+
+            return View(posts);
+        }
+
+        [HttpGet]
+        public IActionResult LatestTen(PostQueryParameters queryParameters)
+        {
+            return RedirectToAction("Index", "Posts");
+        }
+
     }
 }

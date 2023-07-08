@@ -7,6 +7,7 @@ using DataAccess.Models;
 using Business.Services.Helpers;
 using DataAccess.Repositories.Contracts;
 using AspNetCoreDemo.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ForumManagementSystem.Services
 {
@@ -174,6 +175,14 @@ namespace ForumManagementSystem.Services
             return newlyCreatedPost;
         }
 
-      
+        public PaginatedList<Post> GetTopTenCommented(PostQueryParameters queryParameters)
+        {
+            return this.repository.GetTopTenCommented(queryParameters);            
+        }
+
+        public List<Post> GetLastTenCommented()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
