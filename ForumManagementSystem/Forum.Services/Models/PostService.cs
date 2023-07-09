@@ -61,7 +61,7 @@ namespace ForumManagementSystem.Services
 
             Post createdPost = this.repository.Create(post, user);
             
-            IncreasePostCount(post);
+           this.categoryRepository.IncreaseCategoryPostCount(createdPost);
 
             AddTags(createdPost, tagsToAdd);
 
@@ -110,7 +110,7 @@ namespace ForumManagementSystem.Services
 
             CheckIfBlocked(loggedUser, action);
 
-            DecreasePostCount(postToDelete);
+            this.categoryRepository.DecreaseCategoryPostCount(postToDelete);
             this.repository.Delete(id);
         }
 
@@ -142,18 +142,7 @@ namespace ForumManagementSystem.Services
             }
             return isAuthorized;
         }
-        public int IncreasePostCount(Post post)
-        {
-            Category category = this.categoryRepository.GetById(post.CategoryId);
-            category.CountPosts++;
-            return category.CountPosts;
-        }
-        public int DecreasePostCount(Post post)
-        {
-            Category category = this.categoryRepository.GetById(post.CategoryId);
-            category.CountPosts--;
-            return category.CountPosts;
-        }
+       
 
         public Post AddTags(Post newlyCreatedPost, List<string> tagsToAdd)
         {

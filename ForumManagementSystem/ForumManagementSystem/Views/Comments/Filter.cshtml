@@ -10,24 +10,21 @@
     var loggedUserId = this.Context.Session.GetInt32("UserId");
     var isBlocked = Context.Session.GetString("IsBlocked");
     var isAdmin = Context.Session.GetString("IsAdmin");
-}    
-        <form asp-controller="Comments" asp-action="Index" method="get">
-                | <a asp-controller="Home" asp-action="Index">@commentDetail.Post.Category.Name</a>
-                > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
-            <span style="margin-right:35%"></span>
-            @if (isLogged & isBlocked != "True")
-            {
-           @* <label class="form-label"> Find user: </label>
-            <input type="text" name="Username" placeholder="" />
-            <input type="submit" value="Search" class="btn btn-primary" />*@
+}
+<form asp-controller="Comments" asp-action="Filter" method="get">
+    @*| <a asp-controller="Home" asp-action="Index">@commentDetail.Post.Category.Name</a>
+    > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
+    <span style="margin-right:35%"></span>*@
+    @if (isLogged & isBlocked != "True")
+    {
+        <label class="form-label"> Find user: </label>
+        <input type="text" name="Username" placeholder="" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        @*<a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>*@
+    }
+</form>
 
-            <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> ALL </a>
-            <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
-            }
-        </form>
-    
 </br>
-
 <table class="table-responsive">
     <colgroup>
         <col style="width: 8%"> <!-- Adjust the width value as needed -->
@@ -38,25 +35,24 @@
             <tr>
                 <th class="text-center">Username</th>
                 <th class="text-center">Content</th>
-           </tr>
-       </thead>
-    <tbody>
+            </tr>
+        </thead>
+        <tbody>
             @{
-                @if(isLogged)
-                {
+                @if(isLogged){
                 foreach (var comment in this.Model)
                 {
                     <tr>
                         <td>
 
-                            Created by:<br/>
+                            Created by:<br />
                             <a asp-controller="Users" asp-action="Index" asp-route-Username="@comment.CreatedBy.Username">@comment.CreatedBy.Username</a>
-                            <br/>
+                            <br />
                             @comment.DateTime
                         </td>
                         <td>
                             @comment.Content
-                            <br/><br/>
+                            <br /><br />
                             @comment.LikesCount
                             @if (isLogged)
                             {
@@ -76,33 +72,31 @@
                                 <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                                 <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
                             }
-
-                </td>
-            </tr>
+                        </td>
+                    </tr>
+                }
+                }
             }
+        </tbody>
+    </table>
+    @{
+        string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
+        string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+    }
+    <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+    @{
+        int currentPageNumber = this.Model.PageNumber;
+
+        for (int i = 1; i <= this.Model.TotalPages; i++)
+        {
+            if (i == currentPageNumber)
+            {
+                <span>@i</span>
             }
-          }
-    </tbody>
-</table>
-
-@{
-    string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
-    string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
-}
-<a asp-controller="Comments" asp-action="Index" asp-route-Postid="@commentDetail.PostId" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
-@{
-    int currentPageNumber = this.Model.PageNumber;
-
-    for (int i = 1; i <= this.Model.TotalPages; i++)
-    {
-        if (i == currentPageNumber)
-        {
-            <span>@i</span>
-        }
-        else
-        {
-            <span><a asp-controller="Comments" asp-action="Index" asp-route-Postid="@commentDetail.PostId" asp-route-PageNumber="@i">@i</a></span>
+            else
+            {
+                <span><a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@i">@i</a></span>
+            }
         }
     }
-}
-<a asp-controller="Comments" asp-action="Index" asp-route-Postid="@commentDetail.PostId" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
+    <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
