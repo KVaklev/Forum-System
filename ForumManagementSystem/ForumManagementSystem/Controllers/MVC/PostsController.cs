@@ -231,6 +231,28 @@ namespace ForumManagementSystem.Controllers.MVC
             }
         }
 
+        [HttpGet]
+        public IActionResult Like([FromRoute] int id)
+        {
+            try
+            {
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = this.authManager.TryGetUserByUsername(username);
+                Post post = postService.GetById(id);
+                likePostService.Update(post, user);
+                return RedirectToAction("Index", "Posts", new { post = post.Id });
+
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
+
         private void InitializeCategories(PostViewModel postViewModel)
         {
             var categories = categoryService.GetAll();

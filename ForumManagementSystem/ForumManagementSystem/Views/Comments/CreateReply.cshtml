@@ -16,7 +16,7 @@
 	@{
 		if (ViewData["ErrorMessage"] != null)
 		{
-			<h3><p>@ViewData["ErrorMessage"]</p></h3>
+					<h3><p class="text-danger">@ViewData["ErrorMessage"]</p></h3>
 		}
 	}
 	<partial name="_CommentForm" />
