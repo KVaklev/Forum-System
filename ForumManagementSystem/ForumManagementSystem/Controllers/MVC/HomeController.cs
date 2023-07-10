@@ -51,15 +51,15 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             PaginatedList<Post> posts = this.postService.GetTopTenCommented(queryParameters);
 
-            var viewModel = new Home();
-
             return View(posts);
         }
 
         [HttpGet]
         public IActionResult LatestTen(PostQueryParameters queryParameters)
         {
-            return RedirectToAction("Index", "Posts");
+            PaginatedList<Post> posts = this.postService.GetLastTenCommented(queryParameters);
+
+            return View(posts);
         }
 
     }

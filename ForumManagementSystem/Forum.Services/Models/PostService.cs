@@ -180,9 +180,9 @@ namespace ForumManagementSystem.Services
             return this.repository.GetTopTenCommented(queryParameters);            
         }
 
-        public List<Post> GetLastTenCommented()
+        public PaginatedList<Post> GetLastTenCommented(PostQueryParameters queryParameters)
         {
-            throw new NotImplementedException();
+            return this.repository.GetLastTenCommented(queryParameters);
         }
     }
 }

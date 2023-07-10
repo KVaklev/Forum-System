@@ -18,62 +18,45 @@
 </div>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-condensed table-hover">
+        <table class="table-sm table-bordered table-condensed table-hover">
             <thead class="table-dark">
                 <tr>
                 <th class="text-center">#</th>
                 <th class="text-center">Title</th>
                 <th class="text-center">Content</th>
                 <th class="text-center">Likes</th>
-                <th class="text-center">CommentsCount</th>
                 <th class="text-center">Comments</th>
             </tr>
         </thead>
         <tbody>
-        @{
-            int index = 1;
-            foreach (var post in this.Model)
-            {
-                <tr>
-                        <td>@index</td>
-                        <td>@post.Title</td>
-                    <td>
-                        @if (post.Content.Length > 50)
-                        {
-                            <span>@post.Content.Substring(0, 50)</span>
+            @{
+                int index = 1;
 
-                            <span>...</span>
-                        }
-                        else
-                        {
-                            <span>@post.Content</span>
-                        }
-                     </td>
-                        <td>@post.PostLikesCount</td>
-                        <td>@post.PostCommentsCount</td>
-                        <td>
-                            <a asp-controller="Comments" asp-action="Index" asp-route-Postid="@post.Id" class="btn btn-primary">Comments</a>
+                foreach (var post in this.Model)
+                {
+                    <tr>
+                        <td class="text-center" style="width: 5%">@index</td>
+                        <td style="width: 15%">@post.Title</td>
+                        <td style="width: 20%">
+                            <div>
+                                @if (post.Content.Length > 50)
+                                {
+                                    <span>@post.Content.Substring(0, 50)</span>
+                                    <span>...</span>
+
+                                }
+                                else
+                                {
+                                    <span>@post.Content</span>
+                                }
+                            </div>
                         </td>
-                 </tr>
-                index++;
-
-                    //if (post.Comments != null && post.Comments.Count>0)
-                    //{
-                    //    <tr>
-                    //        <td colspan="6">
-                    //            <div class="comment-section">
-                    //                @foreach (var comment in post.Comments)
-                    //                {
-                    //                    <div class="comment">
-                    //                        <span class="comment-content">@comment</span>
-                    //                    </div>
-                    //                }
-                    //            </div>
-                    //        </td>
-                    //    </tr>
-                    //}
+                        <td class="text-center" style="width: 5%">@post.PostLikesCount</td>
+                        <td class="text-center" style="width: 5%">@post.PostCommentsCount</td>
+                    </tr>
+                    index++;
+                }
             }
-        }
         </tbody>
     </table>
 </div>
@@ -82,7 +65,8 @@
     string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
 }
 
-<a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
+<a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@(this.Model.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
+
 @{
     int currentPageNumber = this.Model.PageNumber;
 
@@ -94,9 +78,10 @@
         }
         else
         {
-            <span><a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@i">@i</a></span>
+            <span><a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@i">@i</a></span>
         }
+
     }
 }
-<a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>
+<a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@(this.Model.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>
 

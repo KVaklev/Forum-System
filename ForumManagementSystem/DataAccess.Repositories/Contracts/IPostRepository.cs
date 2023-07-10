@@ -10,6 +10,8 @@ namespace ForumManagementSystem.Repository
 
         PaginatedList<Post> GetTopTenCommented(PostQueryParameters queryParameters);
 
+        PaginatedList<Post> GetLastTenCommented(PostQueryParameters queryParameters);
+
         Post GetById(int id);
 
         Post GetByUser(User user);
