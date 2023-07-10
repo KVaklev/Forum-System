@@ -3,6 +3,7 @@ using Business.Exceptions;
 using Business.ViewModels.Models;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 using System.Text;
@@ -14,15 +15,17 @@ namespace ForumManagementSystem.Controllers.MVC
 		private readonly IAuthManager authManager;
 		private readonly IUserService userService;
 		private readonly IMapper mapper;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public AuthController(IAuthManager authManager, IUserService userService, IMapper mapper)
+        public AuthController(IAuthManager authManager, IUserService userService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.authManager = authManager;
-			this.userService = userService;
-			this.mapper = mapper;
+            this.userService = userService;
+            this.mapper = mapper;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
-		[HttpGet]
+        [HttpGet]
         public IActionResult Login()
 		{
 			var loginViewModel = new LoginViewModel();
@@ -119,7 +122,21 @@ namespace ForumManagementSystem.Controllers.MVC
 
 			this.userService.Create(user);
 
-			return this.RedirectToAction("Login", "Auth");
+            if (registerViewModel.ImageFile != null)
+            {
+                string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
+                string uniqueFileName = user.FirstName + " " + user.LastName + ".png";
+                string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    registerViewModel.ImageFile.CopyTo(fileStream);
+                }
+                user.ProfilePhotoPath = "~/UploadedImages";
+                user.ProfilePhotoFileName = uniqueFileName;
+            }
+
+            return this.RedirectToAction("Login", "Auth");
 		}
 	}
 }

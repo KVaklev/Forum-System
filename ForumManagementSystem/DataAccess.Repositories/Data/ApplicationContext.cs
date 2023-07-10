@@ -69,8 +69,45 @@ namespace DataAccess.Repositories.Data
 					 PhoneNumber = "0797556285",
                      IsAdmin = false,
                      IsBlocked = true
-                }
-            };
+                },
+
+				new User
+				{
+					 Id = 4,
+					 FirstName = "Andrei",
+					 LastName = "Sokolov",
+					 Email = "a.sokolov@gmail.com",
+					 Username = "sokolov",
+					 Password = "MTIz",
+					 PhoneNumber = "0897556285",
+					 IsAdmin = true,
+					 IsBlocked = false
+				},
+				new User
+				{
+					 Id = 5,
+					 FirstName = "Margarita",
+					 LastName = "Ivanova",
+					 Email = "marg89@gmail.com",
+					 Username = "margIvanova",
+					 Password = "MTIz",
+					 PhoneNumber = "0897556285",
+					 IsAdmin = false,
+					 IsBlocked = false
+				},
+				new User
+				{
+					 Id = 6,
+					 FirstName = "Dimitar",
+					 LastName = "Peev",
+					 Email = "dim@gmail.com",
+					 Username = "dimitarDimitrov",
+					 Password = "MTIz",
+					 PhoneNumber = "0897556285",
+					 IsAdmin = false,
+					 IsBlocked = false
+				},
+			};
 
             modelBuilder.Entity<User>().HasData(users);
 
@@ -110,14 +147,32 @@ namespace DataAccess.Repositories.Data
 
                 new Category
                 {
-                    Id = 7,
+                    Id = 4,
                     Name = "Others",
                     Description = "Discussions about Antarctica or anything else.",
                     DateTime = DateTime.Now,
-                    CountPosts =0,
+                    CountPosts =3,
                     CountComments = 0
                 },
-            };
+				new Category
+				{
+					Id = 5,
+					Name = "Islands",
+					Description = "Islands, an enchanting realm surrounded by vast bodies of water. Captures the imagination of adventurers.",
+					DateTime = DateTime.Now,
+					CountPosts =3,
+					CountComments = 2
+				},
+				new Category
+				{
+					Id = 6,
+					Name = "Children's World",
+					Description = "Delightful journey to discover exciting places around the globe that offer endless fun and unforgettable experiences!",
+					DateTime = DateTime.Now,
+					CountPosts =3,
+					CountComments = 3
+				},
+			};
 
             modelBuilder.Entity<Category>().HasData(categories);
 
@@ -155,8 +210,103 @@ namespace DataAccess.Repositories.Data
                   UserId = 3,
                   CategoryId = 3,
                   DateTime = DateTime.Now
-                  }
-            };
+                  },
+
+				new Post
+				  {
+				  Id=4,
+				  Title = "Secret places, where not many people have heard of?",
+				  Content = "Are you willing to share if you have visited a place like this?",
+				  UserId = 2,
+				  CategoryId = 4,
+				  DateTime = DateTime.Now
+				  },
+
+				new Post
+				  {
+				  Id=5,
+				  Title = "Exploring Coastal Gems: California's Central Coast",
+				  Content = "If you're seeking a coastal adventure filled with breathtaking landscapes and hidden treasures, California's Central Coast is the perfect destination to explore",
+				  UserId = 3,
+				  CategoryId = 4,
+				  DateTime = DateTime.Now
+				  },
+
+				new Post
+				  {
+				  Id=6,
+				  Title = "Interesting caves all around the world",
+				  Content = "Explore some of the most fascinating caves found across the globe. Please share your experience!",
+				  UserId = 1,
+				  CategoryId = 4,
+				  DateTime = DateTime.Now
+				  },
+
+				new Post
+				  {
+				  Id=7,
+				  Title = "Tropical Paradise: Exquisite Maldives",
+				  Content = "Discover a tropical paradise like no other, where white-sand beaches meet crystal-clear lagoons and vibrant coral reefs.",
+				  UserId = 3,
+				  CategoryId = 5,
+				  DateTime = DateTime.Now,
+				  PostCommentsCount = 1
+				  },
+
+				new Post
+				  {
+				  Id=8,
+				  Title = "Galapagos Islands' Unique Biodiversity",
+				  Content = "Delve into a world where Charles Darwin's theory of evolution came to life, as these islands boast an extraordinary array of wildlife found nowhere else on Earth.",
+				  UserId = 4,
+				  CategoryId = 5,
+				  DateTime = DateTime.Now,
+				  PostCommentsCount = 1
+				  },
+
+				new Post
+				  {
+				  Id=9,
+				  Title = "Rich Heritage of Japan's Seto Inland Sea Islands",
+				  Content = "A collection of over 3,000 islands steeped in history and tradition!",
+				  UserId = 2,
+				  CategoryId = 5,
+				  DateTime = DateTime.Now
+				  },
+
+				new Post
+				  {
+				  Id=10,
+				  Title = "Exploring the Enchanting World of Fairy Tales",
+				  Content = "Discover beloved stories like Cinderella, Snow White, and Little Red Riding Hood, and explore the lessons of bravery, kindness, and perseverance they teach us.",
+				  UserId = 6,
+				  CategoryId = 6,
+				  DateTime = DateTime.Now,
+				  PostCommentsCount = 1
+				  },
+
+				new Post
+				  {
+				  Id=11,
+				  Title = "Animal Kingdom: Marvels of Wildlife and Nature",
+				  Content = "Diverse habitats that animals call home, from the African savannah to the depths of the Amazon rainforest!",
+				  UserId = 6,
+				  CategoryId = 6,
+				  DateTime = DateTime.Now,
+				  PostCommentsCount = 2
+				  },
+
+				new Post
+				  {
+				  Id=12,
+				  Title = "Science Explorers: Unleashing Curiosity",
+				  Content = "Found places like this? Where experiments explore physics, chemistry, and biology, sparking curiosity and nurturing a love for scientific inquiry!",
+				  UserId = 5,
+				  CategoryId = 6,
+				  DateTime = DateTime.Now,
+				  PostCommentsCount = 1
+				  }
+			};
 
             modelBuilder.Entity<Post>().HasData(posts);
 
@@ -180,8 +330,62 @@ namespace DataAccess.Repositories.Data
                     PostId = 2,
                     Content = "The worst town!",
                     DateTime = DateTime.Now
-                }
-            };
+                },
+
+				 new Comment()
+				{
+					Id= 3,
+					UserId=3,
+					PostId = 7,
+					Content = "I can't wait to see your suggestions!",
+					DateTime = DateTime.Now
+				},
+
+				  new Comment()
+				{
+					Id= 4,
+					UserId=4,
+					PostId = 8,
+					Content = "Wow, nice place you have explored!",
+					DateTime = DateTime.Now
+				},
+
+				   new Comment()
+				{
+					Id= 5,
+					UserId=6,
+					PostId = 10,
+					Content = "Hm, this should be interesting..or not?",
+					DateTime = DateTime.Now
+				},
+
+					new Comment()
+				{
+					Id= 6,
+					UserId=6,
+					PostId = 11,
+					Content = "I am just here for the show.. I will grab my popcorns!",
+					DateTime = DateTime.Now
+				},
+
+					 new Comment()
+				{
+					Id= 7,
+					UserId=5,
+					PostId = 12,
+					Content = "Where to start? It will be a long one..",
+					DateTime = DateTime.Now
+				},
+
+					  new Comment()
+				{
+					Id= 8,
+					UserId=5,
+					PostId = 11,
+					Content = "Ok, we are waiting.. Come on, you!",
+					DateTime = DateTime.Now
+				}
+			};
 
             modelBuilder.Entity<Comment>().HasData(comments);
 
