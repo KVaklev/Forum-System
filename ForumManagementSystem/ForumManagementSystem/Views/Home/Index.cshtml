@@ -10,7 +10,7 @@
         <h2>Welcome to WORLD TRAVEL FORUM</h2>
     </div>
 
-<div class="card-columns" style="display: flex; justify-content: flex-end; position: absolute; top: 100px; right: 20px;">
+<div class="card-columns" style="display: flex; justify-content: flex-end; position: absolute; top: 100px; right: 50px;">
     <div class="card" style="width: 300px;">
         <div class="card-body" style="display: flex; flex-direction: column; align-items: flex-start;">
             <img class="card-img-top" src="~/Images/Traveller.jpg" alt="Card image cap" style="width: 100%;">
@@ -34,11 +34,11 @@
 <table class="table-bordered table-hover table-condensed" style="width: 60%;">
                 <thead class="table-dark">
                     <tr>
-            <th class="text-center" style="height: 40px;">Name</th>
-            <th class="text-center" style="height: 40px;">Description</th>
+            <th class="text-center" style="height: 40px; width: 15%;">Name</th>
+            <th class="text-center" style="height: 40px; width: 70%;">Description</th>
                         @if (isLogged)
                         {
-                            <th>Actions</th>
+                <th class ="text-center" style="width: 15%">Actions</th>
                         }
                     </tr>
                 </thead>
@@ -73,21 +73,21 @@
                             </td>
                             @if (isLogged)
                             {
-                                <td>
-                                    <div class="d-flex flex-column">
+                    <td class="text-center">
+                        <div class="d-flex flex-column ml-4" style="width: 60%">
                                         @if (category.CountPosts <= 0)
                                         {
 
-                                            <a asp-controller="Posts" asp-action="Create" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">New Post</a>
+                                <a asp-controller="Posts" asp-action="Create" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">New Post</a>
                                         }
                                         else
                                         {
-                                        <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">Posts</a>
+                                <a asp-controller="Posts" asp-action="Index" asp-route-categoryId="@category.Id" class="btn btn-primary mb-2">Posts</a>
                                         }
                                         @if (isAdmin == "True")
                                     {
-                                        <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning mb-2">Edit</a>
-                                        <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Delete</a>
+                                <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning mb-2">Edit</a>
+                                <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Delete</a>
                                     }
                                     </div>
                                 </td>
