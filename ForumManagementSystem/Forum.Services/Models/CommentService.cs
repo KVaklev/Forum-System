@@ -2,6 +2,7 @@
 using Business.Exceptions;
 using Business.Services.Helpers;
 using DataAccess.Repositories.Contracts;
+using DataAccess.Repositories.Data;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Repository;
 using System.Reflection.Metadata;
@@ -14,17 +15,20 @@ namespace ForumManagementSystem.Services
         private readonly ICategoryRepository categoryRepository;
         private readonly IPostRepository postRepository;
         private readonly ILikeCommentRepository likeRepository;
+        private readonly ApplicationContext context;
 
         public CommentService(
             ICommentRepository repository, 
             ILikeCommentRepository likeRepository,
             ICategoryRepository categoryRepository,
-            IPostRepository postRepository)
+            IPostRepository postRepository,
+            ApplicationContext context)
         {
             this.repository = repository;
             this.likeRepository = likeRepository;
             this.categoryRepository = categoryRepository;
             this.postRepository = postRepository;
+            this.context = context;
         }
 
         public Comment Create(Comment comment, User user)
@@ -90,7 +94,9 @@ namespace ForumManagementSystem.Services
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
-            return category.CountComments++;
+            category.CountComments++;
+            context.SaveChanges();
+            return category.CountComments;
         }
 
         public int IncreasePostCommentCount(Comment comment)
@@ -104,12 +110,14 @@ namespace ForumManagementSystem.Services
         {
             Post post = this.postRepository.GetById(comment.PostId);
             Category category = this.categoryRepository.GetById(post.CategoryId);
-            return category.CountComments--;
+            category.CountComments--;
+            context.SaveChanges();
+            return category.CountComments;
         }
 
         public int DecreasePostCommentCount(Comment comment)
         {
-            Post post = this.postRepository.Delete(comment.PostId);
+            Post post = this.postRepository.GetById(comment.PostId);
 
             return post.PostCommentsCount--;
         }

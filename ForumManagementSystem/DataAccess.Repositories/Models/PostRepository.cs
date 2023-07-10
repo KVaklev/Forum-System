@@ -243,13 +243,35 @@ namespace ForumManagementSystem.Repository
         {
             var posts = this.GetAll()
                 .OrderByDescending(p => p.PostCommentsCount)
-                .ToList();
-
-            var result = posts
                 .Take(10)
                 .ToList();
 
-            return new PaginatedList<Post>(result.ToList(), queryParameters.PageSize, queryParameters.PageNumber);
+            var result = posts
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .ToList();
+             
+            var totalCount = posts.Count;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)queryParameters.PageSize);
+
+            return new PaginatedList<Post>(result, totalPages, queryParameters.PageNumber);
+        }
+
+        public PaginatedList<Post> GetLastTenCommented(PostQueryParameters queryParameters)
+        {
+            var posts = this.GetAll()
+                .TakeLast(10)
+                .ToList();
+
+            var result = posts
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .ToList();
+
+            var totalCount = posts.Count;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)queryParameters.PageSize);
+
+            return new PaginatedList<Post>(result, totalPages, queryParameters.PageNumber);
         }
     }
 }

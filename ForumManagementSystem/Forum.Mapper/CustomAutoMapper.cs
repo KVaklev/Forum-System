@@ -70,7 +70,9 @@ namespace ForumManagementSystem.Models
             .ForMember(u => u.IsAdmin, u => u.MapFrom(u => u.Admin))
             .ForMember(u => u.IsBlocked, u => u.MapFrom(u => u.Blocked));
             CreateMap<User, UserUpdateProfileViewModel>();
-            CreateMap<UserUpdateProfileViewModel, User>();
+
+            CreateMap<UserUpdateProfileViewModel, User>()
+                .ForMember(u => u.Password, u => u.MapFrom(u => u.NewPassword));
 
 		}
     }

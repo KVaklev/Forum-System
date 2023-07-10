@@ -10,10 +10,12 @@
 	<br />
 	<label asp-for="Description" class="form-label"></label>
 	<br />
-	<input asp-for="Description" type="text" class="form-input" />
+	@*<input asp-for="Description" type="text" class="form-input" />*@
+	<textarea name="Description" style="width: 600px; height: 100px;"></textarea>
 	<br />
 	<span asp-validation-for="Description" class="form-error"></span>
 	<br />
-	<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
+	@*<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />*@
+	<button type="submit" class="btn btn-warning">@this.ViewData["ButtonText"]</button>
 	<a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back</a>
 </form>

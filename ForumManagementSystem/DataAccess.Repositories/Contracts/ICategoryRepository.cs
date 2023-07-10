@@ -19,5 +19,9 @@ namespace ForumManagementSystem.Repository
 
         Category Delete(int id);
 
+        int IncreaseCategoryPostCount(Post post);
+
+        int DecreaseCategoryPostCount(Post post);
+
     }
 }

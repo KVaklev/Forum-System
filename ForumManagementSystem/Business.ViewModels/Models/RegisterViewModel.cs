@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.ViewModels.Models
@@ -31,6 +32,12 @@ namespace Business.ViewModels.Models
         [Required(ErrorMessage = "Confirm Password is required.")]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        public IFormFile? ImageFile { get; set; }
+
+        public string? ProfilePhotoPath { get; set; }
+
+        public string? ProfilePhotoFileName { get; set; }
 
     }
 }

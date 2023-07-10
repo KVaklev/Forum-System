@@ -105,7 +105,7 @@ namespace DataAccess.Repositories.Data
                     Description = "Yes USA and Canada and whatever else is up there. Please feel free to ask why they drive on the wrong side of the road if you like.",
                     DateTime = DateTime.Now,
                     CountPosts =1,
-                    CountComments = 1
+                    CountComments = 0
                 },
 
                 new Category
@@ -113,7 +113,9 @@ namespace DataAccess.Repositories.Data
                     Id = 7,
                     Name = "Others",
                     Description = "Discussions about Antarctica or anything else.",
-                    DateTime = DateTime.Now
+                    DateTime = DateTime.Now,
+                    CountPosts =0,
+                    CountComments = 0
                 },
             };
 

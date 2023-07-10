@@ -4,7 +4,6 @@ using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 
@@ -16,15 +15,12 @@ namespace ForumManagementSystem.Controllers.MVC
 		private readonly IMapper mapper;
 		private readonly IAuthManager authManager;
 		private readonly IWebHostEnvironment webHostEnvironment;
-		private readonly ApplicationContext aplicationContext;
-
-		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager, IWebHostEnvironment webHostEnvironment, ApplicationContext aplicationContext)
+		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager, IWebHostEnvironment webHostEnvironment)
 		{
 			this.userService = userService;
 			this.mapper = mapper;
 			this.authManager = authManager;
 			this.webHostEnvironment = webHostEnvironment;
-			this.aplicationContext = aplicationContext;
 		}
 
 		[HttpGet]
@@ -173,26 +169,33 @@ namespace ForumManagementSystem.Controllers.MVC
 				return this.View("Error");
 			}
 		}
-        [HttpPost, ActionName("Profile")]
-        [HttpPost]
+		[HttpPost, ActionName("Profile")]
+		[HttpPost]
 		public IActionResult ProfileConfirmed([FromRoute] int id, UserUpdateProfileViewModel userUpdateProfileViewModel)
 		{
-            if (!this.ModelState.IsValid)
+
+			if (!this.ModelState.IsValid)
 			{
 				return View(userUpdateProfileViewModel);
 			}
 			var userToUpdate=userService.GetById(id);
 
-			var loggedUser = this.authManager.TryGetUser(userToUpdate.Username,userUpdateProfileViewModel.Password);
+			//var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.Password));
 
+			//userUpdateProfileViewModel.Password = codedPassword.ToString();
+
+			//var loggedUser = this.authManager.TryGetUser(userToUpdate.Username,userUpdateProfileViewModel.Password);
+			
+			var loggedUser = userToUpdate;
+		
 			var user = mapper.Map<User>(userUpdateProfileViewModel);
 
 			userToUpdate = this.userService.Update(id, user, loggedUser);
-
+			
             if (userUpdateProfileViewModel.ImageFile != null)
-            {
+            { 
                 string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_"  + userUpdateProfileViewModel.ImageFile.FileName;
+                string uniqueFileName = userToUpdate.FirstName + " " + userToUpdate.LastName + ".png";
                 string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
@@ -201,12 +204,6 @@ namespace ForumManagementSystem.Controllers.MVC
                 }
                 userToUpdate.ProfilePhotoPath = "~/UploadedImages";
                 userToUpdate.ProfilePhotoFileName = uniqueFileName;
-
-                aplicationContext.Add(userUpdateProfileViewModel);
-                aplicationContext.SaveChanges();
-
-
-                //return this.RedirectToAction("Index");
             }
 
             return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });

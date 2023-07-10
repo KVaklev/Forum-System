@@ -106,5 +106,24 @@ namespace ForumManagementSystem.Repository
 
             return categoryToUpdate;
         }
+
+        public int IncreaseCategoryPostCount(Post post)
+        {
+            Category category = GetById(post.CategoryId);
+            category.CountPosts++;
+            context.SaveChanges();
+            return category.CountPosts;
+        }
+        public int DecreaseCategoryPostCount(Post post)
+        {
+            Category category = GetById(post.CategoryId);
+            category.CountPosts--;
+            context.SaveChanges();
+            return category.CountPosts;
+        }
+
+        
+
+
     }
 }
