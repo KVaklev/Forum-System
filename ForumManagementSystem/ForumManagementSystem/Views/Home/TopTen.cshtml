@@ -7,37 +7,47 @@
     <h2>Welcome to WORLD TRAVEL FORUM</h2>
 </div>
 
-@*<div class="row text-center mt-4">
-    <div class="col-md-10">*@
+<div class="card-columns" style="display: flex; justify-content: flex-end; position: absolute; top: 100px; right: 20px;">
+    <div class="card" style="width: 300px;">
+        <div class="card-body" style="display: flex; flex-direction: column; align-items: flex-start;">
+            <img class="card-img-top" src="~/Images/Traveller.jpg" alt="Card image cap" style="width: 100%;">
+            <h5 class="card-title" style="font-style: italic;">
+                <span style="font-weight: bold;">"He who does not travel does not know the value of men."</span>
+                <span style="font-size: 14px; font-style: italic; color: #999;"> - Moorish Proverb</span>
+            </h5>
+            <p class="card-text" style ="font-style: italic;">Registered users: @this.Model.UsersCount</p>
+            <p class="card-text" style="font-style: italic;">Posts created: @this.Model.PostsCount</p>
+             
+        </div>
+    </div>
+</div>
+
         <div class="text-left mb-3">
             <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Categories</a>
             <a asp-controller="Home" asp-action="TopTen" class="btn btn-secondary">Top <span class="text h5 font-weight-bold text-white">10</span> posts</a>
             <a asp-controller="Home" asp-action="LatestTen" class="btn btn-secondary">Latest <span class="text h5 font-weight-bold text-white">10</span> posts</a>
         </div>
-@*    </div>
-</div>
-*@
-    <div class="table-responsive">
-        <table class="table-sm table-bordered table-condensed table-hover">
+
+    <table class="table-bordered table-hover table-condensed" style="width: 60%;">
             <thead class="table-dark">
                 <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">Title</th>
-                <th class="text-center">Content</th>
-                <th class="text-center">Likes</th>
-                <th class="text-center">Comments</th>
+            <th class="text-center" style="height: 40px;">#</th>
+            <th class="text-center" style="height: 40px;">Title</th>
+            <th class="text-center" style="height: 40px;">Content</th>
+            <th class="text-center" style="height: 40px;">Likes</th>
+            <th class="text-center" style="height: 40px;">Comments</th>
             </tr>
         </thead>
         <tbody>
             @{
-                int index = (this.Model.PageNumber - 1) *5 + 1;
+                int index = (this.Model.Posts.PageNumber - 1) *5 + 1;
 
-                foreach (var post in this.Model)
+                foreach (var post in this.Model.Posts)
                 {
                     <tr>
                         <td class="text-center" style="width: 5%">@index</td>
                         <td style="width: 15%">@post.Title</td>
-                        <td style="width: 20%">
+                    <td class="text-center" style="width: 20%">
                             <div>
                                 @if (post.Content.Length > 50)
                                 {
@@ -59,18 +69,18 @@
             }
         </tbody>
     </table>
-</div>
+@*</div>*@
 @{
-    string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
-    string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+    string prevButtonState = this.Model.Posts.HasPrevPage ? "" : "disabled";
+    string nextButtonState = this.Model.Posts.HasNextPage ? "" : "disabled";
 }
 
-<a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@(this.Model.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
+<a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@(this.Model.Posts.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
 
 @{
-    int currentPageNumber = this.Model.PageNumber;
+    int currentPageNumber = this.Model.Posts.PageNumber;
 
-    for (int i = 1; i <= this.Model.TotalPages; i++)
+    for (int i = 1; i <= this.Model.Posts.TotalPages; i++)
     {
         if (i == currentPageNumber)
         {
@@ -83,5 +93,5 @@
 
     }
 }
-<a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@(this.Model.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>
+<a asp-controller="Home" asp-action="TopTen" asp-route-PageNumber="@(this.Model.Posts.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>
 
