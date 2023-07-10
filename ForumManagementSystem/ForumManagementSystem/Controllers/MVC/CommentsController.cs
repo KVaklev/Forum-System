@@ -44,10 +44,11 @@ namespace ForumManagementSystem.Controllers.MVC
         }
 
         [HttpGet]
-        public IActionResult Index(CommentQueryParameters parameter)
+        public IActionResult Index([FromQuery] CommentQueryParameters parameter)
         {
             try
             {
+               
                 PaginatedList<Comment> comments = this.commentService.FilterBy(parameter);
 
                 return View(comments);
@@ -59,9 +60,25 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.View("Error");
             }
-
-
         }
+
+        [HttpGet]
+        public IActionResult Filter([FromQuery] CommentQueryParameters parameters)
+        {
+            try
+            {
+                PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
+                return View(comments);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -87,7 +104,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var user = authManager.TryGetUserByUsername(username);
                     var createdComment = this.commentService.Create(comment, user);
                     
-                    return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
+                    return this.RedirectToAction("Index", "Comments", new { postID = createdComment.PostId });
                }
             }
             catch (EntityNotFoundException ex)
@@ -147,7 +164,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var user = authManager.TryGetUserByUsername(username);
                 var updatedComment = this.commentService.Update(id, inputComment, user);
 
-                return this.RedirectToAction("Index", "Comments", new { id = updatedComment.PostId });
+                return this.RedirectToAction("Index", "Comments", new { postId = updatedComment.PostId });
             }
              catch (EntityNotFoundException ex)
             {
@@ -199,7 +216,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var user = authManager.TryGetUserByUsername(username);
                 var comment = this.commentService.Delete(id, user);
 
-                return this.RedirectToAction("Index", "Comments", new { id = comment.PostId });
+                return this.RedirectToAction("Index", "Comments", new { postId = comment.PostId });
             }
             catch (EntityNotFoundException ex)
             {
@@ -226,7 +243,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 var user = authManager.TryGetUserByUsername(username);
                 Comment comment = commentService.GetByID(id);
 				likeCommentService.Update(comment, user);
-                return this.RedirectToAction("Index", "Comments", new { id = comment.PostId }); 
+                return this.RedirectToAction("Index", "Comments", new { postId = comment.PostId }); 
 			}
 			catch (EntityNotFoundException ex)
 			{
@@ -254,7 +271,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var comment = commentService.GetByID(id);
                     var commentReplyCreateViewModel = new CommentReplyCreateViewModel()
                     {
-                        Content =$"\"{comment.Content}\" - " + $" {commentViewModel.Content}",
+                        Content =$"\"{comment.CreatedBy.Username}: {comment.Content}\" - " + $" {commentViewModel.Content}",
                         PostId = comment.PostId,
                         CommentId = comment.Id
 					};
