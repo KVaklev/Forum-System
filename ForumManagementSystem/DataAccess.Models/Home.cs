@@ -10,5 +10,9 @@ namespace DataAccess.Models
         public PaginatedList<Category> Categories { get; set; }
 
         public PaginatedList<Post> Posts { get; set; }
+
+        public int PageNumber { get; set; }
+
+
     }
 }

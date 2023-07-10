@@ -186,11 +186,11 @@ namespace ForumManagementSystem.Repository
                 }
             }
 
-            int totalPages = (result.Count() + 1) / filterParameters.PageSize;
+            int totalPages = ((result.Count() + 1) / filterParameters.PageSize)+1;
 
             result = Paginate(result, filterParameters.PageNumber, filterParameters.PageSize);
 
-            return new PaginatedList<Post>(result.ToList(), totalPages, filterParameters.PageNumber);
+            return new PaginatedList<Post>(result, totalPages, filterParameters.PageNumber);
 
 
         }
