@@ -4,12 +4,10 @@
 
 	    <label asp-for="Content" class="form-label"></label>
 		<br />
-	   @* <input asp-for="Content" type="text" style="width: 600px; height: 100px;" />*@
-	<textarea name="content" style="width: 600px; height: 100px;"></textarea>
+	   	<textarea asp-for="Content"  name="Content" style="width: 600px; height: 100px;"></textarea>
 		<br />
 		<span asp-validation-for="Content" class="form-error"></span>
 	    <br />
-	@*<input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />*@
-	<button type="submit" class="btn btn-warning">@this.ViewData["ButtonText"]</button>
+		<button type="submit" class="btn btn-warning">@this.ViewData["ButtonText"]</button>
 	<a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
 </form>

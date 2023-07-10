@@ -6,6 +6,7 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
+using System.Text;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
@@ -105,9 +106,10 @@ namespace ForumManagementSystem.Controllers.MVC
 			{
 				return View(userEditViewModel);
 			}
-			var loggedUser = this.authManager.TryGetUser("ivanchoDraganchov:123");
+            var username = this.HttpContext.Session.GetString("LoggedUser");
+            var loggedUser = authManager.TryGetUserByUsername(username);
 
-			var user = mapper.Map<User>(userEditViewModel);
+            var user = mapper.Map<User>(userEditViewModel);
 
 			var updatedUser = this.userService.Update(id, user, loggedUser);
 
@@ -136,8 +138,9 @@ namespace ForumManagementSystem.Controllers.MVC
 		{
 			try
 			{
-				var user = this.authManager.TryGetUser("ivanchoDraganchov:123");
-				this.userService.Delete(id, user);
+                var username = this.HttpContext.Session.GetString("LoggedUser");
+                var user = authManager.TryGetUserByUsername(username);
+                this.userService.Delete(id, user);
 
 				return this.RedirectToAction("Index", "Users");
 			}
@@ -182,10 +185,12 @@ namespace ForumManagementSystem.Controllers.MVC
 
 			//var loggedUser = this.authManager.TryGetUser(userToUpdate.Username, userUpdateProfileViewModel.Password);
 
-			var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.NewPassword));
+			if (userUpdateProfileViewModel.NewPassword != null)
+			{
+				var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.NewPassword));
 
-			userUpdateProfileViewModel.NewPassword = codedPassword.ToString();
-
+				userUpdateProfileViewModel.NewPassword = codedPassword.ToString();
+			}
 
 			var loggedUser = userToUpdate;
 		
