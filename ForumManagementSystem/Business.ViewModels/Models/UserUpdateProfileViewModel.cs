@@ -20,8 +20,8 @@ namespace Business.ViewModels.Models
 		[EmailAddress(ErrorMessage = "Please provide a valid email.")]
 		public string? Email { get; set; }
 
-        [Required]
-        public string Password { get; set; }
+        //[Required(ErrorMessage = "Please type your current password in order to make changes")]
+        public string? Password { get; set; }
 
         //[Password]
         public string? NewPassword { get; set; }
@@ -32,7 +32,7 @@ namespace Business.ViewModels.Models
 
         public string? ProfilePhotoPath { get; set; }
 
-        public string ProfilePhotoFileName { get; set; }
+        public string? ProfilePhotoFileName { get; set; }
 
         public string? Address { get; set; }
 

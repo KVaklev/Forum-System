@@ -7,7 +7,7 @@ namespace ForumManagementSystem.Services
     {
         List<Post> GetAll();
         PaginatedList<Post> GetTopTenCommented(PostQueryParameters queryParameters);
-        List<Post> GetLastTenCommented();
+        PaginatedList<Post> GetLastTenCommented(PostQueryParameters queryParameters);
         PaginatedList<Post> FilterBy(PostQueryParameters filterParameters);
         Post GetById(int id);
         Post GetByUser(User user);

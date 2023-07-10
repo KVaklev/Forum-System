@@ -4,6 +4,7 @@ using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace ForumManagementSystem.Repository
 {
