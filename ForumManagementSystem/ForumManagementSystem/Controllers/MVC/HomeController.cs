@@ -13,13 +13,12 @@ namespace ForumManagementSystem.Controllers.MVC
     {
         private readonly ICategoryService categoryService;
         private readonly IUserService userService;
-        private readonly IAuthManager authManager;
+
         private readonly IPostService postService;
 
-        public HomeController(ICategoryService categoryService, IAuthManager authManager, IUserService userService, IPostService postService)
+        public HomeController(ICategoryService categoryService, IUserService userService, IPostService postService)
         {
             this.categoryService = categoryService;
-            this.authManager = authManager;
             this.userService = userService;
             this.postService = postService;
         }
@@ -29,7 +28,7 @@ namespace ForumManagementSystem.Controllers.MVC
             PaginatedList<Category> result = categoryService.FilterBy(categoryQueryParameter);
 
             var usersCount = this.userService.GetAll().Count();
-            var postsCount = this.userService.GetAll().Count();
+            var postsCount = this.postService.GetAll().Count();
 
             var viewModel = new Home
             {
@@ -49,17 +48,37 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult TopTen(PostQueryParameters queryParameters)
         {
-            PaginatedList<Post> posts = this.postService.GetTopTenCommented(queryParameters);
+            PaginatedList<Post> result = this.postService.GetTopTenCommented(queryParameters);
 
-            return View(posts);
+            var usersCount = this.userService.GetAll().Count();
+            var postsCount = this.postService.GetAll().Count();
+
+            var viewModel = new Home
+            {
+                Posts = result,
+                UsersCount = usersCount,
+                PostsCount = postsCount
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
         public IActionResult LatestTen(PostQueryParameters queryParameters)
         {
-            PaginatedList<Post> posts = this.postService.GetLastTenCommented(queryParameters);
+            PaginatedList<Post> result = this.postService.GetLastTenCommented(queryParameters);
 
-            return View(posts);
+            var usersCount = this.userService.GetAll().Count();
+            var postsCount = this.postService.GetAll().Count();
+
+            var viewModel = new Home
+            {
+                Posts = result,
+                UsersCount = usersCount,
+                PostsCount = postsCount
+            };
+
+            return View(viewModel);
         }
 
     }

@@ -6,6 +6,7 @@ using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
+using System.Text;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
@@ -180,17 +181,20 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 			var userToUpdate=userService.GetById(id);
 
-			//var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.Password));
+			//var loggedUser = this.authManager.TryGetUser(userToUpdate.Username, userUpdateProfileViewModel.Password);
 
-			//userUpdateProfileViewModel.Password = codedPassword.ToString();
+			var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.NewPassword));
 
-			//var loggedUser = this.authManager.TryGetUser(userToUpdate.Username,userUpdateProfileViewModel.Password);
-			
+			userUpdateProfileViewModel.NewPassword = codedPassword.ToString();
+
+
 			var loggedUser = userToUpdate;
 		
 			var user = mapper.Map<User>(userUpdateProfileViewModel);
 
 			userToUpdate = this.userService.Update(id, user, loggedUser);
+
+
 			
             if (userUpdateProfileViewModel.ImageFile != null)
             { 
