@@ -20,6 +20,27 @@ a {
     display: table;
 }
 
+.square-cell {
+    position: relative;
+}
+
+.square-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.likes-column {
+    width: 150px;
+}
+
+    .likes-column div {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
 .header {
     display: table-header-group;
     font-weight: bold;

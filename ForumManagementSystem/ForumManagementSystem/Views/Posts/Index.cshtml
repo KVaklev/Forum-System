@@ -27,81 +27,109 @@
         <h3><a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a></h3>
 
         @*<form asp-controller="Posts" asp-action="Index" method="get">
-            <label class="form-label">Find By Category</label>
-            <select name="CategoryFilter" asp-items="@ViewBag.Categories" class="form-input">
-                <option value="">All</option>
-            </select>
-            <input type="submit" value="Search" class="btn btn-primary" />
-        </form>*@
+    <label class="form-label">Find By Category</label>
+    <select name="CategoryFilter" asp-items="@ViewBag.Categories" class="form-input">
+    <option value="">All</option>
+    </select>
+    <input type="submit" value="Search" class="btn btn-primary" />
+    </form>*@
 
+        <h5>Find By User</h5>
 
         <form asp-controller="Posts" asp-action="Index" method="get">
 
-            <label class="form-label"> Find By User: </label>
-            <input type="text" name="Username" class="form-input" placeholder="" />
+            <input type="text" name="Username" placeholder="Username">
             <input type="submit" value="Search" class="btn btn-primary" />
 
         </form>
 
 
+        @* <form asp-controller="Posts" asp-action="Index" method="get">
+
+    <label class="form-label"> Find By User: </label>
+    <input type="text" name="Username" class="form-input" placeholder="" />
+    <input type="submit" value="Search" class="btn btn-primary" />
+
+    </form>*@
+
+
+        <h5>Find By Tag</h5>
 
         <form asp-controller="Posts" asp-action="Index" method="get">
 
-            <label class="form-label"> Find By Tag </label>
-            <input type="text" name="Tag" class="form-input" placeholder="" />
+            <input type="text" name="Tag" placeholder="Tag">
             <input type="submit" value="Search" class="btn btn-primary" />
 
         </form>
 
     }
+    <br/>
+  
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Username</th>
+                    <th>Title</th>
+                    <th class="text-center">Content</th>
+                    <th class="text-center">Likes</th>
+                    <th class="text-center">CommentsCount</th>
+                    <th class="text-center">Actions</th>
+                    <th class="text-center">Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var post in Model)
+                    {
+                        <tr>
+                            <td>@post.CreatedBy.Username</td>
+                            <td>@post.Title</td>
+                            <td>@post.Content</td>
+                            <td class="text-center">
+                                <div>
+                                    <span>@post.PostLikesCount</span>
+                                    | <a asp-controller="Posts" asp-action="Like" asp-route-id="@post.Id" class="btn btn-warning">Like</a>
+                                </div>
+                            </td>                            
+                            <td class="text-center square-cell">
+                                <div class="square-content" style="display: flex; justify-content: center; align-items: center; background-color: lightgray; padding: 2px;">
+                                    <span style="font-weight: color: black;">
+                                        @post.PostCommentsCount
+                                    </span>
+                                    <a asp-controller="Posts" asp-action="CommentsCount" asp-route-id="@post.Id"></a>
+                                </div>
 
-    <div class="table">
-        <div class="header">
-
-            <div class="header-cell">Username</div>
-            <div class="header-cell">Title</div>
-            <div class="header-cell">Content</div>
-            <div class="header-cell">Likes</div>
-            <div class="header-cell">CommentsCount</div>
-            <div class="header-cell">Actions</div>
-            <div class="header-cell">Comments</div>
-        </div>
-
-        @{
-            foreach (var post in this.Model)
-            {
-                <div class="row">
-                    <div class="cell">@post.CreatedBy.Username</div>
-                    <div class="cell">@post.Title</div>
-                    <div class="cell"> @post.Content</div>
-
-                    <div class="cell">
-                        @post.PostLikesCount
-                        | <a asp-controller="Posts" asp-action="Like" asp-route-id="@post.Id" class="btn btn-warning"> Like </a>
-                    </div>
-
-                    <div class="cell" style="display: flex; justify-content: center; align-items: center; background-color: lightgray; padding: 2px;">
-                        <span style="font-weight: bold; color: black;">
-                            @post.PostCommentsCount
-                        </span>
-                        <a asp-controller="Posts" asp-action="CommentsCount" asp-route-id="@post.Id"></a>
-                    </div>
-
-
-                    <div class="cell">
-                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
-                        | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
-                        | <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
-                    </div>
-                    <div>
-                        <a asp-controller="Comments" asp-action="Index" asp-route-PostId="@post.Id" class="btn btn-primary">Comments</a>
-                        | <a asp-controller="Comments" asp-action="Create" asp-route-id="@post.Id" class="btn btn-primary">New Comment</a>
-                    </div>
-
-                </div>
-            }
-        }
-    </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <div class="mr-2">
+                                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
+                                    </div>
+                                    <div class="mr-2">
+                                        <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
+                                    </div>
+                                    <div class="mr-2">
+                                        <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex flex-wrap justify-content-center">
+                                    <div class="mr-2">
+                                        <a asp-controller="Comments" asp-action="Index" asp-route-PostId="@post.Id" class="btn btn-primary">Comments (@post.PostCommentsCount)</a>
+                                    </div>
+                                    <div class="mr-2">
+                                        <a asp-controller="Comments" asp-action="Create" asp-route-id="@post.Id" class="btn btn-primary">New Comment</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>  
 </div>
 @{
     string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
