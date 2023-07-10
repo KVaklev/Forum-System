@@ -4,11 +4,8 @@ using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Presentation.Helpers;
-using System.Text;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
@@ -18,16 +15,12 @@ namespace ForumManagementSystem.Controllers.MVC
 		private readonly IMapper mapper;
 		private readonly IAuthManager authManager;
 		private readonly IWebHostEnvironment webHostEnvironment;
-		private readonly ApplicationContext aplicationContext;
-		private readonly ILogger logger;
-
-		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager, IWebHostEnvironment webHostEnvironment, ApplicationContext aplicationContext)
+		public UsersController(IUserService userService, IMapper mapper, IAuthManager authManager, IWebHostEnvironment webHostEnvironment)
 		{
 			this.userService = userService;
 			this.mapper = mapper;
 			this.authManager = authManager;
 			this.webHostEnvironment = webHostEnvironment;
-			this.aplicationContext = aplicationContext;
 		}
 
 		[HttpGet]
@@ -211,7 +204,6 @@ namespace ForumManagementSystem.Controllers.MVC
                 }
                 userToUpdate.ProfilePhotoPath = "~/UploadedImages";
                 userToUpdate.ProfilePhotoFileName = uniqueFileName;
-
             }
 
             return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });
