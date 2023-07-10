@@ -117,6 +117,11 @@ namespace ForumManagementSystem.Repository
                 .ThenInclude(pt => pt.Tag)
                 .ToList();
 
+            //if (filterParameters.UserId.HasValue)
+            //{
+            //    result = result.FindAll(post => post.UserId == filterParameters.UserId);
+            //}
+
             if (filterParameters.Username != null && !string.IsNullOrEmpty(filterParameters.Username))
             {
                 result = result.FindAll(post => post.CreatedBy.Username.Contains(filterParameters.Username));

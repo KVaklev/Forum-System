@@ -26,22 +26,33 @@
     {
         <h3><a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a></h3>
 
-        <form asp-controller="Post" asp-action="Index" method="get">
+        @*<form asp-controller="Posts" asp-action="Index" method="get">
+            <label class="form-label">Find By Category</label>
+            <select name="CategoryFilter" asp-items="@ViewBag.Categories" class="form-input">
+                <option value="">All</option>
+            </select>
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </form>*@
 
-            <label class="form-label"> Filter By Category </label>
-            <select asp-items="@categories" class="form-input"></select>
 
+        <form asp-controller="Posts" asp-action="Index" method="get">
+
+            <label class="form-label"> Find By User: </label>
+            <input type="text" name="Username" class="form-input" placeholder="" />
             <input type="submit" value="Search" class="btn btn-primary" />
 
         </form>
 
-        <form asp-controller="Post" asp-action="Index" method="get">
 
-            <label class="form-label"> Filter By Tag </label>
-            <select asp-items="@tags" class="form-input"></select>
+
+        <form asp-controller="Posts" asp-action="Index" method="get">
+
+            <label class="form-label"> Find By Tag </label>
+            <input type="text" name="Tag" class="form-input" placeholder="" />
             <input type="submit" value="Search" class="btn btn-primary" />
 
         </form>
+
     }
 
     <div class="table">
@@ -76,7 +87,7 @@
                         <a asp-controller="Posts" asp-action="CommentsCount" asp-route-id="@post.Id"></a>
                     </div>
 
-                   
+
                     <div class="cell">
                         <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
                         | <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>

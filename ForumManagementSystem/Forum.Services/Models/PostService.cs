@@ -111,6 +111,7 @@ namespace ForumManagementSystem.Services
             CheckIfBlocked(loggedUser, action);
 
             DecreasePostCount(postToDelete);
+
             this.repository.Delete(id);
         }
 

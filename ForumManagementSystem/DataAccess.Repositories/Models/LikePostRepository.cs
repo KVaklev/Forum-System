@@ -23,8 +23,8 @@ namespace DataAccess.Repositories.Models
         public LikePost Get(Post post, User user)
         {
             LikePost likePost = this.context.LikePosts
-                .Where(user => user.UserId == user.Id)
-                .Where(post =>  post.PostId == post.Id)
+                .Where(u => u.UserId == user.Id)
+                .Where(p => p.PostId == post.Id)
                 .FirstOrDefault();
 
             if (likePost == null)
@@ -51,13 +51,13 @@ namespace DataAccess.Repositories.Models
             var postLikeToBeUpdated = Get(post, user);
 
             if (postLikeToBeUpdated.IsLikedPost)
-            { 
+            {
                 postLikeToBeUpdated.IsLikedPost = false;
                 post.PostLikesCount--;
             }
             else
             {
-                postLikeToBeUpdated.IsLikedPost= true;
+                postLikeToBeUpdated.IsLikedPost = true;
                 post.PostLikesCount++;
             }
 

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreDemo.Models;
+using AutoMapper;
 using Business.Exceptions;
 using Business.Services.Contracts;
 using Business.ViewModels.Models;
@@ -34,16 +35,35 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
         {
-            List<Post> posts = this.postService.FilterBy(queryParameters);
-
-
-            //posts = posts.Where(p => p.CategoryId == id).ToList(); // Apply category filter
-
-            //List<PostViewModel> postsViewModel = posts.Select(post => mapper.Map<PostViewModel>(posts)).ToList();
+            var posts = this.postService.FilterBy(queryParameters);
 
             return View(posts);
 
         }
+
+        //if we decide to filter by category
+        //[HttpGet] 
+        //public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
+        //{
+        //    var allPosts = this.postService.GetAll();
+        //    var categories = categoryService.GetAll();
+        //    var paginatedPosts = new PaginatedList<Post>(allPosts, queryParameters.PageNumber, queryParameters.PageSize);
+
+        //    // Filter the posts based on the selected category if CategoryFilter has a value
+        //    if (queryParameters.CategoryFilter.HasValue)
+        //    {
+        //        paginatedPosts = new PaginatedList<Post>(
+        //            paginatedPosts.Where(p => p.CategoryId == queryParameters.CategoryFilter.Value).ToList(),
+        //            queryParameters.PageNumber,
+        //            queryParameters.PageSize
+        //        );
+        //    }
+
+        //    ViewBag.Categories = new SelectList(categories, "Id", "Name");
+        //    ViewBag.CategoryFilter = queryParameters.CategoryFilter;
+
+        //    return View(paginatedPosts);
+        //}
 
 
         [HttpGet]
@@ -201,7 +221,7 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 return this.View("Error");
             }
-            catch(UnauthorizedOperationException ex)
+            catch (UnauthorizedOperationException ex)
             {
                 this.HttpContext.Response.StatusCode =
                     StatusCodes.Status401Unauthorized;
