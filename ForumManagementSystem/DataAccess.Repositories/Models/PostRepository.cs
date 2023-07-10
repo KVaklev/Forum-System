@@ -190,7 +190,7 @@ namespace ForumManagementSystem.Repository
 
             result = Paginate(result, filterParameters.PageNumber, filterParameters.PageSize);
 
-            return new PaginatedList<Post>(result.ToList(), totalPages, filterParameters.PageNumber);
+            return new PaginatedList<Post>(result, totalPages, filterParameters.PageNumber);
 
 
         }

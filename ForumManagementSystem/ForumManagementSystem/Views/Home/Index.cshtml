@@ -25,24 +25,17 @@
     </div>
 </div>
 
-<div class="row text-center mt-4">
-    <div class="col-md-10">
         <div class="text-left mb-3">
             <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Categories</a>
             <a asp-controller="Home" asp-action="TopTen" class="btn btn-secondary">Top <span class="text h5 font-weight-bold text-white">10</span> posts</a>
             <a asp-controller="Home" asp-action="LatestTen" class="btn btn-secondary">Latest <span class="text h5 font-weight-bold text-white">10</span> posts</a>
         </div>
-    </div>
-</div>
 
-<div class="row text-center">
-    <div class="col-md-10">
-        <div class="table-responsive table-bordered table-hover">
-            <table class="table table-condensed">
+<table class="table-bordered table-hover table-condensed" style="width: 60%;">
                 <thead class="table-dark">
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
+            <th class="text-center" style="height: 40px;">Name</th>
+            <th class="text-center" style="height: 40px;">Description</th>
                         @if (isLogged)
                         {
                             <th>Actions</th>
@@ -54,12 +47,29 @@
                     {
                         <tr>
                             <td>
-                                <h5>@category.Name</h5>
-                                <p>Posts: @category.CountPosts</p>
-                                <p>Comments: @category.CountComments</p>
+                        <h6 class="text-center">@category.Name</h6>
+                        <p class="text-center">Posts: @category.CountPosts</p>
+                        <p class="text-center">Comments: @category.CountComments</p>
                             </td>
                             <td>
-                                <p>@category.Description</p>
+                        <p class="text-center">
+                            @{
+                                if (category.Description.Length > 100)
+                                {
+                                    var truncatedDescription = category.Description.Substring(0, 70);
+                                    var remainingDescription = category.Description.Substring(70);
+
+                                    <span>@truncatedDescription</span>
+
+                                    <br />
+                                    <span>@remainingDescription</span>
+                                }
+                                else
+                                {
+                                    <span>@category.Description</span>
+                                }
+                            }
+                        </p>
                             </td>
                             @if (isLogged)
                             {
@@ -86,9 +96,7 @@
                     }
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
+
      <div>
     <br />
         @if (isLogged & isAdmin == "True")

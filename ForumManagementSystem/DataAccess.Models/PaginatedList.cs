@@ -11,8 +11,6 @@ namespace AspNetCoreDemo.Models
             this.PageNumber = pageNumber;
         }
 
-        
-
         public int TotalPages { get; set; }
         public int PageNumber { get; set; }
         public bool HasPrevPage
