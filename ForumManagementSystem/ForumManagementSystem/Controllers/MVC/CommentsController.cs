@@ -67,8 +67,16 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
-                return View(comments);
+                if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
+                {
+                    this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return this.View("UnauthorizedError");
+                }
+                else
+                {
+                    PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
+                    return View(comments);
+                }
             }
             catch (EntityNotFoundException ex)
             {
@@ -81,10 +89,9 @@ namespace ForumManagementSystem.Controllers.MVC
 
         [HttpGet]
         public IActionResult Create()
-        {
-            var commentViewModel = new CommentViewModel();
-
-            return this.View(commentViewModel);
+        {  
+                var commentViewModel = new CommentViewModel();
+                return this.View(commentViewModel);
         }
 
         [HttpPost]
@@ -251,6 +258,13 @@ namespace ForumManagementSystem.Controllers.MVC
                 this.ViewData["ErrorMessage"] = ex.Message;
 
                 return this.View("Error");
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+				this.ViewData["ErrorMessage"] = ex.Message;
+
+				return this.View("UnauthorizedError");
 			}
 		}
 
