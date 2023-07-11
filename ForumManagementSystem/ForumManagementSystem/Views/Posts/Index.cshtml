@@ -102,24 +102,33 @@
                             <td>@string.Join(", ", post.PostTags.Select(t => t.Tag.Name))</td>
                             <td class="text-center">
                                 <div class="d-flex flex-wrap justify-content-center">
-                                    <div class="mr-2">
+                                    <div class="text-left mb-3">
                                         <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
                                     </div>
-                                    <div class="mr-2">
+
+                                    <br/>
+
+                                    <div class="text-left mb-3">
                                         <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
                                     </div>
-                                    <div class="mr-2">
+
+                                    <br />
+
+                                    <div class="text-left mb-3">
                                         <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
                                     </div>
+
+                                    <br />
+
                                 </div>
                             </td>
                             <td class="text-center">
                                 <div class="d-flex flex-wrap justify-content-center">
-                                    <div class="mr-2">
+                                    <div class="text-left mb-3">
                                         <a asp-controller="Comments" asp-action="Index" asp-route-PostId="@post.Id" class="btn btn-primary">Comments (@post.PostCommentsCount)</a>
                                     </div>
-                                    
-                                    <div class="mr-2">
+
+                                    <div class="text-left mb-3">
                                         @if (isBlocked == "False")
                                         {
                                             <a asp-controller="Comments" asp-action="Create" asp-route-id="@post.Id" class="btn btn-primary">New Comment</a>
