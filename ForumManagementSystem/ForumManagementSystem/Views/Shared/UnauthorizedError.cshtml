@@ -5,5 +5,14 @@
 <h2 class="label-error">Sorry you are not authorized :(</h2>
 <p>
 	Status Code: @this.Context.Response.StatusCode<br />
-	Message: @this.ViewData["ErrorMessage"]
+	 
+	
+	@{
+		if (ViewData["ErrorMessage"] != null)
+		{
+
+			<p class="text-danger">Message: @ViewData["ErrorMessage"]</p>
+		}
+	}
+	
 </p>

@@ -11,6 +11,7 @@ using System.Net;
 
 namespace ForumManagementSystem.Controllers.MVC
 {
+    
     public class CategoriesController:Controller
     {
         private readonly ICategoryService categoryService;
@@ -33,9 +34,17 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Create()
         {
-            var categoryViewModel = new CategoryViewModel();
-
-            return this.View(categoryViewModel);
+            if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return this.View("UnauthorizedError");
+            }
+            else 
+            {
+				var categoryViewModel = new CategoryViewModel();
+				return this.View(categoryViewModel);
+			}
+           
         }
         [HttpPost]
         public IActionResult Create(CategoryViewModel categoryViewModel)
@@ -73,10 +82,9 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-               var category = this.categoryService.GetById(id);
-               var categoryViewModel = this.mapper.Map<CategoryViewModel>(category);
-
-                return this.View(categoryViewModel);
+                    var category = this.categoryService.GetById(id);
+                    var categoryViewModel = this.mapper.Map<CategoryViewModel>(category);
+                    return this.View(categoryViewModel);
             }
             catch (EntityNotFoundException ex)
             {
@@ -129,9 +137,8 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                var category = this.categoryService.GetById(id);
-
-                return this.View(category);
+                    var category = this.categoryService.GetById(id);
+                    return this.View(category);   
             }
             catch (EntityNotFoundException ex)
             {
