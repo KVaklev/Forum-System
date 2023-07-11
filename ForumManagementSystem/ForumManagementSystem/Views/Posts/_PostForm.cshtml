@@ -1,36 +1,38 @@
 ﻿@model PostViewModel
 
-     <form asp-controller="Posts" asp-action="@this.ViewData["Action"]" method="post">
+<form asp-controller="Posts" asp-action="@this.ViewData["Action"]" method="post">
 
 
-     <label asp-for="Title" class="form-label"></label>
-     <br />
-     <input asp-for="Title" type="text" class="form-input">
-     <br />
-     <span asp-validation-for="Title" class="form-error"></span>
+    <label asp-for="Title" class="form-label"></label>
+    <br />
+    <input asp-for="Title" type="text" class="form-input">
+    <br />
+    <span asp-validation-for="Title" class="form-error"></span>
 
 
-     <label asp-for="Content" class="form-label"></label>
-     <br />
-     <input asp-for="Content" type="text" class="form-input">
-     <br />
-     <span asp-validation-for="Content" class="form-error"></span>
+    <label asp-for="Content" class="form-label"></label>
+    <br />
+    <textarea asp-for="Content" type="text" style="width: 600px; height: 100px;"></textarea>
+    <br />
+    <span asp-validation-for="Content" class="form-error"></span>
 
 
     @*<label asp-for="SelectTags" class="form-label"></label>
     <br />
     <select asp-items="@Model.SelectTags" asp-for="SelectTags" class="form-input">
-        <option selected> </option>
+    <option selected> </option>
     </select>
     <br />
     <span asp-validation-for="SelectTags" class="form-error"></span>
-*@
+    *@
+
+    <br />
 
     <label asp-for="Tags" class="form-label">Tags (If more than one tag will be added, please separate them with a space)</label>
-     <br />
-     <input asp-for="Tags" type="text" class="form-input">
-     <br />
-     <span asp-validation-for="Tags" class="form-error"></span>
+    <br />
+    <input asp-for="Tags" type="text" class="form-input">
+    <br />
+    <span asp-validation-for="Tags" class="form-error"></span>
 
 
     <label asp-for="CategoryName" class="form-label"></label>
@@ -39,9 +41,9 @@
     <br />
     <span asp-validation-for="CategoryId" class="form-error"></span>
 
-   
 
-     <input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
-     <a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
-   
+
+    <input type="submit" value="@this.ViewData["ButtonText"]" class="btn btn-warning" />
+    <a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
+
 </form>
