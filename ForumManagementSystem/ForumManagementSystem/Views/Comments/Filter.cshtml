@@ -12,15 +12,12 @@
     var isAdmin = Context.Session.GetString("IsAdmin");
 }
 <form asp-controller="Comments" asp-action="Filter" method="get">
-    @*| <a asp-controller="Home" asp-action="Index">@commentDetail.Post.Category.Name</a>
-    > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
-    <span style="margin-right:35%"></span>*@
-    @if (isLogged & isBlocked != "True")
+   
+    @if (isLogged)
     {
         <label class="form-label"> Find user: </label>
-        <input type="text" name="Username" placeholder="" />
+        <input type="text" name="Username" placeholder="Username" />
         <input type="submit" value="Search" class="btn btn-primary" />
-        @*<a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>*@
     }
 </form>
 
@@ -83,7 +80,14 @@
         string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
         string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
     }
+    @if (commentDetail == null)
+    {
+     <a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+    }
+    else
+    {
     <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+    }
     @{
         int currentPageNumber = this.Model.PageNumber;
 
@@ -95,8 +99,22 @@
             }
             else
             {
+                @if (commentDetail == null)
+                {
+                   <span><a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@i">@i</a></span>
+                }
+                else
+                {
                 <span><a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@i">@i</a></span>
-            }
+                }
+             }
         }
     }
+   @if (commentDetail == null)
+    {
+     <a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Next</a>
+    }
+    else
+    { 
     <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
+    }

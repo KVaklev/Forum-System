@@ -15,14 +15,12 @@
                 | <a asp-controller="Home" asp-action="Index">@commentDetail.Post.Category.Name</a>
                 > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
             <span style="margin-right:35%"></span>
-            @if (isLogged & isBlocked != "True")
+            @if (isLogged)
             {
-           @* <label class="form-label"> Find user: </label>
-            <input type="text" name="Username" placeholder="" />
-            <input type="submit" value="Search" class="btn btn-primary" />*@
-
-            <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> ALL </a>
-            <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
+        
+        <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> ALL </a>
+        <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
+        
             }
         </form>
     
@@ -61,10 +59,8 @@
                             @if (isLogged)
                             {
                                 <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
-                            }
-                            @if (isLogged & isBlocked != "True")
-                            {
-                                <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
+                                                                                   
+                               <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
                             }
                             @if (isLogged & comment.UserId == loggedUserId)
                             {

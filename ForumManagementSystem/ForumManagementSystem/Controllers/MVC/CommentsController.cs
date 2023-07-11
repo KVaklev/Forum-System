@@ -8,6 +8,7 @@ using Business.ViewModels.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Helpers;
 using System.Data;
@@ -48,9 +49,7 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-               
                 PaginatedList<Comment> comments = this.commentService.FilterBy(parameter);
-
                 return View(comments);
             }
             catch (EntityNotFoundException ex)
@@ -67,16 +66,8 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
-                {
-                    this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                    return this.View("UnauthorizedError");
-                }
-                else
-                {
                     PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
                     return View(comments);
-                }
             }
             catch (EntityNotFoundException ex)
             {
@@ -89,9 +80,19 @@ namespace ForumManagementSystem.Controllers.MVC
 
         [HttpGet]
         public IActionResult Create()
-        {  
+        {
+            if ((this.HttpContext.Session.GetString("IsBlocked")) == "True" 
+                || (this.HttpContext.Session.GetString("LoggedUser")) == null)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = "You are not \"LOGGET USER\" or you are \"BLOCKED\"!";
+                return this.View("UnauthorizedError");
+            }
+            else
+            {
                 var commentViewModel = new CommentViewModel();
                 return this.View(commentViewModel);
+            }
         }
 
         [HttpPost]
@@ -271,8 +272,18 @@ namespace ForumManagementSystem.Controllers.MVC
 		[HttpGet]
 		public IActionResult CreateReply()
 		{
-			var commentViewModel = new CommentViewModel();
-			return this.View(commentViewModel);
+            if ((this.HttpContext.Session.GetString("IsBlocked")) == "True"
+                || (this.HttpContext.Session.GetString("LoggedUser")) == null)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = "You are not \"LOGGED USER\" or you are \"BLOCKED\"!";
+                return this.View("UnauthorizedError");
+            }
+            else
+            {
+                var commentViewModel = new CommentViewModel();
+                return this.View(commentViewModel);
+            }
 		}
 
 		[HttpPost]
