@@ -40,7 +40,6 @@ namespace DataAccess.Repositories.Data
                      Email = "i.draganov@gmail.com",
                      Username = "ivanchoDraganchov",
                      Password = "MTIz",
-					 PhoneNumber = "0897556285",
                      IsAdmin = true,
                      IsBlocked = false
                 },
@@ -53,7 +52,6 @@ namespace DataAccess.Repositories.Data
                      Email = "m.petrova@gmail.com",
                      Username = "mariicheto",
                      Password = "MTIz",
-					 PhoneNumber = "0897554285",
                      IsAdmin = false,
                      IsBlocked = false
                 },
@@ -66,7 +64,6 @@ namespace DataAccess.Repositories.Data
                      Email = "m.dobreva@gmail.com",
                      Username = "marcheto",
                      Password = "MTIz",
-					 PhoneNumber = "0797556285",
                      IsAdmin = false,
                      IsBlocked = true
                 },
@@ -79,7 +76,6 @@ namespace DataAccess.Repositories.Data
 					 Email = "a.sokolov@gmail.com",
 					 Username = "sokolov",
 					 Password = "MTIz",
-					 PhoneNumber = "0897556285",
 					 IsAdmin = true,
 					 IsBlocked = false
 				},
@@ -91,7 +87,6 @@ namespace DataAccess.Repositories.Data
 					 Email = "marg89@gmail.com",
 					 Username = "margIvanova",
 					 Password = "MTIz",
-					 PhoneNumber = "0897556285",
 					 IsAdmin = false,
 					 IsBlocked = false
 				},
@@ -103,7 +98,6 @@ namespace DataAccess.Repositories.Data
 					 Email = "dim@gmail.com",
 					 Username = "dimitarDimitrov",
 					 Password = "MTIz",
-					 PhoneNumber = "0897556285",
 					 IsAdmin = false,
 					 IsBlocked = false
 				},
