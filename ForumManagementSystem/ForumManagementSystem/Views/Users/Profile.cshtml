@@ -5,6 +5,13 @@
     var fullName = string.Concat(this.Context.Session.GetString("FirstName"), " ", this.Context.Session.GetString("LastName"));
 }
 
+@{
+    if (ViewData["ErrorMessage"] != null)
+    {
+        <h3><p class="text-danger">@ViewData["ErrorMessage"]</p></h3>
+    }
+}
+
 <script>
     function PreviewImage(ID) {
         var preview = document.getElementById("ProductImage");
@@ -34,50 +41,50 @@
                     <tr>
                         <td>
                             <label asp-for="@Model.FirstName" class="form-label"></label>
-                            <input asp-for="FirstName" type="text" class="form-input" placeholder="First name" value="" />
+                            <input asp-for="FirstName" type="text" class="form-input" placeholder="First name"/>
                             <span asp-validation-for="FirstName" class="form-error"></span>
                         </td>
                         <td style="padding-left: 30px;">
                             <label asp-for="@Model.LastName" class="form-label"></label>
-                            <input asp-for="LastName" type="text" class="form-input" placeholder="Last name" value="" />
+                            <input asp-for="LastName" type="text" class="form-input" placeholder="Last name"/>
                             <span asp-validation-for="LastName" class="form-error"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label asp-for="@Model.PhoneNumber" class="form-label"></label>
-                            <input asp-for="PhoneNumber" type="text" class="form-input" placeholder="Enter phone number" value="" />
+                            <input asp-for="PhoneNumber" type="text" class="form-input" placeholder="Enter phone number"/>
                             <span asp-validation-for="PhoneNumber" class="form-error"></span>
                         </td>
                         <td style="padding-left: 30px;">
                             <label asp-for="@Model.Email" class="form-label"></label>
-                            <input asp-for="Email" type="text" class="form-input" placeholder="Enter a valid email" value="" />
+                            <input asp-for="Email" type="text" class="form-input" placeholder="Enter a valid email"/>
                             <span asp-validation-for="Email" class="form-error"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label asp-for="@Model.Country" class="form-label"></label>
-                            <input asp-for="Country" type="text" class="form-input" placeholder="Enter your country" value="" />
+                            <input asp-for="Country" type="text" class="form-input" placeholder="Enter your country"/>
                             <span asp-validation-for="Country" class="form-error"></span>
                         </td>
                         <td style="padding-left: 30px;">
                             <label asp-for="@Model.Address" class="form-label"></label>
-                            <input asp-for="Address" type="text" class="form-input" placeholder="Enter your address" value="" />
+                            <input asp-for="Address" type="text" class="form-input" placeholder="Enter your address"/>
                             <span asp-validation-for="Address" class="form-error"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label asp-for="@Model.NewPassword" class="form-label"></label>
-                            <input asp-for="NewPassword" type="password" class="form-input" placeholder="Change password" value="" />
+                            <input asp-for="NewPassword" type="password" class="form-input" placeholder="Change password"/>
                             <span asp-validation-for="NewPassword" class="form-error"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label asp-for="@Model.DateOfBirth" class="form-label" class="mt-4"></label>
-                            <input asp-for="DateOfBirth" type="date" class="form-input" placeholder="Enter your date of birth" value="" />
+                            <input asp-for="DateOfBirth" type="date" class="form-input" placeholder="Enter your date of birth"/>
                             <span asp-validation-for="DateOfBirth" class="form-error"></span>
                         </td>
                         <br/>

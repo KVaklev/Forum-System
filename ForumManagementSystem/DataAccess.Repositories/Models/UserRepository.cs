@@ -4,6 +4,7 @@ using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace ForumManagementSystem.Repository
@@ -71,28 +72,42 @@ namespace ForumManagementSystem.Repository
         }
 
         public User Update(int id, User user, User loggedUser)
-        {
-            User userToUpdate = this.GetById(id);
+		{
+			User userToUpdate = this.GetById(id);
 
-            userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
-            userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
-            userToUpdate.Password = user.Password ?? userToUpdate.Password;
-            userToUpdate.Address = user.Address ?? userToUpdate.Address;
-            userToUpdate.Country = user.Country ?? userToUpdate.Country;
-            userToUpdate.DateOfBirth = user.DateOfBirth ?? userToUpdate.DateOfBirth;
-            userToUpdate.Email = user.Email ?? userToUpdate.Email;
-            userToUpdate.Username = user.Username ?? userToUpdate.Username;
-            userToUpdate.IsAdmin = user.IsAdmin;
-            userToUpdate.IsBlocked = user.IsBlocked;
+			userToUpdate.FirstName = user.FirstName ?? userToUpdate.FirstName;
+			userToUpdate.LastName = user.LastName ?? userToUpdate.LastName;
+			userToUpdate.Password = user.Password ?? userToUpdate.Password;
+			userToUpdate.Address = user.Address ?? userToUpdate.Address;
+			userToUpdate.Country = user.Country ?? userToUpdate.Country;
+			userToUpdate.DateOfBirth = user.DateOfBirth ?? userToUpdate.DateOfBirth;
+			userToUpdate.Email = user.Email ?? userToUpdate.Email;
+			userToUpdate.Username = user.Username ?? userToUpdate.Username;
 
-            UpdatePhoneNumber(user, userToUpdate, loggedUser);
+			UpdateAdminStatus(user, userToUpdate);
 
-            context.SaveChanges();
+			userToUpdate.IsBlocked = user.IsBlocked;
 
-            return userToUpdate;
-        }
+			UpdatePhoneNumber(user, userToUpdate, loggedUser);
 
-        public void UpdatePhoneNumber(User user, User userToUpdate, User loggedUser)
+			context.SaveChanges();
+
+			return userToUpdate;
+		}
+
+		public static void UpdateAdminStatus(User user, User userToUpdate)
+		{
+			if (!userToUpdate.IsAdmin)
+			{
+				userToUpdate.IsAdmin = user.IsAdmin;
+			}
+			else
+			{
+				userToUpdate.IsAdmin = true;
+			}
+		}
+
+		public void UpdatePhoneNumber(User user, User userToUpdate, User loggedUser)
         {
             if (user.IsAdmin || loggedUser.IsAdmin)
             {

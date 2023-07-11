@@ -69,10 +69,11 @@ namespace ForumManagementSystem.Models
             CreateMap<UserEditViewModel, User>()
             .ForMember(u => u.IsAdmin, u => u.MapFrom(u => u.Admin))
             .ForMember(u => u.IsBlocked, u => u.MapFrom(u => u.Blocked));
-            CreateMap<User, UserUpdateProfileViewModel>();
-
+            CreateMap<User, UserUpdateProfileViewModel>()
+            .ForMember(u => u.Admin, u => u.MapFrom(u => u.IsAdmin));
             CreateMap<UserUpdateProfileViewModel, User>()
-                .ForMember(u => u.Password, u => u.MapFrom(u => u.NewPassword));
+            .ForMember(u => u.IsAdmin, u => u.MapFrom(u => u.Admin))
+            .ForMember(u => u.Password, u => u.MapFrom(u => u.NewPassword));
 
 		}
     }
