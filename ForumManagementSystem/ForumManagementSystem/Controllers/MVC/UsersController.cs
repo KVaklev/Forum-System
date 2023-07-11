@@ -113,9 +113,17 @@ namespace ForumManagementSystem.Controllers.MVC
 
                 var loggedUser = authManager.TryGetUserByUsername(username);
 
+				if (userEditViewModel.Password != null)
+				{
+					var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userEditViewModel.Password));
+
+					userEditViewModel.Password = codedPassword.ToString();
+				}
+
                 var user = mapper.Map<User>(userEditViewModel);
 
-                var updatedUser = this.userService.Update(id, user, loggedUser);
+
+				var updatedUser = this.userService.Update(id, user, loggedUser);
 
                 return this.RedirectToAction("Details", "Users", new { id = updatedUser.Id });
             }
