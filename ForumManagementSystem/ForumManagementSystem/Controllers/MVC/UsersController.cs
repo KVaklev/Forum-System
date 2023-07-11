@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Exceptions;
 using Business.ViewModels.Models;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
@@ -106,15 +107,49 @@ namespace ForumManagementSystem.Controllers.MVC
 			{
 				return View(userEditViewModel);
 			}
-            var username = this.HttpContext.Session.GetString("LoggedUser");
-            var loggedUser = authManager.TryGetUserByUsername(username);
+			try
+			{
+                var username = this.HttpContext.Session.GetString("LoggedUser");
 
-            var user = mapper.Map<User>(userEditViewModel);
+                var loggedUser = authManager.TryGetUserByUsername(username);
 
-			var updatedUser = this.userService.Update(id, user, loggedUser);
+				if (userEditViewModel.Password != null)
+				{
+					var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userEditViewModel.Password));
 
-			return this.RedirectToAction("Details", "Users", new { id = updatedUser.Id });
-		}
+					userEditViewModel.Password = codedPassword.ToString();
+				}
+
+                var user = mapper.Map<User>(userEditViewModel);
+
+
+				var updatedUser = this.userService.Update(id, user, loggedUser);
+
+                return this.RedirectToAction("Details", "Users", new { id = updatedUser.Id });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View("Error");
+            }
+            catch (UnauthorizedOperationException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View(userEditViewModel);
+            }
+            catch (DuplicateEntityException ex)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                this.ViewData["ErrorMessage"] = ex.Message;
+
+                return this.View(userEditViewModel);
+            }
+
+        }
 		[HttpGet]
 		public IActionResult Delete([FromRoute] int id)
 		{
@@ -151,7 +186,7 @@ namespace ForumManagementSystem.Controllers.MVC
 
 				return this.View("Error");
 			}
-		}
+        }
 
 		[HttpGet]
 		public IActionResult Profile([FromRoute] int id)
@@ -181,40 +216,60 @@ namespace ForumManagementSystem.Controllers.MVC
 			{
 				return View(userUpdateProfileViewModel);
 			}
-			var userToUpdate=userService.GetById(id);
-
-			//var loggedUser = this.authManager.TryGetUser(userToUpdate.Username, userUpdateProfileViewModel.Password);
-
-			if (userUpdateProfileViewModel.NewPassword != null)
+			try
 			{
-				var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.NewPassword));
+				var userToUpdate = userService.GetById(id);
 
-				userUpdateProfileViewModel.NewPassword = codedPassword.ToString();
+				if (userUpdateProfileViewModel.NewPassword != null)
+				{
+					var codedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(userUpdateProfileViewModel.NewPassword));
+
+					userUpdateProfileViewModel.NewPassword = codedPassword.ToString();
+				}
+
+				var loggedUser = userToUpdate;
+
+				var user = mapper.Map<User>(userUpdateProfileViewModel);
+
+				userToUpdate = this.userService.Update(id, user, loggedUser);
+
+				if (userUpdateProfileViewModel.ImageFile != null)
+				{
+					string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
+					string uniqueFileName = userToUpdate.FirstName + " " + userToUpdate.LastName + ".png";
+					string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
+
+					using (var fileStream = new FileStream(filePath, FileMode.Create))
+					{
+						userUpdateProfileViewModel.ImageFile.CopyTo(fileStream);
+					}
+					userToUpdate.ProfilePhotoPath = "~/UploadedImages";
+					userToUpdate.ProfilePhotoFileName = uniqueFileName;
+				}
+
+				return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });
 			}
+			catch (EntityNotFoundException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
 
-			var loggedUser = userToUpdate;
-		
-			var user = mapper.Map<User>(userUpdateProfileViewModel);
+				return this.View("Error");
+			}
+			catch (DuplicateEntityException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+				this.ViewData["ErrorMessage"] = ex.Message;
 
-			userToUpdate = this.userService.Update(id, user, loggedUser);
+				return this.View(userUpdateProfileViewModel);
+			}
+			catch (UnauthorizedOperationException ex)
+			{
+				this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+				this.ViewData["ErrorMessage"] = ex.Message;
 
-
-			
-            if (userUpdateProfileViewModel.ImageFile != null)
-            { 
-                string imageUploadedFolder = Path.Combine(webHostEnvironment.WebRootPath, "UploadedImages");
-                string uniqueFileName = userToUpdate.FirstName + " " + userToUpdate.LastName + ".png";
-                string filePath = Path.Combine(imageUploadedFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    userUpdateProfileViewModel.ImageFile.CopyTo(fileStream);
-                }
-                userToUpdate.ProfilePhotoPath = "~/UploadedImages";
-                userToUpdate.ProfilePhotoFileName = uniqueFileName;
-            }
-
-            return this.RedirectToAction("Details", "Users", new { id = userToUpdate.Id });
+				return this.View(userUpdateProfileViewModel);
+			}
 		}
 	}
 }
