@@ -51,9 +51,9 @@ namespace ForumManagementSystem.Repository
             {
                 result = result.Where(p => p.CreatedBy.Username == parameters.Username).ToList();
             }
-            if (parameters.postID.HasValue)
+            if (parameters.PostId.HasValue)
             {
-                result = result.Where(p => p.PostId == parameters.postID).ToList();
+                result = result.Where(p => p.PostId == parameters.PostId).ToList();
             }
             if (!string.IsNullOrEmpty(parameters.SortBy))
             { 

@@ -66,8 +66,15 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                    PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
-                    return View(comments);
+                PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
+                if (parameters.Username == null)
+                {
+                    return View("Get", comments);
+                }
+                else 
+                {
+                     return View(comments);
+                }
             }
             catch (EntityNotFoundException ex)
             {
@@ -305,7 +312,7 @@ namespace ForumManagementSystem.Controllers.MVC
                     var username = this.HttpContext.Session.GetString("LoggedUser");
                     var user = authManager.TryGetUserByUsername(username);
                     var createdComment = this.commentService.Create(commentReply, user);
-					return this.RedirectToAction("Index", "Comments", new { id = createdComment.PostId });
+					return this.RedirectToAction("Filter", "Comments", new { username=user.Username});
 				}
 			}
 			catch (EntityNotFoundException ex)

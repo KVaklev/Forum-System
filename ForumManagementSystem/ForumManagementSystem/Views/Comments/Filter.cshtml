@@ -18,9 +18,9 @@
         <label class="form-label"> Find user: </label>
         <input type="text" name="Username" placeholder="Username" />
         <input type="submit" value="Search" class="btn btn-primary" />
+        <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> ALL </a>
     }
 </form>
-
 </br>
 <table class="table-responsive">
     <colgroup>
@@ -107,14 +107,15 @@
                 {
                 <span><a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@i">@i</a></span>
                 }
-             }
+            }
         }
     }
    @if (commentDetail == null)
     {
-     <a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Next</a>
+        
+        <a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Next</a>
     }
     else
     { 
-    <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
+        <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
     }

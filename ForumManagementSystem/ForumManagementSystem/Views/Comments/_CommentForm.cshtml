@@ -8,6 +8,7 @@
 		<br />
 		<span asp-validation-for="Content" class="form-error"></span>
 	    <br />
+	    
 		<button type="submit" class="btn btn-warning">@this.ViewData["ButtonText"]</button>
-	<a asp-controller="Posts" asp-action="Index" class="btn btn-primary">Back</a>
+	<a asp-controller="Comments" asp-action="Index" asp-route-PostId="@this.ViewData["PostId"]" class="btn btn-primary">Back @this.ViewData["PostId"]</a>
 </form>
