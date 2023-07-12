@@ -35,6 +35,11 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
         {
+            if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             var posts = this.postService.FilterBy(queryParameters);
 
             return View(posts);
@@ -90,12 +95,26 @@ namespace ForumManagementSystem.Controllers.MVC
                 return RedirectToAction("Login", "Auth");
             }
 
+            var userName = this.HttpContext.Session.GetString("LoggedUser");
+            var user = authManager.TryGetUserByUsername(userName);
 
-            var postViewModel = new PostViewModel();
-            this.InitializeCategories(postViewModel);
-            this.InitializeTags(postViewModel);
+            if (user.IsBlocked)
+            {
+                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                this.ViewData["ErrorMessage"] = "You are blocked";
+                return this.View("UnauthorizedError");
+            }
+            else
+            {
 
-            return this.View(postViewModel);
+                var postViewModel = new PostViewModel();
+                this.InitializeCategories(postViewModel);
+                this.InitializeTags(postViewModel);
+
+                return this.View(postViewModel);
+            }
+
+
         }
 
         [HttpPost]
@@ -110,6 +129,7 @@ namespace ForumManagementSystem.Controllers.MVC
                 {
                     var userName = this.HttpContext.Session.GetString("LoggedUser");
                     var user = authManager.TryGetUserByUsername(userName);
+
                     var post = mapper.Map<Post>(postViewModel);
                     var createdPost = postService.Create(post, user, postViewModel.Tags);
                     return RedirectToAction("Details", "Posts", new { id = createdPost.Id });

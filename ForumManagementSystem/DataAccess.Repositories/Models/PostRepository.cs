@@ -91,7 +91,7 @@ namespace ForumManagementSystem.Repository
         {
             post.CreatedBy = user;
             post.PostLikesCount = 0;
-            post.PostCommentsCount = 0; 
+            post.PostCommentsCount = 0;
             post.DateTime = DateTime.Now;
             context.Posts.Add(post);
             context.SaveChanges();
@@ -186,7 +186,7 @@ namespace ForumManagementSystem.Repository
                 }
             }
 
-            int totalPages = ((result.Count() + 1) / filterParameters.PageSize)+1;
+            int totalPages = ((result.Count() + 1) / filterParameters.PageSize) + 1;
 
             result = Paginate(result, filterParameters.PageNumber, filterParameters.PageSize);
 
@@ -228,9 +228,19 @@ namespace ForumManagementSystem.Repository
                 TagId = tagId,
                 PostId = postId
             };
-            Post post = this.GetById(postId);
-            post.PostTags.Add(postTag);
-            this.context.PostTags.Add(postTag);
+
+            // Post post = this.GetById(postId);
+
+            // post.PostTags.Add(postTag);
+
+
+            var currPostTag = context.PostTags.Where(t => t.TagId == tagId).Where(p => p.PostId == postId).FirstOrDefault();
+
+            if (currPostTag == null)
+            {
+                this.context.PostTags.Add(postTag);
+            }
+
             context.SaveChanges();
         }
 
@@ -250,7 +260,7 @@ namespace ForumManagementSystem.Repository
                 .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
                 .Take(queryParameters.PageSize)
                 .ToList();
-             
+
             var totalCount = posts.Count;
             var totalPages = (int)Math.Ceiling(totalCount / (double)queryParameters.PageSize);
 

@@ -10,6 +10,7 @@
     var loggedUserId = this.Context.Session.GetInt32("UserId");
     var isBlocked = Context.Session.GetString("IsBlocked");
     var isAdmin = Context.Session.GetString("IsAdmin");
+    var username = Context.Session.GetString("Username");
 }
 <form asp-controller="Comments" asp-action="Filter" method="get">
    
@@ -86,7 +87,7 @@
     }
     else
     {
-    <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+    <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@username" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
     }
     @{
         int currentPageNumber = this.Model.PageNumber;
@@ -105,7 +106,7 @@
                 }
                 else
                 {
-                <span><a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@i">@i</a></span>
+                <span><a asp-controller="Comments" asp-action="Filter" asp-route-Username="@username" asp-route-PageNumber="@i">@i</a></span>
                 }
             }
         }

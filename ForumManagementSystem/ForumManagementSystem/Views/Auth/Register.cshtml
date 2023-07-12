@@ -16,7 +16,7 @@
 		}
 
 		if (file) {
-			// Load image as a base64 encoded URI
+
 			reader.readAsDataURL(file);
 		}
 		else {
@@ -38,37 +38,37 @@
 	<form asp-controller="Auth" asp-action="Register" enctype="multipart/form-data" method="post">
 		<label asp-for="FirstName" class="form-label"></label>
 		<br />
-		<input asp-for="FirstName" type="text" class="form-input" />
+		<input asp-for="FirstName" type="text" class="form-input" placeholder="First name" />
 		<br />
 		<span asp-validation-for="FirstName" class="form-error"></span>
 
 		<label asp-for="LastName" class="form-label"></label>
 		<br />
-		<input asp-for="LastName" type="text" class="form-input" />
+		<input asp-for="LastName" type="text" class="form-input" placeholder="Last name" />
 		<br />
 		<span asp-validation-for="LastName" class="form-error"></span>
 
 		<label asp-for="Username" class="form-label"></label>
 		<br />
-		<input asp-for="Username" type="text" class="form-input" />
+		<input asp-for="Username" type="text" class="form-input" placeholder="Username" />
 		<br />
 		<span asp-validation-for="Username" class="form-error"></span>
 
 		<label asp-for="Email" class="form-label"></label>
 		<br />
-		<input asp-for="Email" type="text" class="form-input" />
+		<input asp-for="Email" type="text" class="form-input" placeholder="Enter a valid email" />
 		<br />
 		<span asp-validation-for="Email" class="form-error"></span>
 
 		<label asp-for="Password" class="form-label"></label>
 		<br />
-		<input asp-for="Password" type="password" class="form-input" />
+		<input asp-for="Password" type="password" class="form-input" placeholder="Enter a valid password" />
 		<br />
 		<span asp-validation-for="Password" class="form-error"></span>
 
 		<label asp-for="ConfirmPassword" class="form-label"></label>
 		<br />
-		<input asp-for="ConfirmPassword" type="password" class="form-input" />
+		<input asp-for="ConfirmPassword" type="password" class="form-input" placeholder="Re-type password" />
 		<br />
 		<span asp-validation-for="ConfirmPassword" class="form-error"></span>
 
@@ -91,7 +91,6 @@
 		<div style="margin-top: 20px;">
 			<input type="submit" value="Register" class="btn btn-primary" />
 
-		@*<a asp-controller="Auth" asp-action="Login" class="btn btn-secondary">Login</a>*@
 		</div>
 	</form>
 </body>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business.Exceptions;
 using Business.ViewModels.Models;
+using DataAccess.Models;
 using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
@@ -34,7 +35,7 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 			List<User> users = this.userService.FilterBy(userQueryParameters);
 
-			return this.View(users);
+            return this.View(users);
 		}
 		[HttpGet]
 		public IActionResult Details([FromRoute] int id)
