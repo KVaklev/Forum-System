@@ -35,6 +35,11 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
         {
+            if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             var posts = this.postService.FilterBy(queryParameters);
 
             return View(posts);
