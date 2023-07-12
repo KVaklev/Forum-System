@@ -1,14 +1,18 @@
 ﻿using AspNetCoreDemo.Models;
 using AutoMapper;
 using Business.Exceptions;
+using Business.QueryParameters;
 using Business.Services.Contracts;
 using Business.ViewModels.Models;
+using DataAccess.Models;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using ForumManagementSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Presentation.Helpers;
+using System.Linq;
+
 
 namespace ForumManagementSystem.Controllers.MVC
 {
@@ -33,44 +37,28 @@ namespace ForumManagementSystem.Controllers.MVC
         }
 
         [HttpGet]
-        public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
+        public IActionResult Index([FromQuery] PostQueryParameters postQueryParameters)
         {
             if (!this.HttpContext.Session.Keys.Contains("LoggedUser"))
             {
                 return RedirectToAction("Login", "Auth");
             }
 
-            var posts = this.postService.FilterBy(queryParameters);
+            List<Post> posts = this.postService.FilterBy(postQueryParameters);
 
-            return View(posts);
+            var filterViewModel = new PostSearchModel
+            {
+                Posts = (AspNetCoreDemo.Models.PaginatedList<Post>)posts,
+                PostQueryParameters = postQueryParameters
+                
+
+            };
+
+            return View(filterViewModel);
 
         }
 
-        //if we decide to filter by category
-        //[HttpGet] 
-        //public IActionResult Index([FromQuery] PostQueryParameters queryParameters)
-        //{
-        //    var allPosts = this.postService.GetAll();
-        //    var categories = categoryService.GetAll();
-        //    var paginatedPosts = new PaginatedList<Post>(allPosts, queryParameters.PageNumber, queryParameters.PageSize);
-
-        //    // Filter the posts based on the selected category if CategoryFilter has a value
-        //    if (queryParameters.CategoryFilter.HasValue)
-        //    {
-        //        paginatedPosts = new PaginatedList<Post>(
-        //            paginatedPosts.Where(p => p.CategoryId == queryParameters.CategoryFilter.Value).ToList(),
-        //            queryParameters.PageNumber,
-        //            queryParameters.PageSize
-        //        );
-        //    }
-
-        //    ViewBag.Categories = new SelectList(categories, "Id", "Name");
-        //    ViewBag.CategoryFilter = queryParameters.CategoryFilter;
-
-        //    return View(paginatedPosts);
-        //}
-
-
+        
         [HttpGet]
         public IActionResult Details(int id)
         {
@@ -159,9 +147,22 @@ namespace ForumManagementSystem.Controllers.MVC
             {
                 var post = postService.GetById(id);
 
+                var tags = post.PostTags
+                       .Where(p => p.PostId == id)
+                       .Select(p => p.Tag.Name)
+                       .ToList();
+
+                var tagNames = string.Join(" ", tags);
+                              
+
                 var postViewModel = this.mapper.Map<PostViewModel>(post);
+
+
                 this.InitializeCategories(postViewModel);
                 this.InitializeTags(postViewModel);
+
+                postViewModel.Tags = tagNames;
+                
                 return this.View(postViewModel);
             }
             catch (EntityNotFoundException ex)

@@ -1,12 +1,10 @@
-﻿@model PaginatedList<Post>
-
-
-@using ForumManagementSystem.Services
-@using Business.Services.Contracts
-@using AspNetCoreDemo.Models
+﻿@using ForumManagementSystem.Services;
+@using Business.Services.Contracts;
+@using AspNetCoreDemo.Models;
 @using Microsoft.AspNetCore.Http;
+@using Business.QueryParameters;
 
-
+@model PostSearchModel
 
 
 @inject ICategoryService categoryService
@@ -22,6 +20,14 @@
     var tags = new SelectList(tagService.GetAll(), "Id", "Name");
 }
 
+@{
+    var parameters = new Dictionary<string, string>()
+            {
+                {"Username" , Model.PostQueryParameters.Username },
+                {"Tag" , Model.PostQueryParameters.Tag }
+            };
+}
+
 
 <div class="body-content">
     <h2>Posts</h2>
@@ -29,46 +35,16 @@
 
     @if (isLogged)
     {
-        <h3><a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create</a></h3>
-
-        @*<form asp-controller="Posts" asp-action="Index" method="get">
-    <label class="form-label">Find By Category</label>
-    <select name="CategoryFilter" asp-items="@ViewBag.Categories" class="form-input">
-    <option value="">All</option>
-    </select>
-    <input type="submit" value="Search" class="btn btn-primary" />
-    </form>*@
-
-        <h5>Find By User</h5>
-
-        <form asp-controller="Posts" asp-action="Index" method="get">
-
+        <form asp-controller="Posts" asp-action="Index" method="get" style="width: 100%;">
+            <a asp-controller="Posts" asp-action="Create" class="btn btn-primary">Create New Post</a>
+            <span style="font-weight: bold;">Find By User</span>
             <input type="text" name="Username" placeholder="Username">
-            <input type="submit" value="Search" class="btn btn-primary" />
-
-        </form>
-
-
-        @* <form asp-controller="Posts" asp-action="Index" method="get">
-
-    <label class="form-label"> Find By User: </label>
-    <input type="text" name="Username" class="form-input" placeholder="" />
-    <input type="submit" value="Search" class="btn btn-primary" />
-
-    </form>*@
-
-
-        <h5>Find By Tag</h5>
-
-        <form asp-controller="Posts" asp-action="Index" method="get">
-
+            <span style="font-weight: bold;">Find By Tag</span>
             <input type="text" name="Tag" placeholder="Tag">
-            <input type="submit" value="Search" class="btn btn-primary" />
-
+            <input type="submit" value="Search" class="btn btn-primary ml-2">
         </form>
 
     }
-
 
     <br />
 
@@ -87,7 +63,7 @@
             </thead>
             <tbody>
                 @{
-                    foreach (var post in Model)
+                    foreach (var post in Model.Posts)
                     {
                         <tr>
                             <td>@post.CreatedBy.Username</td>
@@ -106,7 +82,7 @@
                                         <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
                                     </div>
 
-                                    <br/>
+                                    <br />
 
                                     <div class="text-left mb-3">
                                         <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
@@ -145,15 +121,15 @@
     </div>
 </div>
 @{
-    string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
-    string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+    string prevButtonState = this.Model.Posts.HasPrevPage ? "" : "disabled";
+    string nextButtonState = this.Model.Posts.HasNextPage ? "" : "disabled";
 }
 
-<a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
+<a asp-controller="Posts" asp-action="Index" asp-all-route-data="@parameters" asp-route-PageNumber="@(this.Model.Posts.PageNumber-1)" class="btn btn-link @prevButtonState">Prev</a>
 @{
-    int currentPageNumber = this.Model.PageNumber;
+    int currentPageNumber = this.Model.Posts.PageNumber;
 
-    for (int i = 1; i <= this.Model.TotalPages; i++)
+    for (int i = 1; i <= this.Model.Posts.TotalPages; i++)
     {
         if (i == currentPageNumber)
         {
@@ -161,8 +137,8 @@
         }
         else
         {
-            <span><a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@i">@i</a></span>
+            <span><a asp-controller="Posts" asp-action="Index" asp-all-route-data="@parameters" asp-route-PageNumber="@i">@i</a></span>
         }
     }
 }
-<a asp-controller="Posts" asp-action="Index" asp-route-PageNumber="@(this.Model.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>
+<a asp-controller="Posts" asp-action="Index" asp-all-route-data="@parameters" asp-route-PageNumber="@(this.Model.Posts.PageNumber+1)" class="btn btn-link @nextButtonState">Next</a>

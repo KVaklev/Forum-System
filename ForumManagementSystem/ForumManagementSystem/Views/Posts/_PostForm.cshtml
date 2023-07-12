@@ -30,7 +30,7 @@
 
     <label asp-for="Tags" class="form-label">Tags (If more than one tag will be added, please separate them with a space)</label>
     <br />
-    <input asp-for="Tags" type="text" class="form-input">
+    <input asp-for="Tags" type="text" class="form-input" value ="@Model.Tags">
     <br />
     <span asp-validation-for="Tags" class="form-error"></span>
 

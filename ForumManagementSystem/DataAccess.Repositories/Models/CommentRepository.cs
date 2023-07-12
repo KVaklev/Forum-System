@@ -73,9 +73,9 @@ namespace ForumManagementSystem.Repository
             }
 
 
-			int totalPages = (result.Count() + 1) / parameters.PageSize;
+            int totalPages = (result.Count() + parameters.PageSize - 1) / parameters.PageSize;
 
-			result = Paginate(result, parameters.PageNumber, parameters.PageSize);
+            result = Paginate(result, parameters.PageNumber, parameters.PageSize);
 
 			return new PaginatedList<Comment>(result.ToList(), totalPages, parameters.PageNumber);
 		}

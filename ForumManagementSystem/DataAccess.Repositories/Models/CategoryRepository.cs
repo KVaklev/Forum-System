@@ -64,7 +64,7 @@ namespace ForumManagementSystem.Repository
                 throw new EntityNotFoundException("These are no category with this name or description.");
             }
 
-            int totalPages = (result.Count() + 1) / parameters.PageSize;
+            int totalPages = (result.Count() + parameters.PageSize - 1) / parameters.PageSize;
 
             result = Paginate(result, parameters.PageNumber, parameters.PageSize);
 
