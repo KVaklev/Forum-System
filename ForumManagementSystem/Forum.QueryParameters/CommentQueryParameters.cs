@@ -14,7 +14,7 @@
 
         public int? PostId { get; set; }
 
-		public int PageSize { get; set; } = 2;
+		public int PageSize { get; set; } = 4;
 
 		public int PageNumber { get; set; } = 1;
 
