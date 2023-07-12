@@ -40,6 +40,7 @@ namespace ForumManagementSystem.Controllers.MVC
             return View(viewModel);
          
         }
+        [HttpGet]
         public IActionResult About()
         {
             return View();

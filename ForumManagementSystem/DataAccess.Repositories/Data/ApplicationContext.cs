@@ -112,7 +112,7 @@ namespace DataAccess.Repositories.Data
                 new Category
                 {
                     Id = 1,
-                    Name = "Asian",
+                    Name = "Asia",
                     Description = "Discussions about all the countries that fall in the Asian continent including the middle eastern countries.",
                     DateTime = DateTime.Now,
                     CountPosts =1,
