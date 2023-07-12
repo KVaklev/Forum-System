@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Exceptions;
+using Business.QueryParameters;
 using Business.ViewModels.Models;
 using DataAccess.Models;
 using DataAccess.Repositories.Data;
@@ -35,7 +36,14 @@ namespace ForumManagementSystem.Controllers.MVC
 			}
 			List<User> users = this.userService.FilterBy(userQueryParameters);
 
-            return this.View(users);
+			var newViewModel = new UserSearchModel
+			{
+				Users = (AspNetCoreDemo.Models.PaginatedList<User>)users,
+				UserQueryParameters = userQueryParameters
+
+            };
+
+            return this.View(newViewModel);
 		}
 		[HttpGet]
 		public IActionResult Details([FromRoute] int id)
