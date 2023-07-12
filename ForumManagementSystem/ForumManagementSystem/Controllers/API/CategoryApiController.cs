@@ -75,7 +75,10 @@ namespace ForumManagementSystem.Controllers.API
             }
         }
         [HttpPut("categories/{id}")]
-        public IActionResult UpdateCategory(int id, [FromBody] CategoryDto categoryDto, [FromHeader] string credentials)
+        public IActionResult UpdateCategory(
+            int id, 
+            [FromBody] CategoryDto categoryDto, 
+            [FromHeader] string credentials)
         {
             try
             {

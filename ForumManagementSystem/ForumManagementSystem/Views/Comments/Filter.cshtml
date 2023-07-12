@@ -1,48 +1,50 @@
 ﻿@using AspNetCoreDemo.Models;
 @using Microsoft.AspNetCore.Http;
-@model PaginatedList<Comment>
+@using Business.QueryParameters;
+@model CommentSearchModel
 @{
     this.ViewData["Title"] = "World Travel Forum - Comments";
 }
 @{
-    Comment commentDetail = this.Model.FirstOrDefault();
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var loggedUserId = this.Context.Session.GetInt32("UserId");
     var isBlocked = Context.Session.GetString("IsBlocked");
     var isAdmin = Context.Session.GetString("IsAdmin");
     var username = Context.Session.GetString("Username");
 }
+@{
+    var parameters = new Dictionary<string, string>
+    {
+         {"Username", Model.CommentQueryParameters.Username}
+    };
+}
 <form asp-controller="Comments" asp-action="Filter" method="get">
    
     @if (isLogged)
     {
-        <label class="form-label"> Find user: </label>
+        <label class="form-label"> Find user by username: </label>
         <input type="text" name="Username" placeholder="Username" />
         <input type="submit" value="Search" class="btn btn-primary" />
         <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> ALL </a>
     }
 </form>
-</br>
+<span class="form-label">The results are filtered by username: @this.Model.CommentQueryParameters.Username</span>
+</br></br>
 <table class="table-responsive">
-    <colgroup>
-        <col style="width: 8%"> <!-- Adjust the width value as needed -->
-        <col style="width: 70%">
-    </colgroup>
     <table class="table table-bordered table-condensed table-hover">
         <thead class="table-dark">
             <tr>
-                <th class="text-center">Username</th>
-                <th class="text-center">Content</th>
+                <th class="text-center" style="height: 40px; width: 15%;">Username</th>
+                <th class="text-center" style="height: 40px; width: 85%;">Content</th>
             </tr>
         </thead>
         <tbody>
             @{
                 @if(isLogged){
-                foreach (var comment in this.Model)
+                foreach (var comment in this.Model.Comments)
                 {
                     <tr>
                         <td>
-
                             Created by:<br />
                             <a asp-controller="Users" asp-action="Index" asp-route-Username="@comment.CreatedBy.Username">@comment.CreatedBy.Username</a>
                             <br />
@@ -78,21 +80,16 @@
         </tbody>
     </table>
     @{
-        string prevButtonState = this.Model.HasPrevPage ? "" : "disabled";
-        string nextButtonState = this.Model.HasNextPage ? "" : "disabled";
+        string prevButtonState = this.Model.Comments.HasPrevPage ? "" : "disabled";
+        string nextButtonState = this.Model.Comments.HasNextPage ? "" : "disabled";
     }
-    @if (commentDetail == null)
-    {
-     <a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
-    }
-    else
-    {
-    <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
-    }
+    
+    <a asp-controller="Comments" asp-action="Filter" asp-all-route-data="@parameters" asp-route-PageNumber="@(this.Model.Comments.PageNumber - 1)" class="btn btn-link @prevButtonState">Prev</a>
+   
     @{
-        int currentPageNumber = this.Model.PageNumber;
+        int currentPageNumber = this.Model.CommentQueryParameters.PageNumber;
 
-        for (int i = 1; i <= this.Model.TotalPages; i++)
+        for (int i = 1; i <= this.Model.Comments.TotalPages; i++)
         {
             if (i == currentPageNumber)
             {
@@ -100,23 +97,8 @@
             }
             else
             {
-                @if (commentDetail == null)
-                {
-                   <span><a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@i">@i</a></span>
-                }
-                else
-                {
-                    <span><a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@i">@i</a></span>
-                }
+                <span><a asp-controller="Comments" asp-action="Filter" asp-all-route-data="@parameters" asp-route-PageNumber="@i">@i</a></span>
             }
         }
     }
-   @if (commentDetail == null)
-    {
-        
-        <a asp-controller="Comments" asp-action="Filter" asp-route-PageNumber="@(this.Model.PageNumber - 1)" class="btn btn-link @prevButtonState">Next</a>
-    }
-    else
-    { 
-        <a asp-controller="Comments" asp-action="Filter" asp-route-Username="@commentDetail.CreatedBy.Username" asp-route-PageNumber="@(this.Model.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>
-    }
+    <a asp-controller="Comments" asp-action="Filter" asp-all-route-data="@parameters" asp-route-PageNumber="@(this.Model.Comments.PageNumber + 1)" class="btn btn-link @nextButtonState">Next</a>

@@ -25,6 +25,7 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Index([FromQuery] CategoryQueryParameter categoryQueryParameter)
         {
+            categoryQueryParameter.SortBy = "name";
             PaginatedList<Category> result = categoryService.FilterBy(categoryQueryParameter);
 
             var usersCount = this.userService.GetAll().Count();
@@ -40,6 +41,7 @@ namespace ForumManagementSystem.Controllers.MVC
             return View(viewModel);
          
         }
+        [HttpGet]
         public IActionResult About()
         {
             return View();

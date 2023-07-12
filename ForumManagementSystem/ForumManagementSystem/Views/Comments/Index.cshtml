@@ -16,26 +16,20 @@
                 > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
             <span style="margin-right:35%"></span>
             @if (isLogged)
-            {
-        
-        <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> ALL </a>
-        <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-primary"> ADD A NEW COMMENT </a>
-        
+            {        
+        <a asp-controller="Comments" asp-action="Filter" class="btn btn-primary"> FILTER </a>
+        <a asp-controller="Comments" asp-action="Create" asp-route-id="@commentDetail.PostId" class="btn btn-warning"> CREATE NEW </a>       
             }
         </form>
     
 </br>
 
 <table class="table-responsive">
-    <colgroup>
-        <col style="width: 8%"> <!-- Adjust the width value as needed -->
-        <col style="width: 70%">
-    </colgroup>
     <table class="table table-bordered table-condensed table-hover">
         <thead class="table-dark">
             <tr>
-                <th class="text-center">Username</th>
-                <th class="text-center">Content</th>
+            <th class="text-center" style="height: 40px; width: 15%;">Username</th>
+            <th class="text-center" style="height: 40px; width: 85%;">Content</th>
            </tr>
        </thead>
     <tbody>
@@ -46,7 +40,6 @@
                 {
                     <tr>
                         <td>
-
                             Created by:<br/>
                             <a asp-controller="Users" asp-action="Index" asp-route-Username="@comment.CreatedBy.Username">@comment.CreatedBy.Username</a>
                             <br/>
@@ -58,8 +51,7 @@
                             @comment.LikesCount
                             @if (isLogged)
                             {
-                                <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
-                                                                                   
+                               <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>                                                    
                                <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
                             }
                             @if (isLogged & comment.UserId == loggedUserId)

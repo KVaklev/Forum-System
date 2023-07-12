@@ -121,9 +121,5 @@ namespace ForumManagementSystem.Repository
             context.SaveChanges();
             return category.CountPosts;
         }
-
-        
-
-
     }
 }
