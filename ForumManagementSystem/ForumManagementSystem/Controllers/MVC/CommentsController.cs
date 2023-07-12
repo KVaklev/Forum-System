@@ -2,6 +2,7 @@
 using AutoMapper;
 using Business.Dto;
 using Business.Exceptions;
+using Business.QueryParameters;
 using Business.Services.Contracts;
 using Business.Services.Models;
 using Business.ViewModels.Models;
@@ -78,15 +79,16 @@ namespace ForumManagementSystem.Controllers.MVC
                 parameters.SortBy = "date";
                 parameters.SortOrder = "desc";
                 PaginatedList<Comment> comments = this.commentService.FilterBy(parameters);
+
+                var commentSearchModel = new CommentSearchModel
+                {
+                    Comments = (AspNetCoreDemo.Models.PaginatedList<Comment>)comments,
+                    CommentQueryParameters = parameters
+
+                };
+
+                return View(commentSearchModel);
                 
-                if (parameters.Username == null)
-                {
-                    return View("Get", comments);
-                }
-                else
-                {
-                    return View(comments);
-                }
             }
             catch (EntityNotFoundException ex)
             {

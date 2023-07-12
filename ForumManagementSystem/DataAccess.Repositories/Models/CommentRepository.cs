@@ -3,6 +3,7 @@ using DataAccess.Repositories.Data;
 using ForumManagementSystem.Exceptions;
 using ForumManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Net;
 
 namespace ForumManagementSystem.Repository
@@ -37,11 +38,7 @@ namespace ForumManagementSystem.Repository
         
         public PaginatedList<Comment> FilterBy(CommentQueryParameters parameters)
         {
-            List<Comment> result = context.Comments
-                .Include(u => u.CreatedBy)
-                .Include(p => p.Post)
-                .ThenInclude(c => c.Category)
-                .ToList();
+            var result = GetComments();
 
             if (parameters.UserId.HasValue)
             {
@@ -118,6 +115,17 @@ namespace ForumManagementSystem.Repository
             context.SaveChanges();
 
             return commentToUpdate;
+        }
+
+        private List<Comment> GetComments()
+        { 
+          List<Comment>result = context.Comments
+                .Include(u => u.CreatedBy)
+                .Include(p => p.Post)
+                .ThenInclude(c => c.Category)
+                .ToList();
+
+          return result;
         }
     }
 }
