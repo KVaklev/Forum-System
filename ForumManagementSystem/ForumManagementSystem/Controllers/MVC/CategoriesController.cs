@@ -34,18 +34,28 @@ namespace ForumManagementSystem.Controllers.MVC
         [HttpGet]
         public IActionResult Create()
         {
-            if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
+            try
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return this.View("UnauthorizedError");
+                if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
+                {
+                    return UnLoggedErrorView();
+                }
+                else if ((this.HttpContext.Session.GetString("IsAdmin")) != "True")
+                {
+                    return NotAdminErrorView();
+                }
+                else 
+                {
+                    var categoryViewModel = new CategoryViewModel();
+                    return this.View(categoryViewModel);
+                }
             }
-            else 
+            catch (UnauthenticatedOperationException ex)
             {
-				var categoryViewModel = new CategoryViewModel();
-				return this.View(categoryViewModel);
-			}
-           
+                return UnauthorizedErrorView(ex.Message);
+            }
         }
+
         [HttpPost]
         public IActionResult Create(CategoryViewModel categoryViewModel)
         {
@@ -54,53 +64,54 @@ namespace ForumManagementSystem.Controllers.MVC
                 if (this.ModelState.IsValid)
                 {
                     var category = this.mapper.Map<Category>(categoryViewModel);
-
-                    var username = this.HttpContext.Session.GetString("LoggedUser");
-                    var user = authManager.TryGetUserByUsername(username);
-                    var createdCategory = this.categoryService.Create(category, user);
+                    var loggedUser = GetLoggedUser();
+                    var createdCategory = this.categoryService.Create(category, loggedUser);
                     return this.RedirectToAction("Index", "Home", new { id = createdCategory.Id });
                 }
             }
             catch (DuplicateEntityException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
                 this.ViewData["ErrorMessage"] = ex.Message;
                 return this.View(categoryViewModel);
             }
             catch (UnauthorizedOperationException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("UnauthorizedError");
+                return UnauthorizedErrorView(ex.Message);
             }
 
             return this.View(categoryViewModel);
         }
+        
         [HttpGet]
         public IActionResult Edit([FromRoute] int id)
         {
             try
             {
+                if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
+                {
+                    return UnLoggedErrorView();
+                }
+                else if ((this.HttpContext.Session.GetString("IsAdmin")) != "True")
+               {
+                return NotAdminErrorView();
+                }
+               else
+               { 
                     var category = this.categoryService.GetById(id);
                     var categoryViewModel = this.mapper.Map<CategoryViewModel>(category);
                     return this.View(categoryViewModel);
+               }
             }
             catch (EntityNotFoundException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("Error");
+                return EntityErrorView(ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("UnauthorizedError");
+                return UnauthorizedErrorView(ex.Message);
             }
         }
+        
         [HttpPost]
         public IActionResult Edit([FromRoute] int id, CategoryViewModel categoryViewModel)
         {
@@ -110,25 +121,20 @@ namespace ForumManagementSystem.Controllers.MVC
                 {
                     return View(categoryViewModel);
                 }
-                var username = this.HttpContext.Session.GetString("LoggedUser");
-                var user = authManager.TryGetUserByUsername(username);
+                var loggedUser = GetLoggedUser();
                 var category = mapper.Map<Category>(categoryViewModel);
-                var updatedCategory = this.categoryService.Update(id, category, user);
+                var updatedCategory = this.categoryService.Update(id, category, loggedUser);
 
                 return this.RedirectToAction("Index", "Home", new { id = updatedCategory.Id });
             }
             catch (DuplicateEntityException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status409Conflict;
                 this.ViewData["ErrorMessage"] = ex.Message;
                 return this.View(categoryViewModel);
             }
             catch (UnauthorizedOperationException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("UnauthorizedError");
+                return UnauthorizedErrorView(ex.Message);
             }
         }
 
@@ -137,22 +143,27 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
+                if ((this.HttpContext.Session.GetString("LoggedUser")) == null)
+                {
+                    return UnLoggedErrorView();
+                }
+                else if ((this.HttpContext.Session.GetString("IsAdmin")) != "True")
+                {
+                    return NotAdminErrorView();
+                }
+                else 
+                { 
                     var category = this.categoryService.GetById(id);
                     return this.View(category);   
+                }
             }
             catch (EntityNotFoundException ex)
             {
-                this.Response.StatusCode = StatusCodes.Status404NotFound;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("Error");
+                return EntityErrorView(ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("UnauthorizedError");
+                return UnauthorizedErrorView(ex.Message);
             }
         }
 
@@ -161,30 +172,60 @@ namespace ForumManagementSystem.Controllers.MVC
         {
             try
             {
-                var username = this.HttpContext.Session.GetString("LoggedUser");
-                var user = authManager.TryGetUserByUsername(username);
+                var loggedUser = GetLoggedUser();
                 var category = this.categoryService.GetById(id);
-                this.categoryService.Delete(id, user);
+                this.categoryService.Delete(id, loggedUser);
 
                 return this.RedirectToAction("Index", "Home");
             }
             catch (EntityNotFoundException ex)
             {
-                this.Response.StatusCode = StatusCodes.Status404NotFound;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("Error");
+                return EntityErrorView(ex.Message);
             }
             catch (UnauthorizedOperationException ex)
             {
-                this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                this.ViewData["ErrorMessage"] = ex.Message;
-
-                return this.View("UnauthorizedError");
+                return UnauthorizedErrorView(ex.Message);
             }
         }
-		
-		
 
-	}
+        private User GetLoggedUser()
+        {
+            var username = this.HttpContext.Session.GetString("LoggedUser");
+            var user = authManager.TryGetUserByUsername(username);
+            return user;
+        }
+
+        private IActionResult EntityErrorView(string message)
+        {
+            this.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            this.ViewData["ErrorMessage"] = message;
+
+            return this.View("Error");
+        }
+
+        private IActionResult UnauthorizedErrorView(string message)
+        {
+            this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            this.ViewData["ErrorMessage"] = message;
+
+            return this.View("UnauthorizedError");
+        }
+
+        private IActionResult UnLoggedErrorView()
+        {
+            this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            this.ViewData["ErrorMessage"] = "You are a \"UNLOGGED USER\"!";
+            return this.View("UnauthorizedError");
+
+        }
+
+        private IActionResult NotAdminErrorView()
+        {
+            this.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            this.ViewData["ErrorMessage"] = "You are not \"ADMIN USER\"!";
+            return this.View("UnauthorizedError");
+
+        }
+
+    }
 }
