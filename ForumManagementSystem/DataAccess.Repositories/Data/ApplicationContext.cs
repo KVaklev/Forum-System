@@ -11,6 +11,10 @@ namespace DataAccess.Repositories.Data
         {
 
         }
+        public ApplicationContext()
+        {
+            
+        }
 
         //Configure DB tables 
         public DbSet<User> Users { get; set; }

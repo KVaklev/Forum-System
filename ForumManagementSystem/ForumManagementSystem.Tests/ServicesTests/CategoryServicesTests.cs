@@ -1,4 +1,5 @@
-﻿using Business.Exceptions;
+﻿using AspNetCoreDemo.Models;
+using Business.Exceptions;
 using Business.Services.Helpers;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
@@ -199,33 +200,33 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Delete(1,testUser));
 
         }
-        //[TestMethod]
-        //public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
-        //{
-        //    //Arrange
-        //    List<Category> expectedCategory = TestHelpers.GetTestFilterCategory();
-            
-        //    CategoryQueryParameter filterParameter = new CategoryQueryParameter()
-        //    {
-        //        Name = "Asia"
-        //    };
+        [TestMethod]
+        public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
+        {
+            // Arrange
+            List<Category> expectedCategory = TestHelpers.GetTestFilterCategory();
 
-        //    var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            CategoryQueryParameter filterParameter = new CategoryQueryParameter()
+            {
+                Name = "Asia"
+            };
 
-        //    categoryRepositoryMock
-        //        .Setup(repo => repo.FilterBy(filterParameter))
-        //        .Returns(expectedCategory);
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-        //    var sut = new CategoryService(categoryRepositoryMock.Object);
+            categoryRepositoryMock
+                .Setup(repo => repo.FilterBy(filterParameter))
+                .Returns(new PaginatedList<Category>(expectedCategory, 1, 1));
 
-        //    // Act
+            var sut = new CategoryService(categoryRepositoryMock.Object);
 
-        //    List<Category> filteredCategory = sut.FilterBy(filterParameter);
+            // Act
+            List<Category> filteredCategory = sut.FilterBy(filterParameter);
 
-        //    // Assert
+            // Assert
+            CollectionAssert.AreEqual(expectedCategory, filteredCategory);
+        }
 
-        //    Assert.AreEqual(filteredCategory, expectedCategory);
-        //}
+
         [TestMethod]
         public void UpdateCategory_Should_ReturnCorrectCategory_When_ParametersAreValid()
         {
