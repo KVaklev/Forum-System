@@ -101,7 +101,29 @@ namespace DataAccess.Repositories.Data
 					 IsAdmin = false,
 					 IsBlocked = false
 				},
-			};
+                new User
+                {
+                     Id = 7,
+                     FirstName = "Ivan",
+                     LastName = "Apostolov",
+                     Email = "Apostolche@gmail.com",
+                     Username = "IApostolov99",
+                     Password = "MTIz",
+                     IsAdmin = true,
+                     IsBlocked = false
+                },
+                 new User
+                {
+                     Id = 8,
+                     FirstName = "Ivan",
+                     LastName = "Atanasov",
+                     Email = "AtansovGerey@gmail.com",
+                     Username = "DreamerTillX",
+                     Password = "MTIz",
+                     IsAdmin = false,
+                     IsBlocked = false
+                },
+            };
 
             modelBuilder.Entity<User>().HasData(users);
 
