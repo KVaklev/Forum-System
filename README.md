@@ -31,8 +31,8 @@ Documentation: Swagger
 2. Install Dependencies and Packages
 3. Ensure that you have Microsoft SQL Server Management Studio installed and running on your local machine. 
 4. Configure the Connection String - locate the configuration file where the database connection string is stored. It is usually found in a configuration file like appsettings.json. 
-Update the connection string with the appropriate details for your SQL Server database. 
-Provide the server name, database name, connection.=> "DefaultConnection":"Server=....;Database=....;Trusted_Connection=True;"
+	Update the connection string with the appropriate details for your SQL Server database. 
+	Provide the server name, database name, connection.=> "DefaultConnection":"Server=....;Database=....;Trusted_Connection=True;"
 4. Build and Run the Project - use the appropriate commands to build and run the project.
 5. Access the Application - once the project is running locally, you can access the application by opening a web browser and entering the appropriate URL.
 
