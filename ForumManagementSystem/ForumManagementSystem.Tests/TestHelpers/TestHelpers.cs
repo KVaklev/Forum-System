@@ -1,4 +1,5 @@
-﻿using Business.Dto;
+﻿using AspNetCoreDemo.Models;
+using Business.Dto;
 using DataAccess.Models;
 using ForumManagementSystem.Models;
 
@@ -294,7 +295,7 @@ namespace ForumManagementSystem.Tests.Helpers
 
             };
         }
-        public static List<User> GetTestExpectedListUsers()
+      public static List<User> GetTestExpectedListUsers()
         {
             return new List<User>()
             {

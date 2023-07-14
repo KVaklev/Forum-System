@@ -170,8 +170,8 @@ namespace ForumManagementSystem.Repository
                 }
             }
 
-            int totalPages = ((result.Count() + 1) / filterParameters.PageSize)+1;
-            
+            int totalPages = (result.Count() + filterParameters.PageSize - 1) / filterParameters.PageSize;
+
             result = Paginate(result, filterParameters.PageNumber, filterParameters.PageSize);
 
             return new PaginatedList<User>(result, totalPages, filterParameters.PageNumber);

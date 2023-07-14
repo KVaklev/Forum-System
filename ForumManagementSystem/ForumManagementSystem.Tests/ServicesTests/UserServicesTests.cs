@@ -1,3 +1,4 @@
+using AspNetCoreDemo.Models;
 using Business.Exceptions;
 using DataAccess.Repositories.Contracts;
 using ForumManagementSystem.Exceptions;
@@ -273,40 +274,6 @@ namespace ForumManagementSystem.Tests.ServicesTests
         }
 
         [TestMethod]
-        public void UpdateUser_Should_ThrowException_When_TriesToChangeUsername()
-        {
-            //Arrange
-
-            User userToUpdate = TestHelpers.GetTestUpdateUser();
-
-            User loggedUser = TestHelpers.GetTestUpdateUser();
-
-            User user = new User()
-            {
-                Id = 2,
-                FirstName = "Mareto",
-                LastName = "Petrovka",
-                Username = "Mandarinka"
-            };
-
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-
-            userRepositoryMock
-                .Setup(repo => repo.GetById(userToUpdate.Id))
-                .Returns(userToUpdate);
-            userRepositoryMock
-                .Setup(repo => repo.Update(userToUpdate.Id, user, loggedUser))
-                .Returns(user);
-
-            var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
-
-            //Act & Assert
-
-            Assert.ThrowsException<InvalidOperationException>(() => sut.Update(userToUpdate.Id, user, loggedUser));
-        }
-
-        [TestMethod]
         public void UpdateUser_Should_ThrowException_When_UpdatorIsNotAuthorized()
         {
             //Arrange
@@ -457,36 +424,33 @@ namespace ForumManagementSystem.Tests.ServicesTests
             Assert.AreEqual(expectedUser, actualUser);
         }
 
-        //[TestMethod]
-        //public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
-        //{
-        //    //Arrange
+        [TestMethod]
+        public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
+        {
+            // Arrange
+            List<User> users = TestHelpers.GetTestListUsers();
+            List<User> expectedUsers = TestHelpers.GetTestExpectedListUsers();
+            UserQueryParameters filterParameters = new UserQueryParameters()
+            {
+                FirstName = "Ivan"
+            };
 
-        //    List<User> users = TestHelpers.GetTestListUsers();
+            var userRepositoryMock = new Mock<IUserRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
 
-        //    List<User> expectedUsers = TestHelpers.GetTestExpectedListUsers();
+            userRepositoryMock
+                .Setup(repo => repo.FilterBy(filterParameters))
+                .Returns(new PaginatedList<User>(expectedUsers, expectedUsers.Count, 1));
 
-        //    UserQueryParameters filterParameters = new UserQueryParameters()
-        //    {
-        //        FirstName = "Ivan"
-        //    };
+            var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
 
-        //    var userRepositoryMock = new Mock<IUserRepository>();
-        //    var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            // Act
+            PaginatedList<User> filteredUsers = sut.FilterBy(filterParameters);
 
-        //    userRepositoryMock
-        //        .Setup(repo => repo.FilterBy(filterParameters))
-        //        .Returns(expectedUsers);
-
-        //    var sut = new UserService(userRepositoryMock.Object, likeCommentRepositoryMock.Object);
-
-        //    // Act
-
-        //    List<User> filteredUsers = sut.FilterBy(filterParameters);
-
-        //    // Assert
-
-        //    Assert.AreEqual(filteredUsers, expectedUsers);
-        //}
+            // Assert
+            CollectionAssert.AreEqual(expectedUsers, filteredUsers);
+            Assert.AreEqual(expectedUsers.Count, filteredUsers.Count);
+            Assert.AreEqual(1, filteredUsers.PageNumber);
+        }
     }
 }

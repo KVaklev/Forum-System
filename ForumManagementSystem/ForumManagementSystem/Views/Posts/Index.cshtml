@@ -14,6 +14,7 @@
     this.ViewData["Title"] = "World Travel Forum - Posts";
     var isLogged = Context.Session.Keys.Contains("LoggedUser");
     var isBlocked = Context.Session.GetString("IsBlocked");
+    var isAdmin = Context.Session.GetString("IsAdmin");
 
 
     var categories = new SelectList(categoryService.GetAll(), "Id", "Name");
@@ -76,26 +77,59 @@
                                 </div>
                             </td>
                             <td>@string.Join(", ", post.PostTags.Select(t => t.Tag.Name))</td>
+
                             <td class="text-center">
                                 <div class="d-flex flex-wrap justify-content-center">
-                                    <div class="text-left mb-3">
-                                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
-                                    </div>
 
-                                    <br />
+                                    @if (Context.Session.GetString("IsAdmin") == "True")
+                                    {
+                                        // Admin view: Display view, edit, and delete buttons for all posts
+                                        <div class="text-left mb-3">
+                                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
+                                        </div>
 
-                                    <div class="text-left mb-3">
-                                        <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
-                                    </div>
+                                        <br />
 
-                                    <br />
+                                        <div class="text-left mb-3">
+                                            <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
+                                        </div>
 
-                                    <div class="text-left mb-3">
-                                        <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
-                                    </div>
+                                        <br />
 
-                                    <br />
+                                        <div class="text-left mb-3">
+                                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
+                                        </div>
+                                    }
+                                    else if (isBlocked == "False" || post.CreatedBy.Username == Context.Session.GetString("LoggedUser"))
+                                    {
+                                        // Logged-in user view
+                                        <div class="text-left mb-3">
+                                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
+                                        </div>
 
+                                        <br />
+
+                                        @if (post.CreatedBy.Username == Context.Session.GetString("LoggedUser"))
+                                        {
+                                            // User's own post: Display edit and delete buttons
+                                            <div class="text-left mb-3">
+                                                <a asp-controller="Posts" asp-action="Edit" asp-route-id="@post.Id" class="btn btn-warning">Edit</a>
+                                            </div>
+
+                                            <br />
+
+                                            <div class="text-left mb-3">
+                                                <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Other user view: Display view button only
+                                        <div class="text-left mb-3">
+                                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary">View</a>
+                                        </div>
+                                    }
                                 </div>
                             </td>
                             <td class="text-center">
