@@ -282,5 +282,20 @@ namespace ForumManagementSystem.Repository
 
             return new PaginatedList<Post>(result, totalPages, queryParameters.PageNumber);
         }
+
+        public int IncreasePostCommentCount(Comment comment)
+        {
+            Post post = this.GetById(comment.PostId);
+
+            return post.PostCommentsCount++;
+        }
+
+
+        public int DecreasePostCommentCount(Comment comment)
+        {
+            Post post = this.GetById(comment.PostId);
+
+            return post.PostCommentsCount--;
+        }
     }
 }
