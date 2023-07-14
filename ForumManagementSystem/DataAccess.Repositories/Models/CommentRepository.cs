@@ -111,7 +111,6 @@ namespace ForumManagementSystem.Repository
         {
             Comment commentToUpdate = this.GetByID(id);
             commentToUpdate.Content = comment.Content;
-            commentToUpdate.DateTime = DateTime.Now;
             context.SaveChanges();
 
             return commentToUpdate;

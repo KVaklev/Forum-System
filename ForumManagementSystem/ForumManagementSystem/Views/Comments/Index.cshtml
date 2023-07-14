@@ -13,7 +13,7 @@
 }    
         <form asp-controller="Comments" asp-action="Index" method="get">
                 | <a asp-controller="Home" asp-action="Index">@commentDetail.Post.Category.Name</a>
-                > <a asp-controller="Posts" asp-action="Index">@commentDetail.Post.Title</a>
+    > <a asp-controller="Posts" asp-action="Index" asp-route-id="@commentDetail.PostId">@commentDetail.Post.Title</a>
             <span style="margin-right:35%"></span>
             @if (isLogged)
             {        
@@ -50,11 +50,15 @@
                             <br/><br/>
                             @comment.LikesCount
                             @if (isLogged)
-                            {
-                               <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>                                                    
-                               <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
-                            }
-                            @if (isLogged & comment.UserId == loggedUserId)
+                                {
+                                    <a asp-controller="Comments" asp-action="Like" asp-route-id="@comment.Id" class="btn btn-warning">Like</a>
+                                }
+                                    @if (isLogged & isBlocked != "True")
+                                    {
+                                        <a asp-controller="Comments" asp-action="CreateReply" asp-route-id="@comment.Id" class="btn btn-primary"> Reply </a>
+                                    }
+                                
+                                @if (isLogged & comment.UserId == loggedUserId)
                             {
                                 <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-warning"> Edit </a>
                                 <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" class="btn btn-danger"> Delete </a>
