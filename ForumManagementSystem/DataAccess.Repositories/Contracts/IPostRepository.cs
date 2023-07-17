@@ -37,5 +37,9 @@ namespace ForumManagementSystem.Repository
 
         bool TitleExists(string title);
 
+        int IncreasePostCommentCount(Comment comment);
+
+        int DecreasePostCommentCount(Comment comment);
+
     }
 }

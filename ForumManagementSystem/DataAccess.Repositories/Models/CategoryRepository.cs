@@ -8,10 +8,12 @@ namespace ForumManagementSystem.Repository
     public class CategoryRepository : ICategoryRepository
     {
         private readonly ApplicationContext context;
+        private readonly IPostRepository postRepository;
         
-        public CategoryRepository(ApplicationContext context)
+        public CategoryRepository(ApplicationContext context, IPostRepository postRepository)
         {
-            this.context = context;        
+            this.context = context;
+            this.postRepository = postRepository;
         }
         public Category Create(Category category)
         {
@@ -120,6 +122,24 @@ namespace ForumManagementSystem.Repository
             category.CountPosts--;
             context.SaveChanges();
             return category.CountPosts;
+        }
+
+        public int IncreaseCategoryCommentCount(Comment comment)
+        {
+            Post post = this.postRepository.GetById(comment.PostId);
+            Category category = this.GetById(post.CategoryId);
+            category.CountComments++;
+            context.SaveChanges();
+            return category.CountComments;
+        }
+
+        public int DecreaseCategoryCommentCount(Comment comment)
+        {
+            Post post = this.postRepository.GetById(comment.PostId);
+            Category category = this.GetById(post.CategoryId);
+            category.CountComments--;
+            context.SaveChanges();
+            return category.CountComments;
         }
     }
 }

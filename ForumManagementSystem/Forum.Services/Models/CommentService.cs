@@ -37,8 +37,8 @@ namespace ForumManagementSystem.Services
             {
                 throw new UnauthorizedOperationException(Constants.ModifyCommentErrorMessage);
             }
-            IncreaseCategoryCommentCount(comment);
-            IncreasePostCommentCount(comment);
+            this.categoryRepository.IncreaseCategoryCommentCount(comment);
+            this.postRepository.IncreasePostCommentCount(comment);
             return this.repository.Create(comment, user);
         }
 
@@ -50,8 +50,8 @@ namespace ForumManagementSystem.Services
             }
             Comment comment = repository.GetByID(id);
             likeRepository.DeleteByComment(comment);
-            DecreaseCategoryCommentCount(comment);
-            DecreasePostCommentCount(comment);
+            this.categoryRepository.DecreaseCategoryCommentCount(comment);
+            this.postRepository.DecreasePostCommentCount(comment);
             return this.repository.Delete(id);
         }
 
@@ -90,36 +90,6 @@ namespace ForumManagementSystem.Services
             }
             return isUserUnauthorized;
         }
-        public int IncreaseCategoryCommentCount(Comment comment)
-        {
-            Post post = this.postRepository.GetById(comment.PostId);
-            Category category = this.categoryRepository.GetById(post.CategoryId);
-            category.CountComments++;
-            context.SaveChanges();
-            return category.CountComments;
-        }
-
-        public int IncreasePostCommentCount(Comment comment)
-        {
-            Post post = this.postRepository.GetById(comment.PostId);
-            
-            return post.PostCommentsCount++;
-        }
-
-        public int DecreaseCategoryCommentCount(Comment comment)
-        {
-            Post post = this.postRepository.GetById(comment.PostId);
-            Category category = this.categoryRepository.GetById(post.CategoryId);
-            category.CountComments--;
-            context.SaveChanges();
-            return category.CountComments;
-        }
-
-        public int DecreasePostCommentCount(Comment comment)
-        {
-            Post post = this.postRepository.GetById(comment.PostId);
-
-            return post.PostCommentsCount--;
-        }
+        
     }
 }

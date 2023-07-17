@@ -18,5 +18,7 @@ namespace ForumManagementSystem.Repository
         Comment Update(int id, Comment comment);
 
         Comment Delete(int id);
+
+
     }
 }

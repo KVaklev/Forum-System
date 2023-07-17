@@ -23,5 +23,9 @@ namespace ForumManagementSystem.Repository
 
         int DecreaseCategoryPostCount(Post post);
 
+        int IncreaseCategoryCommentCount(Comment comment);
+
+        int DecreaseCategoryCommentCount(Comment comment);
+
     }
 }

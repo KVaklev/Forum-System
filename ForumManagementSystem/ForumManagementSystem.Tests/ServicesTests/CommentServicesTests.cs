@@ -50,7 +50,7 @@ namespace ForumManagementSystem.Tests.ServicesTests
         [TestMethod]
         public void FilterBy_Should_ReturnCorrectList_When_ParametersAreValid()
         {
-            //Arrange
+           // Arrange
 
             List<Comment> comments = TestHelpers.GetTestListComments();
 
@@ -81,245 +81,277 @@ namespace ForumManagementSystem.Tests.ServicesTests
 
             PaginatedList<Comment> filteredComments = sut.FilterBy(filterParameters);
 
-            // Assert
+            //Assert
             CollectionAssert.AreEqual(expectedComment, filteredComments);
         }
 
-        //        [TestMethod]
-        //        public void CreateComment_Should_ReturnCorrectComment_When_ParametersAreValid()
-        //        {
-        //            //Arrange
+        [TestMethod]
+        public void CreateComment_Should_ReturnCorrectComment_When_ParametersAreValid()
+        {
+            //Arrange
 
-        //            Comment expectedComment = TestHelpers.GetTestComment();
+            Comment expectedComment = TestHelpers.GetTestComment();
 
-        //            User loggedUser = TestHelpers.GetTestUserAdmin();
+            User loggedUser = TestHelpers.GetTestUserAdmin();
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Create(expectedComment, loggedUser))
-        //                .Returns(expectedComment);
+            commentRepositoryMock
+                .Setup(repo => repo.Create(expectedComment, loggedUser))
+                .Returns(expectedComment);
+            
+               
+            categoryRepositoryMock
+                .Setup(repo => repo.IncreaseCategoryCommentCount(expectedComment))
+                .Returns(1);
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object);
+            postRepositoryMock
+                .Setup(repo => repo.IncreasePostCommentCount(expectedComment))
+                .Returns(1);
 
-        //            //Act
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object, 
+                applicationContextMock.Object);
 
-        //            Comment actualComment = sut.Create(expectedComment, loggedUser);
 
-        //            //Assert
+            //Act
+            
+            Comment actualComment = sut.Create(expectedComment, loggedUser);
 
-        //            Assert.AreEqual(expectedComment, actualComment);
-        //        }
+            //Assert
 
-        //        [TestMethod]
-        //        public void CreateComment_Should_ThrowException_When_UserIsBlocked()
-        //        {
-        //            //Arrange
+            Assert.AreEqual(expectedComment, actualComment);
+           
+        }
 
-        //            Comment expectedComment = TestHelpers.GetTestComment();
+        [TestMethod]
+        public void CreateComment_Should_ThrowException_When_UserIsBlocked()
+        {
+            //Arrange
 
-        //            User loggedUser = TestHelpers.GetTestExpectedUserAsBlocked();
+            Comment expectedComment = TestHelpers.GetTestComment();
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+            User loggedUser = TestHelpers.GetTestExpectedUserAsBlocked();
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Create(expectedComment, loggedUser))
-        //                .Throws(new UnauthorizedOperationException("Blocked user cannot create comment."));
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object);
+            commentRepositoryMock
+                .Setup(repo => repo.Create(expectedComment, loggedUser))
+                .Throws(new UnauthorizedOperationException("Blocked user cannot create comment."));
 
-        //            //Act & Assert
-        //            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Create(expectedComment, loggedUser));
-        //        }
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object, 
+                applicationContextMock.Object);
 
-        //        [TestMethod]
-        //        public void UpdateComment_Should_ReturnCorrectComment_When_ParametersAreValid()
-        //        {
-        //            //Arrange
+            //Act & Assert
+            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Create(expectedComment, loggedUser));
+        }
 
-        //            Comment commentToUpdate = TestHelpers.GetTestUpdateComment();
+        [TestMethod]
+        public void UpdateComment_Should_ReturnCorrectComment_When_ParametersAreValid()
+        {
+            //Arrange
 
-        //            User loggedUser = TestHelpers.GetTestUserAdmin();
+            Comment commentToUpdate = TestHelpers.GetTestUpdateComment();
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+            User loggedUser = TestHelpers.GetTestUserAdmin();
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.GetByID(commentToUpdate.Id))
-        //                .Returns(commentToUpdate);
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
-        //                .Returns(commentToUpdate);
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object);
+            commentRepositoryMock
+                .Setup(repo => repo.GetByID(commentToUpdate.Id))
+                .Returns(commentToUpdate);
+            commentRepositoryMock
+                .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
+                .Returns(commentToUpdate);
 
-        //            //Act
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object,
+                applicationContextMock.Object);
 
-        //            Comment updatedComment = sut.Update(commentToUpdate.Id, commentToUpdate, loggedUser);
+            //Act
 
-        //            //Assert
+            Comment updatedComment = sut.Update(commentToUpdate.Id, commentToUpdate, loggedUser);
 
-        //            Assert.AreEqual(commentToUpdate, updatedComment);
-        //        }
+            //Assert
 
-        //        [TestMethod]
-        //        public void UpdateComment_Should_ThrowException_When_UpdatorIsNotAuthorized()
-        //        {
-        //            Comment commentToUpdate = TestHelpers.GetTestUpdateComment();
+            Assert.AreEqual(commentToUpdate, updatedComment);
+        }
 
-        //            User loggedUser = TestHelpers.GetTestCreateUser();
+        [TestMethod]
+        public void UpdateComment_Should_ThrowException_When_UpdatorIsNotAuthorized()
+        {
+            Comment commentToUpdate = TestHelpers.GetTestUpdateComment();
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+            User loggedUser = TestHelpers.GetTestCreateUser();
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.GetByID(commentToUpdate.Id))
-        //                .Returns(commentToUpdate);
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
-        //                .Returns(commentToUpdate);
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object);
+            commentRepositoryMock
+                .Setup(repo => repo.GetByID(commentToUpdate.Id))
+                .Returns(commentToUpdate);
+            commentRepositoryMock
+                .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
+                .Returns(commentToUpdate);
 
-        //            //Act & Assert
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object,
+                applicationContextMock.Object);
 
-        //            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Update(commentToUpdate.Id, commentToUpdate, loggedUser));
-        //        }
+            //Act & Assert
 
-        //        [TestMethod]
-        //        public void UpdateComment_Should_ThrowException_When_UpdatorIsBlocked()
-        //        {
-        //            //Arrange
+            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Update(commentToUpdate.Id, commentToUpdate, loggedUser));
+        }
 
-        //            Comment commentToUpdate = TestHelpers.GetTestUpdateComment();
+        [TestMethod]
+        public void UpdateComment_Should_ThrowException_When_UpdatorIsBlocked()
+        {
+            //Arrange
 
-        //            User loggedUser = TestHelpers.GetTestExpectedUserAsBlocked();
+            Comment commentToUpdate = TestHelpers.GetTestUpdateComment();
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+            User loggedUser = TestHelpers.GetTestExpectedUserAsBlocked();
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.GetByID(commentToUpdate.Id))
-        //                .Returns(commentToUpdate);
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
-        //                .Returns(commentToUpdate);
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object);
+            commentRepositoryMock
+                .Setup(repo => repo.GetByID(commentToUpdate.Id))
+                .Returns(commentToUpdate);
+            commentRepositoryMock
+                .Setup(repo => repo.Update(commentToUpdate.Id, commentToUpdate))
+                .Returns(commentToUpdate);
 
-        //            //Act & Assert
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object,
+                applicationContextMock.Object);
 
-        //            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Update(commentToUpdate.Id, commentToUpdate, loggedUser));
-        //        }
+            //Act & Assert
 
-        //        [TestMethod]
-        //        public void DeleteComment_Should__When_UserIsAdmin()
-        //        {
-        //            //Arrange 
+            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Update(commentToUpdate.Id, commentToUpdate, loggedUser));
+        }
 
-        //            User loggedUser = TestHelpers.GetTestUserAdmin();
+        [TestMethod]
+        public void DeleteComment_Should__When_UserIsAdmin()
+        {
+            //Arrange 
 
-        //            Comment commentToDelete = TestHelpers.GetTestComment();
+            User loggedUser = TestHelpers.GetTestUserAdmin();
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+            Comment commentToDelete = TestHelpers.GetTestComment();
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.GetByID(commentToDelete.Id))
-        //                .Returns(commentToDelete);
-        //            likeCommentRepositoryMock
-        //                .Setup(repo => repo.DeleteByComment(commentToDelete))
-        //                .Returns(0);
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Delete(commentToDelete.Id))
-        //                .Returns(commentToDelete);
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object
-        //                );
+            commentRepositoryMock
+                .Setup(repo => repo.GetByID(commentToDelete.Id))
+                .Returns(commentToDelete);
+            likeCommentRepositoryMock
+                .Setup(repo => repo.DeleteByComment(commentToDelete))
+                .Returns(0);
+            commentRepositoryMock
+                .Setup(repo => repo.Delete(commentToDelete.Id))
+                .Returns(commentToDelete);
 
-        //            //Act 
+            categoryRepositoryMock
+                .Setup(repo => repo.DecreaseCategoryCommentCount(commentToDelete))
+                .Returns(0);
 
-        //            sut.Delete(commentToDelete.Id, loggedUser);
+            postRepositoryMock
+                .Setup(repo => repo.DecreasePostCommentCount(commentToDelete))
+                .Returns(0);
 
-        //            //Assert
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object,
+                applicationContextMock.Object
+                );
 
-        //            commentRepositoryMock
-        //                .Verify(repo => repo.Delete(commentToDelete.Id), Times.Once);
-        //        }
+            //Act 
 
-        //        [TestMethod]
-        //        public void DeleteComment_Should_ThrowException_When_UserIsNotAdmin()
-        //        {
-        //            //Arrange 
+            Comment deletedComment =sut.Delete(commentToDelete.Id, loggedUser);
 
-        //            Comment commentToDelete = TestHelpers.GetTestComment();
+            //Assert
 
-        //            User loggedUser = TestHelpers.GetTestCreateUser();
+            Assert.AreEqual(commentToDelete, deletedComment);
+        }
 
-        //            var commentRepositoryMock = new Mock<ICommentRepository>();
-        //            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
-        //            var categoryRepositoryMock = new Mock<ICategoryRepository>();
-        //            var postRepositoryMock = new Mock<IPostRepository>();
+        [TestMethod]
+        public void DeleteComment_Should_ThrowException_When_UserIsNotAdmin()
+        {
+            //Arrange 
 
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.GetByID(commentToDelete.Id))
-        //                .Returns(commentToDelete);
-        //            likeCommentRepositoryMock
-        //               .Setup(repo => repo.DeleteByComment(commentToDelete))
-        //               .Returns(0);
-        //            commentRepositoryMock
-        //                .Setup(repo => repo.Delete(commentToDelete.Id))
-        //                .Returns(commentToDelete);
+            Comment commentToDelete = TestHelpers.GetTestComment();
 
-        //            var sut = new CommentService(
-        //                commentRepositoryMock.Object,
-        //                likeCommentRepositoryMock.Object,
-        //                categoryRepositoryMock.Object,
-        //                postRepositoryMock.Object);
+            User loggedUser = TestHelpers.GetTestCreateUser();
 
-        //            //Act & Assert
+            var commentRepositoryMock = new Mock<ICommentRepository>();
+            var likeCommentRepositoryMock = new Mock<ILikeCommentRepository>();
+            var categoryRepositoryMock = new Mock<ICategoryRepository>();
+            var postRepositoryMock = new Mock<IPostRepository>();
+            var applicationContextMock = new Mock<ApplicationContext>();
 
-        //            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Delete(commentToDelete.Id, loggedUser));
+            commentRepositoryMock
+                .Setup(repo => repo.GetByID(commentToDelete.Id))
+                .Returns(commentToDelete);
+            likeCommentRepositoryMock
+               .Setup(repo => repo.DeleteByComment(commentToDelete))
+               .Returns(0);
+            commentRepositoryMock
+                .Setup(repo => repo.Delete(commentToDelete.Id))
+                .Returns(commentToDelete);
 
-        //        }
+            var sut = new CommentService(
+                commentRepositoryMock.Object,
+                likeCommentRepositoryMock.Object,
+                categoryRepositoryMock.Object,
+                postRepositoryMock.Object,
+                applicationContextMock.Object);
+
+            //Act & Assert
+
+            Assert.ThrowsException<UnauthorizedOperationException>(() => sut.Delete(commentToDelete.Id, loggedUser));
+
+        }
 
     }
 }
