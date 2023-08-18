@@ -66,6 +66,19 @@ Documentation: Swagger
 |		  |Views             | Contains the views responsible for rendering the user interface and presenting data to the end-user.       |
 |		  |Helpers           | Provides helper classes or methods that assist in rendering views or performing other related tasks.       |
 
+
+#### Home Page
+
+![N|Solid](https://i.postimg.cc/02R7586B/HomePage.jpg)
+
+### Users filter Page
+
+![N|Solid](https://i.postimg.cc/52ymd3Km/Users-Filter.jpg)
+
+### Posts filter Page
+
+![N|Solid](https://i.postimg.cc/J4vQ8JwV/Posts-Filter.jpg)
+
 ## Credits
 
 This project was created with the assistance of:
