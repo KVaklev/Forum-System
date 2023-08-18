@@ -51,5 +51,7 @@ namespace ForumManagementSystem.Models
         // Collection navigation containing dependents
         public List<LikePost> LikePosts { get; set; } = new List<LikePost> { };
         public List<PostTag> PostTags { get; set; } = new List<PostTag>();
+
+
     }
 }
