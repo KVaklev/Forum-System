@@ -38,7 +38,7 @@ Documentation: Swagger
 
 ## Database Relations
 
-![Diagram](https://gitlab.com/forum-system-group-8/forum-system/-/blob/main/Diagram.jpg)
+See the additional Diagram file in our project folder -->Diagram.jpg
 
 # About the Project 
 
